@@ -1,0 +1,6 @@
+{
+  "name": "RajDailyTools – Government Exam Portal",
+  "description": "India's Exam Preparation & Recruitment Resource. Live updates for Latest Jobs, Admit Card, Answer Key, Result, Cut Off, and Eligibility.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
