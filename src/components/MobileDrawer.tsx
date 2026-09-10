@@ -90,7 +90,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       {/* Backdrop */}
       <div
         id="mobile-drawer-backdrop"
-        style={staticMode && !isOpen ? { display: 'none', pointerEvents: 'none' } : undefined}
+        style={{
+          zIndex: 50,
+          ...(staticMode && !isOpen ? { display: 'none', pointerEvents: 'none' } : {})
+        }}
         className={`fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity z-50 ${
           staticMode ? 'hidden pointer-events-none' : 'animate-in fade-in cursor-pointer'
         }`}
@@ -105,17 +108,18 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       {/* Slide-out Drawer */}
       <div
         id="mobile-drawer"
-        style={
-          staticMode && !isOpen
+        style={{
+          zIndex: 60,
+          ...(staticMode && !isOpen
             ? {
                 display: 'none',
                 visibility: 'hidden',
                 transform: 'translateX(100%)',
                 pointerEvents: 'none'
               }
-            : undefined
-        }
-        className={`fixed top-0 right-0 bottom-0 z-[60] w-[85%] max-w-[340px] bg-white h-full shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+            : {})
+        }}
+        className={`fixed top-0 right-0 bottom-0 z-60 w-[85%] max-w-[340px] bg-white h-full shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           staticMode
             ? 'translate-x-full hidden pointer-events-none invisible'
             : 'animate-in slide-in-from-right'
@@ -155,15 +159,18 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               e.stopPropagation();
               onClose();
             }}
-            className="w-8 h-8 rounded-lg bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+            className="relative z-10 w-9 h-9 rounded-lg bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Close menu"
           >
-            <X className="w-4 h-4 pointer-events-none" />
+            <X className="w-5 h-5 pointer-events-none" />
           </button>
         </div>
 
         {/* Drawer Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-1">
+        <div 
+          className="flex-1 overflow-y-auto p-4 space-y-1"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
             Main Portal
           </div>

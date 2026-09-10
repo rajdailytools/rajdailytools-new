@@ -75,6 +75,34 @@
 }
 
 /* Mobile Navigation Drawer & Backdrop */
+#mobile-drawer-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 50 !important;
+}
+
+#mobile-drawer {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 60 !important;
+}
+
+#close-mobile-drawer {
+  position: relative !important;
+  z-index: 70 !important;
+  cursor: pointer !important;
+}
+
+.z-50 {
+  z-index: 50 !important;
+}
+
+.z-60 {
+  z-index: 60 !important;
+}
+
 #mobile-drawer-backdrop.hidden,
 #mobile-drawer-backdrop[style*="display: none"] {
   display: none !important;

@@ -33,6 +33,7 @@
         e.preventDefault();
         e.stopPropagation();
       }
+      drawer.style.zIndex = '60';
       drawer.style.display = 'flex';
       drawer.style.visibility = 'visible';
       drawer.style.pointerEvents = 'auto';
@@ -44,6 +45,7 @@
       });
 
       if (backdrop) {
+        backdrop.style.zIndex = '50';
         backdrop.style.display = 'block';
         backdrop.style.pointerEvents = 'auto';
         backdrop.classList.remove('hidden', 'pointer-events-none');
