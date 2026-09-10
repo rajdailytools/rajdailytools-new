@@ -14,21 +14,91 @@
 
     if (!drawer) return;
 
-    function openDrawer() {
-      drawer.classList.remove('translate-x-full');
-      if (backdrop) backdrop.classList.remove('hidden');
+    // Ensure drawer is initialized as closed on fresh load
+    drawer.style.transform = 'translateX(100%)';
+    drawer.style.display = 'none';
+    drawer.style.visibility = 'hidden';
+    drawer.style.pointerEvents = 'none';
+    drawer.classList.add('translate-x-full', 'hidden', 'invisible', 'pointer-events-none');
+    drawer.classList.remove('translate-x-0');
+
+    if (backdrop) {
+      backdrop.style.display = 'none';
+      backdrop.style.pointerEvents = 'none';
+      backdrop.classList.add('hidden', 'pointer-events-none');
+    }
+
+    function openDrawer(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      drawer.style.display = 'flex';
+      drawer.style.visibility = 'visible';
+      drawer.style.pointerEvents = 'auto';
+      drawer.classList.remove('translate-x-full', 'hidden', 'invisible', 'pointer-events-none');
+      drawer.classList.add('translate-x-0');
+
+      requestAnimationFrame(function () {
+        drawer.style.transform = 'translateX(0)';
+      });
+
+      if (backdrop) {
+        backdrop.style.display = 'block';
+        backdrop.style.pointerEvents = 'auto';
+        backdrop.classList.remove('hidden', 'pointer-events-none');
+      }
       document.body.style.overflow = 'hidden';
     }
 
-    function closeDrawer() {
+    function closeDrawer(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      drawer.style.transform = 'translateX(100%)';
+      drawer.style.pointerEvents = 'none';
       drawer.classList.add('translate-x-full');
-      if (backdrop) backdrop.classList.add('hidden');
+      drawer.classList.remove('translate-x-0');
+
+      if (backdrop) {
+        backdrop.style.display = 'none';
+        backdrop.style.pointerEvents = 'none';
+        backdrop.classList.add('hidden', 'pointer-events-none');
+      }
       document.body.style.overflow = '';
+
+      setTimeout(function () {
+        if (drawer.classList.contains('translate-x-full')) {
+          drawer.style.display = 'none';
+          drawer.style.visibility = 'hidden';
+          drawer.classList.add('hidden', 'invisible', 'pointer-events-none');
+        }
+      }, 300);
     }
 
     if (openBtn) openBtn.addEventListener('click', openDrawer);
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
     if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    // Prevent clicks inside drawer from closing it
+    drawer.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+
+    // Close on navigation click inside drawer
+    drawer.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeDrawer();
+      });
+    });
+
+    // Escape key closes drawer
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeDrawer();
+      }
+    });
   }
 
   // --- 2. Live Global Search ---

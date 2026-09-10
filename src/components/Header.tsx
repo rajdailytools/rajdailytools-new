@@ -232,12 +232,19 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* MOBILE HAMBURGER BUTTON */}
             <button
+              type="button"
               id="mobile-menu-btn"
-              onClick={onOpenMobileMenu}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (onOpenMobileMenu) {
+                  onOpenMobileMenu();
+                }
+              }}
               className="lg:hidden p-2 text-slate-800 hover:bg-slate-100 rounded-xl cursor-pointer focus:outline-none"
               aria-label="Open Navigation Menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-6 h-6 pointer-events-none" />
             </button>
           </div>
         </div>

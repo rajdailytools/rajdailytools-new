@@ -48,9 +48,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
   // Escape key listener
   useEffect(() => {
-    if (staticMode) return;
+    if (staticMode || !isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
@@ -90,23 +90,40 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       {/* Backdrop */}
       <div
         id="mobile-drawer-backdrop"
+        style={staticMode && !isOpen ? { display: 'none', pointerEvents: 'none' } : undefined}
         className={`fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity z-50 ${
-          staticMode ? 'hidden' : 'animate-in fade-in'
+          staticMode ? 'hidden pointer-events-none' : 'animate-in fade-in cursor-pointer'
         }`}
-        onClick={onClose}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }}
+        aria-hidden="true"
       />
 
       {/* Slide-out Drawer */}
       <div
         id="mobile-drawer"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[340px] bg-white h-full shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+        style={
+          staticMode && !isOpen
+            ? {
+                display: 'none',
+                visibility: 'hidden',
+                transform: 'translateX(100%)',
+                pointerEvents: 'none'
+              }
+            : undefined
+        }
+        className={`fixed top-0 right-0 bottom-0 z-[60] w-[85%] max-w-[340px] bg-white h-full shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           staticMode
-            ? 'translate-x-full'
+            ? 'translate-x-full hidden pointer-events-none invisible'
             : 'animate-in slide-in-from-right'
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
         <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
@@ -131,12 +148,17 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
             </div>
           </div>
           <button
+            type="button"
             id="close-mobile-drawer"
-            onClick={onClose}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClose();
+            }}
             className="w-8 h-8 rounded-lg bg-slate-200/80 hover:bg-red-100 hover:text-red-600 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Close menu"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 pointer-events-none" />
           </button>
         </div>
 

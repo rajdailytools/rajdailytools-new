@@ -43,6 +43,7 @@ export default function App() {
   // Synchronize with URL hash for browser history / back button
   useEffect(() => {
     const handleHashChange = () => {
+      setIsMobileDrawerOpen(false);
       const hash = window.location.hash.replace('#/', '').replace('#', '');
       if (!hash) {
         setCurrentPage('home');
