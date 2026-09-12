@@ -8,6 +8,9 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root SSC CPO 2026 page
+  if (page === 'ssc-cpo-si-capf-recruitment-2026' || page === 'ssc-cpo-2026') return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
+
   // Map dedicated root exams
   if (page === 'ssc-cgl-2026') return `${prefix}ssc-cgl-2026.html`;
   if (page === 'ssc-cgl-eligibility-2026') return `${prefix}ssc-cgl-eligibility-2026.html`;
@@ -77,6 +80,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'ssc-cpo-si-capf-recruitment-2026' || slug === 'ssc-cpo-2026') {
+        return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
+      }
       return slug ? `${prefix}latest-jobs/${slug}.html` : `${prefix}latest-jobs.html`;
     case 'admit-card-detail':
       return slug ? `${prefix}admit-card/${slug}.html` : `${prefix}admit-card.html`;
@@ -92,6 +98,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'ssc-cpo-si-capf-recruitment-2026' || slug === 'ssc-cpo-2026') {
+        return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
+      }
       if (slug) {
         return `${prefix}latest-jobs/${slug}.html`;
       }

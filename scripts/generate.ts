@@ -40,8 +40,10 @@ import { IbpsRrbTopicPage } from '../src/pages/IbpsRrbTopicPage';
 import { AIIMS_NORCET_11_EXAM } from '../src/data/aiimsNorcetData';
 import { AiimsNorcetAdmitCardPage } from '../src/pages/AiimsNorcetAdmitCardPage';
 import { AiimsNorcetTopicPage } from '../src/pages/AiimsNorcetTopicPage';
+import { SSC_CPO_2026_EXAM } from '../src/data/sscCpoData';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
+const generatedFiles: string[] = [];
 
 // Helper to escape HTML attributes
 function escapeHtml(str: string): string {
@@ -59,7 +61,7 @@ const searchIndex = EXAMS_DATABASE.map((exam) => ({
   org: exam.organization || 'Government of India',
   category: exam.category,
   vac: exam.totalVacancy,
-  url: `latest-jobs/${exam.slug}.html`,
+  url: exam.slug === 'ssc-cpo-si-capf-recruitment-2026' ? 'ssc-cpo-si-capf-recruitment-2026.html' : `latest-jobs/${exam.slug}.html`,
   icon: exam.logoIcon || '📋'
 }));
 
@@ -151,6 +153,7 @@ function writePage(relativeFilePath: string, htmlContent: string) {
     fs.mkdirSync(dir, { recursive: true });
   }
   fs.writeFileSync(fullPath, htmlContent, 'utf-8');
+  generatedFiles.push(relativeFilePath);
   console.log(`✓ Generated: ${relativeFilePath}`);
 }
 
@@ -1103,6 +1106,27 @@ async function generateAllPages() {
   );
 
   // --------------------------------------------------------------------------
+  // 2e. DEDICATED SSC CPO SI CAPF 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const sscCpoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'ssc-cpo-2026' || e.slug === 'ssc-cpo-si-capf-recruitment-2026') ||
+    SSC_CPO_2026_EXAM;
+
+  writePage(
+    'ssc-cpo-si-capf-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: `${sscCpoExam.examName} – Notification, 1871 Vacancies, Physical Standards & Apply Online`,
+      description: sscCpoExam.description || sscCpoExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: sscCpoExam, depth: 0 })
+      ),
+      pageKey: 'ssc-cpo-si-capf-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'ssc-cpo-si-capf-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
   // 3. SUBDIRECTORIES (depth = 1)
   // --------------------------------------------------------------------------
 
@@ -1291,6 +1315,19 @@ async function generateAllPages() {
       })
     );
   }
+
+  // Generate sitemap.xml with canonical base domain https://rajdailytools.in/
+  const sitemapUrls = generatedFiles
+    .filter((f) => f.endsWith('.html'))
+    .map((f) => {
+      const pathPart = f === 'index.html' ? '' : f;
+      return `  <url>\n    <loc>https://rajdailytools.in/${pathPart}</loc>\n    <lastmod>2026-09-12</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${f === 'index.html' ? '1.0' : f.includes('/') ? '0.7' : '0.9'}</priority>\n  </url>`;
+    })
+    .join('\n');
+
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>`;
+  fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf-8');
+  console.log(`✓ Generated: sitemap.xml with ${generatedFiles.filter((f) => f.endsWith('.html')).length} URLs`);
 
   console.log('\n✨ All static HTML pages generated successfully in dist/!\n');
 }

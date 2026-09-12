@@ -26,7 +26,7 @@ import {
 
 interface JobDetailPageProps {
   exam: ExamRecord;
-  onNavigate: (page: ActivePage, slug?: string) => void;
+  onNavigate?: (page: ActivePage, slug?: string) => void;
   depth?: number;
 }
 
@@ -249,16 +249,20 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     Check if your degree ({exam.education.join(', ')}) and age meet the criteria for {exam.examName}.
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    window.location.hash = `#/tools/eligibility-calculator?exam=${exam.slug}`;
-                    onNavigate('tool-detail', `eligibility-calculator?exam=${exam.slug}`);
+                <a
+                  href={`${depth === 1 ? '../' : './'}tools/eligibility-calculator.html?exam=${exam.slug}`}
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      window.location.hash = `#/tools/eligibility-calculator?exam=${exam.slug}`;
+                      onNavigate('tool-detail', `eligibility-calculator?exam=${exam.slug}`);
+                    }
                   }}
                   className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                 >
                   <span>Check Eligibility</span>
                   <ArrowRight className="w-3 h-3" />
-                </button>
+                </a>
               </div>
 
               {/* Tool 2: Age Calculator */}
@@ -277,16 +281,20 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     Calculate exact Years, Months &amp; Days on official cut-off date ({exam.ageMin}-{exam.ageMax} yrs).
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    window.location.hash = `#/tools/age-calculator?exam=${exam.slug}`;
-                    onNavigate('tool-detail', `age-calculator?exam=${exam.slug}`);
+                <a
+                  href={`${depth === 1 ? '../' : './'}tools/age-calculator.html?exam=${exam.slug}`}
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      window.location.hash = `#/tools/age-calculator?exam=${exam.slug}`;
+                      onNavigate('tool-detail', `age-calculator?exam=${exam.slug}`);
+                    }
                   }}
                   className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                 >
                   <span>Calculate Official Age</span>
                   <ArrowRight className="w-3 h-3" />
-                </button>
+                </a>
               </div>
 
               {/* Tool 3: Photo & Signature Resizer */}
@@ -305,16 +313,20 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     Crop and compress documents directly matching {exam.organization} upload specifications.
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    window.location.hash = `#/tools/photo-resizer?exam=${exam.slug}`;
-                    onNavigate('tool-detail', `photo-resizer?exam=${exam.slug}`);
+                <a
+                  href={`${depth === 1 ? '../' : './'}tools/photo-resizer.html?exam=${exam.slug}`}
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      window.location.hash = `#/tools/photo-resizer?exam=${exam.slug}`;
+                      onNavigate('tool-detail', `photo-resizer?exam=${exam.slug}`);
+                    }
                   }}
                   className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                 >
                   <span>Resize Documents</span>
                   <ArrowRight className="w-3 h-3" />
-                </button>
+                </a>
               </div>
 
               {/* Tool 4: Physical Eligibility Checker */}
@@ -333,16 +345,20 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     Check height (170/157cm), chest expansion (80-85cm), and running endurance pass/fail.
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    window.location.hash = `#/tools/physical-eligibility?exam=${exam.slug}`;
-                    onNavigate('tool-detail', `physical-eligibility?exam=${exam.slug}`);
+                <a
+                  href={`${depth === 1 ? '../' : './'}tools/physical-eligibility.html?exam=${exam.slug}`}
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      window.location.hash = `#/tools/physical-eligibility?exam=${exam.slug}`;
+                      onNavigate('tool-detail', `physical-eligibility?exam=${exam.slug}`);
+                    }
                   }}
                   className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                 >
                   <span>Check Physical Fitness</span>
                   <ArrowRight className="w-3 h-3" />
-                </button>
+                </a>
               </div>
 
               {/* Tool 5: Online Mock Test */}
@@ -360,16 +376,20 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => {
-                    window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
-                    onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                <a
+                  href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                  onClick={(e) => {
+                    if (onNavigate) {
+                      e.preventDefault();
+                      window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                      onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                    }
                   }}
                   className="py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-xs"
                 >
                   <span>Start Mock Test</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </a>
               </div>
             </div>
           </div>

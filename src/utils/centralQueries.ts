@@ -1,8 +1,8 @@
 import { ExamRecord, EducationLevel } from '../types/exam';
 import { EXAMS_DATABASE } from '../data/exams';
 
-// Reference date for current time (matches system environment 2026-09-03)
-export const TODAY_DATE = '2026-09-03';
+// Reference date for current time (matches system environment 2026-09-12)
+export const TODAY_DATE = '2026-09-12';
 
 /**
  * Parses date string (YYYY-MM-DD) into Date object normalized to midnight UTC
@@ -208,8 +208,30 @@ export function evaluateCandidateEligibility(
   }
 
   // 3. Education Check
-  if (criteria.education !== 'All' && !exam.education.includes(criteria.education)) {
-    reasons.push(`Educational qualification requires: ${exam.education.join(' OR ')} (Selected: ${criteria.education})`);
+  if (criteria.education !== 'All') {
+    let matchesEducation = exam.education.includes(criteria.education);
+    if (!matchesEducation && exam.acceptedQualificationLevels && exam.acceptedQualificationLevels.includes(criteria.education)) {
+      matchesEducation = true;
+    }
+    if (!matchesEducation && exam.higherQualificationAccepted) {
+      const eduOrder: Record<string, number> = {
+        '10th': 1,
+        '12th': 2,
+        'ITI': 2,
+        'Diploma': 3,
+        'Graduation': 4,
+        'Post Graduation': 5
+      };
+      const candidateRank = eduOrder[criteria.education] || 0;
+      const minRequiredRank = Math.min(...exam.education.map((e) => eduOrder[e] || 99));
+      if (candidateRank >= minRequiredRank && candidateRank >= 4) {
+        matchesEducation = true;
+      }
+    }
+
+    if (!matchesEducation) {
+      reasons.push(`Educational qualification requires: ${exam.education.join(' OR ')} (Selected: ${criteria.education})`);
+    }
   }
 
   // 4. Gender Check

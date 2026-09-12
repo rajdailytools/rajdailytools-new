@@ -2,10 +2,12 @@ import { ExamRecord, ExamInfoSection } from '../types/exam';
 import { ADDITIONAL_EXAMS } from './moreExams';
 import { IBPS_RRB_XV_EXAM, generateIbpsRrbXv50Sections } from './ibpsRrbData';
 import { AIIMS_NORCET_11_EXAM, generateAiimsNorcet50Sections } from './aiimsNorcetData';
+import { SSC_CPO_2026_EXAM, generateSscCpo50Sections } from './sscCpoData';
 
-export { generateIbpsRrbXv50Sections, generateAiimsNorcet50Sections, AIIMS_NORCET_11_EXAM };
+export { generateIbpsRrbXv50Sections, generateAiimsNorcet50Sections, AIIMS_NORCET_11_EXAM, SSC_CPO_2026_EXAM, generateSscCpo50Sections };
 
 const BASE_EXAMS: ExamRecord[] = [
+  SSC_CPO_2026_EXAM,
   AIIMS_NORCET_11_EXAM,
   IBPS_RRB_XV_EXAM,
   {
@@ -916,7 +918,7 @@ export function generateSscChsl50Sections(): ExamInfoSection[] {
  * repetitive boilerplate when adding new exams to central data.
  */
 export function normalizeExamRecord(raw: ExamRecord): ExamRecord {
-  const today = '2026-09-09';
+  const today = '2026-09-12';
 
   // 1. Automatically calculate lifecycle status from official dates if applicable
   let autoStatus = raw.status;

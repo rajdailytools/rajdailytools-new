@@ -49,6 +49,15 @@ export interface ExamRecord {
   cutOffDate?: string;          // ISO date 'YYYY-MM-DD'
   status?: LifecycleStage;
   education: EducationLevel[];
+  minimumQualificationLevel?: string;
+  acceptedQualificationLevels?: string[];
+  eligibilityPaths?: {
+    pathName: string;
+    qualifications: string[];
+    notes?: string;
+  }[];
+  higherQualificationAccepted?: boolean;
+  specialQualificationRequirements?: string[];
   ageMin: number;
   ageMax: number;
   ageRelaxationInfo?: string;
