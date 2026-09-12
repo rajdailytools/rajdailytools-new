@@ -7,6 +7,14 @@ import { SSC_JE_2026_EXAM, generateSscJe50Sections } from './sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections } from './ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM, generateUpSpecialTet50Sections } from './upSpecialTetData';
 import { NBEMS_GROUP_ABC_2026_EXAM, generateNbems50Sections } from './nbemsData';
+import {
+  PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
+  generatePatnaHighCourt50Sections
+} from './patnaHighCourtData';
+import {
+  MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
+  generateMpesb50Sections
+} from './mpesbData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -21,10 +29,16 @@ export {
   UP_SPECIAL_TET_2026_EXAM,
   generateUpSpecialTet50Sections,
   NBEMS_GROUP_ABC_2026_EXAM,
-  generateNbems50Sections
+  generateNbems50Sections,
+  PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
+  generatePatnaHighCourt50Sections,
+  MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
+  generateMpesb50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
+  PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
   NBEMS_GROUP_ABC_2026_EXAM,
   SSC_JE_2026_EXAM,
   UP_SPECIAL_TET_2026_EXAM,

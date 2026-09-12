@@ -8,6 +8,12 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root MPESB Krishi Vistar Adhikari 2026 Admit Card page
+  if (page === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || page === 'mpesb-krishi-vistar-adhikari-2026') return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
+
+  // Map dedicated root Patna High Court Assistant 2026 Admit Card page
+  if (page === 'patna-high-court-assistant-admit-card-2026' || page === 'patna-high-court-assistant-2026') return `${prefix}patna-high-court-assistant-admit-card-2026.html`;
+
   // Map dedicated root NBEMS Group A B C 2026 Admit Card page
   if (page === 'nbems-group-a-b-c-admit-card-2026' || page === 'nbems-admit-card-2026') return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
 
@@ -92,6 +98,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || slug === 'mpesb-krishi-vistar-adhikari-2026') {
+        return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
+      }
+      if (slug === 'patna-high-court-assistant-admit-card-2026' || slug === 'patna-high-court-assistant-2026') {
+        return `${prefix}patna-high-court-assistant-admit-card-2026.html`;
+      }
       if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
         return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
       }
@@ -109,6 +121,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       return slug ? `${prefix}latest-jobs/${slug}.html` : `${prefix}latest-jobs.html`;
     case 'admit-card-detail':
+      if (slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || slug === 'mpesb-krishi-vistar-adhikari-2026') {
+        return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
+      }
+      if (slug === 'patna-high-court-assistant-admit-card-2026' || slug === 'patna-high-court-assistant-2026') {
+        return `${prefix}patna-high-court-assistant-admit-card-2026.html`;
+      }
       if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
         return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
       }
@@ -125,6 +143,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || slug === 'mpesb-krishi-vistar-adhikari-2026') {
+        return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
+      }
+      if (slug === 'patna-high-court-assistant-admit-card-2026' || slug === 'patna-high-court-assistant-2026') {
+        return `${prefix}patna-high-court-assistant-admit-card-2026.html`;
+      }
       if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
         return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
       }

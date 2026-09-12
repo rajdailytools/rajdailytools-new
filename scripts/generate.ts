@@ -46,6 +46,10 @@ import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
+import { PATNA_HIGH_COURT_ASSISTANT_2026_EXAM } from '../src/data/patnaHighCourtData';
+import { PatnaHighCourtAdmitCardPage } from '../src/pages/PatnaHighCourtAdmitCardPage';
+import { MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM } from '../src/data/mpesbData';
+import { MpesbAdmitCardPage } from '../src/pages/MpesbAdmitCardPage';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -67,7 +71,11 @@ const searchIndex = EXAMS_DATABASE.map((exam) => ({
   category: exam.category,
   vac: exam.totalVacancy,
   url:
-    exam.slug === 'nbems-group-a-b-c-admit-card-2026'
+    exam.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026'
+      ? 'mpesb-krishi-vistar-adhikari-admit-card-2026.html'
+      : exam.slug === 'patna-high-court-assistant-admit-card-2026'
+      ? 'patna-high-court-assistant-admit-card-2026.html'
+      : exam.slug === 'nbems-group-a-b-c-admit-card-2026'
       ? 'nbems-group-a-b-c-admit-card-2026.html'
       : exam.slug === 'ssc-je-recruitment-2026'
       ? 'ssc-je-recruitment-2026.html'
@@ -1223,6 +1231,48 @@ async function generateAllPages() {
       pageKey: 'nbems-group-a-b-c-admit-card-2026',
       depth: 0,
       canonicalPath: 'nbems-group-a-b-c-admit-card-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2j. DEDICATED PATNA HIGH COURT ASSISTANT ADMIT CARD 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const patnaHcExam =
+    EXAMS_DATABASE.find((e) => e.id === 'patna-high-court-assistant-2026' || e.slug === 'patna-high-court-assistant-admit-card-2026') ||
+    PATNA_HIGH_COURT_ASSISTANT_2026_EXAM;
+
+  writePage(
+    'patna-high-court-assistant-admit-card-2026.html',
+    wrapWithHtmlLayout({
+      title: `${patnaHcExam.examName} – Download Hall Ticket, Exam Date (18 Sept 2026), Written Exam & Direct Link`,
+      description: patnaHcExam.description || patnaHcExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(PatnaHighCourtAdmitCardPage, { exam: patnaHcExam, depth: 0 })
+      ),
+      pageKey: 'patna-high-court-assistant-admit-card-2026',
+      depth: 0,
+      canonicalPath: 'patna-high-court-assistant-admit-card-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2k. DEDICATED MPESB KRISHI VISTAR ADHIKARI ADMIT CARD 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const mpesbExam =
+    EXAMS_DATABASE.find((e) => e.id === 'mpesb-krishi-vistar-adhikari-2026' || e.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026') ||
+    MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM;
+
+  writePage(
+    'mpesb-krishi-vistar-adhikari-admit-card-2026.html',
+    wrapWithHtmlLayout({
+      title: `${mpesbExam.examName} – Download Hall Ticket (TAC), Exam Date (17 Sept 2026), 2784 Posts & Direct Link`,
+      description: mpesbExam.description || mpesbExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(MpesbAdmitCardPage, { exam: mpesbExam, depth: 0 })
+      ),
+      pageKey: 'mpesb-krishi-vistar-adhikari-admit-card-2026',
+      depth: 0,
+      canonicalPath: 'mpesb-krishi-vistar-adhikari-admit-card-2026.html'
     })
   );
 

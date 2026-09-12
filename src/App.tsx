@@ -34,6 +34,8 @@ import { IbpsRrbTopicPage } from './pages/IbpsRrbTopicPage';
 import { AiimsNorcetAdmitCardPage } from './pages/AiimsNorcetAdmitCardPage';
 import { AiimsNorcetTopicPage } from './pages/AiimsNorcetTopicPage';
 import { NbemsAdmitCardPage } from './pages/NbemsAdmitCardPage';
+import { PatnaHighCourtAdmitCardPage } from './pages/PatnaHighCourtAdmitCardPage';
+import { MpesbAdmitCardPage } from './pages/MpesbAdmitCardPage';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<ActivePage>('home');
@@ -127,6 +129,12 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isMpesbPage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb') || currentPage === 'mpesb-krishi-vistar-adhikari-admit-card-2026');
+  const mpesbRecord = EXAMS_DATABASE.find((e) => e.id === 'mpesb-krishi-vistar-adhikari-2026' || e.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026');
+
+  const isPatnaHcPage = typeof currentPage === 'string' && (currentPage.startsWith('patna-high-court') || currentPage === 'patna-high-court-assistant-admit-card-2026');
+  const patnaHcRecord = EXAMS_DATABASE.find((e) => e.id === 'patna-high-court-assistant-2026' || e.slug === 'patna-high-court-assistant-admit-card-2026');
+
   const isNbemsPage = typeof currentPage === 'string' && (currentPage.startsWith('nbems') || currentPage === 'nbems-group-a-b-c-admit-card-2026');
   const nbemsRecord = EXAMS_DATABASE.find((e) => e.id === 'nbems-group-abc-2026' || e.slug === 'nbems-group-a-b-c-admit-card-2026');
 
@@ -149,6 +157,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isMpesbPage && mpesbRecord) ? mpesbRecord :
+    (isPatnaHcPage && patnaHcRecord) ? patnaHcRecord :
     (isNbemsPage && nbemsRecord) ? nbemsRecord :
     (isSscJePage && sscJeRecord) ? sscJeRecord :
     (isUpTetPage && upTetRecord) ? upTetRecord :
@@ -359,6 +369,14 @@ export default function App() {
 
       case 'aiims-norcet-11th-cut-off-2026':
         return <AiimsNorcetTopicPage exam={currentExam} topic="cut-off" onNavigate={handleNavigate} />;
+
+      case 'mpesb-krishi-vistar-adhikari-admit-card-2026':
+      case 'mpesb-krishi-vistar-adhikari-2026':
+        return <MpesbAdmitCardPage exam={mpesbRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'patna-high-court-assistant-admit-card-2026':
+      case 'patna-high-court-assistant-2026':
+        return <PatnaHighCourtAdmitCardPage exam={patnaHcRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'nbems-group-a-b-c-admit-card-2026':
       case 'nbems-admit-card-2026':
