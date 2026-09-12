@@ -41,6 +41,7 @@ import { AIIMS_NORCET_11_EXAM } from '../src/data/aiimsNorcetData';
 import { AiimsNorcetAdmitCardPage } from '../src/pages/AiimsNorcetAdmitCardPage';
 import { AiimsNorcetTopicPage } from '../src/pages/AiimsNorcetTopicPage';
 import { SSC_CPO_2026_EXAM } from '../src/data/sscCpoData';
+import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -61,7 +62,12 @@ const searchIndex = EXAMS_DATABASE.map((exam) => ({
   org: exam.organization || 'Government of India',
   category: exam.category,
   vac: exam.totalVacancy,
-  url: exam.slug === 'ssc-cpo-si-capf-recruitment-2026' ? 'ssc-cpo-si-capf-recruitment-2026.html' : `latest-jobs/${exam.slug}.html`,
+  url:
+    exam.slug === 'ukpsc-upper-pcs-recruitment-2026'
+      ? 'ukpsc-upper-pcs-recruitment-2026.html'
+      : exam.slug === 'ssc-cpo-si-capf-recruitment-2026'
+      ? 'ssc-cpo-si-capf-recruitment-2026.html'
+      : `latest-jobs/${exam.slug}.html`,
   icon: exam.logoIcon || '📋'
 }));
 
@@ -1123,6 +1129,27 @@ async function generateAllPages() {
       pageKey: 'ssc-cpo-si-capf-recruitment-2026',
       depth: 0,
       canonicalPath: 'ssc-cpo-si-capf-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2f. DEDICATED UKPSC UPPER PCS 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const ukpscExam =
+    EXAMS_DATABASE.find((e) => e.id === 'ukpsc-upper-pcs-2026' || e.slug === 'ukpsc-upper-pcs-recruitment-2026') ||
+    UKPSC_UPPER_PCS_2026_EXAM;
+
+  writePage(
+    'ukpsc-upper-pcs-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: `${ukpscExam.examName} – Notification, 67 Posts, Eligibility & Apply Online`,
+      description: ukpscExam.description || ukpscExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: ukpscExam, depth: 0 })
+      ),
+      pageKey: 'ukpsc-upper-pcs-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'ukpsc-upper-pcs-recruitment-2026.html'
     })
   );
 

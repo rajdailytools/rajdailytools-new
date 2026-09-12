@@ -9,7 +9,9 @@ export type ExamCategory =
   | 'Bank'
   | 'UPSC'
   | 'Govt Exam' 
-  | 'Admission';
+  | 'Admission'
+  | 'State Jobs'
+  | 'UKPSC';
 
 export type LifecycleStage =
   | 'APPLICATION_OPEN'

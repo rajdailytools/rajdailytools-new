@@ -3,10 +3,12 @@ import { ADDITIONAL_EXAMS } from './moreExams';
 import { IBPS_RRB_XV_EXAM, generateIbpsRrbXv50Sections } from './ibpsRrbData';
 import { AIIMS_NORCET_11_EXAM, generateAiimsNorcet50Sections } from './aiimsNorcetData';
 import { SSC_CPO_2026_EXAM, generateSscCpo50Sections } from './sscCpoData';
+import { UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections } from './ukpscData';
 
-export { generateIbpsRrbXv50Sections, generateAiimsNorcet50Sections, AIIMS_NORCET_11_EXAM, SSC_CPO_2026_EXAM, generateSscCpo50Sections };
+export { generateIbpsRrbXv50Sections, generateAiimsNorcet50Sections, AIIMS_NORCET_11_EXAM, SSC_CPO_2026_EXAM, generateSscCpo50Sections, UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections };
 
 const BASE_EXAMS: ExamRecord[] = [
+  UKPSC_UPPER_PCS_2026_EXAM,
   SSC_CPO_2026_EXAM,
   AIIMS_NORCET_11_EXAM,
   IBPS_RRB_XV_EXAM,

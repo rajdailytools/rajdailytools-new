@@ -277,6 +277,8 @@ export const LatestJobsPage: React.FC<LatestJobsPageProps> = ({ onNavigate, dept
               <option value="Army">Indian Armed Forces</option>
               <option value="Bank">Banking (IBPS/SBI)</option>
               <option value="UPSC">UPSC Civil / Defence</option>
+              <option value="State Jobs">State PSC / State Jobs</option>
+              <option value="Medical">Medical / Healthcare</option>
             </select>
           </div>
 
@@ -309,6 +311,7 @@ export const LatestJobsPage: React.FC<LatestJobsPageProps> = ({ onNavigate, dept
             >
               <option value="All">All States / Zones</option>
               <option value="All India">All India / Central</option>
+              <option value="Uttarakhand">Uttarakhand</option>
               <option value="Uttar Pradesh">Uttar Pradesh</option>
               <option value="Rajasthan">Rajasthan</option>
               <option value="Bihar">Bihar</option>

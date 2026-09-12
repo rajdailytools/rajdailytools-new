@@ -8,6 +8,9 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root UKPSC Upper PCS 2026 page
+  if (page === 'ukpsc-upper-pcs-recruitment-2026' || page === 'ukpsc-upper-pcs-2026') return `${prefix}ukpsc-upper-pcs-recruitment-2026.html`;
+
   // Map dedicated root SSC CPO 2026 page
   if (page === 'ssc-cpo-si-capf-recruitment-2026' || page === 'ssc-cpo-2026') return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
 
@@ -80,6 +83,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'ukpsc-upper-pcs-recruitment-2026' || slug === 'ukpsc-upper-pcs-2026') {
+        return `${prefix}ukpsc-upper-pcs-recruitment-2026.html`;
+      }
       if (slug === 'ssc-cpo-si-capf-recruitment-2026' || slug === 'ssc-cpo-2026') {
         return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
       }
@@ -98,6 +104,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'ukpsc-upper-pcs-recruitment-2026' || slug === 'ukpsc-upper-pcs-2026') {
+        return `${prefix}ukpsc-upper-pcs-recruitment-2026.html`;
+      }
       if (slug === 'ssc-cpo-si-capf-recruitment-2026' || slug === 'ssc-cpo-2026') {
         return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
       }
