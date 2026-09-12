@@ -44,6 +44,8 @@ import { SSC_CPO_2026_EXAM } from '../src/data/sscCpoData';
 import { SSC_JE_2026_EXAM } from '../src/data/sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
+import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
+import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -65,7 +67,9 @@ const searchIndex = EXAMS_DATABASE.map((exam) => ({
   category: exam.category,
   vac: exam.totalVacancy,
   url:
-    exam.slug === 'ssc-je-recruitment-2026'
+    exam.slug === 'nbems-group-a-b-c-admit-card-2026'
+      ? 'nbems-group-a-b-c-admit-card-2026.html'
+      : exam.slug === 'ssc-je-recruitment-2026'
       ? 'ssc-je-recruitment-2026.html'
       : exam.slug === 'up-special-tet-online-form-2026'
       ? 'up-special-tet-online-form-2026.html'
@@ -1198,6 +1202,27 @@ async function generateAllPages() {
       pageKey: 'ssc-je-recruitment-2026',
       depth: 0,
       canonicalPath: 'ssc-je-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2i. DEDICATED NBEMS GROUP A, B & C ADMIT CARD 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const nbemsExam =
+    EXAMS_DATABASE.find((e) => e.id === 'nbems-group-abc-2026' || e.slug === 'nbems-group-a-b-c-admit-card-2026') ||
+    NBEMS_GROUP_ABC_2026_EXAM;
+
+  writePage(
+    'nbems-group-a-b-c-admit-card-2026.html',
+    wrapWithHtmlLayout({
+      title: `${nbemsExam.examName} – Download Hall Ticket, Exam Date, Pattern & Direct Link`,
+      description: nbemsExam.description || nbemsExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(NbemsAdmitCardPage, { exam: nbemsExam, depth: 0 })
+      ),
+      pageKey: 'nbems-group-a-b-c-admit-card-2026',
+      depth: 0,
+      canonicalPath: 'nbems-group-a-b-c-admit-card-2026.html'
     })
   );
 

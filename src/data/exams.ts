@@ -6,6 +6,7 @@ import { SSC_CPO_2026_EXAM, generateSscCpo50Sections } from './sscCpoData';
 import { SSC_JE_2026_EXAM, generateSscJe50Sections } from './sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections } from './ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM, generateUpSpecialTet50Sections } from './upSpecialTetData';
+import { NBEMS_GROUP_ABC_2026_EXAM, generateNbems50Sections } from './nbemsData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -18,10 +19,13 @@ export {
   UKPSC_UPPER_PCS_2026_EXAM,
   generateUkpscUpperPcs50Sections,
   UP_SPECIAL_TET_2026_EXAM,
-  generateUpSpecialTet50Sections
+  generateUpSpecialTet50Sections,
+  NBEMS_GROUP_ABC_2026_EXAM,
+  generateNbems50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  NBEMS_GROUP_ABC_2026_EXAM,
   SSC_JE_2026_EXAM,
   UP_SPECIAL_TET_2026_EXAM,
   UKPSC_UPPER_PCS_2026_EXAM,

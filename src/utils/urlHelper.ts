@@ -8,6 +8,9 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root NBEMS Group A B C 2026 Admit Card page
+  if (page === 'nbems-group-a-b-c-admit-card-2026' || page === 'nbems-admit-card-2026') return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
+
   // Map dedicated root SSC JE 2026 page
   if (page === 'ssc-je-recruitment-2026' || page === 'ssc-je-2026') return `${prefix}ssc-je-recruitment-2026.html`;
 
@@ -89,6 +92,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
+        return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
+      }
       if (slug === 'ssc-je-recruitment-2026' || slug === 'ssc-je-2026') {
         return `${prefix}ssc-je-recruitment-2026.html`;
       }
@@ -103,6 +109,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       return slug ? `${prefix}latest-jobs/${slug}.html` : `${prefix}latest-jobs.html`;
     case 'admit-card-detail':
+      if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
+        return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
+      }
       return slug ? `${prefix}admit-card/${slug}.html` : `${prefix}admit-card.html`;
     case 'result-detail':
       return slug ? `${prefix}result/${slug}.html` : `${prefix}result.html`;
@@ -116,6 +125,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'nbems-group-a-b-c-admit-card-2026' || slug === 'nbems-admit-card-2026' || slug === 'nbems-group-abc-2026') {
+        return `${prefix}nbems-group-a-b-c-admit-card-2026.html`;
+      }
       if (slug === 'ssc-je-recruitment-2026' || slug === 'ssc-je-2026') {
         return `${prefix}ssc-je-recruitment-2026.html`;
       }

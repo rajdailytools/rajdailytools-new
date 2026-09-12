@@ -33,6 +33,7 @@ import { ToolsPage } from './pages/ToolsPage';
 import { IbpsRrbTopicPage } from './pages/IbpsRrbTopicPage';
 import { AiimsNorcetAdmitCardPage } from './pages/AiimsNorcetAdmitCardPage';
 import { AiimsNorcetTopicPage } from './pages/AiimsNorcetTopicPage';
+import { NbemsAdmitCardPage } from './pages/NbemsAdmitCardPage';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<ActivePage>('home');
@@ -126,6 +127,9 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isNbemsPage = typeof currentPage === 'string' && (currentPage.startsWith('nbems') || currentPage === 'nbems-group-a-b-c-admit-card-2026');
+  const nbemsRecord = EXAMS_DATABASE.find((e) => e.id === 'nbems-group-abc-2026' || e.slug === 'nbems-group-a-b-c-admit-card-2026');
+
   const isSscJePage = typeof currentPage === 'string' && (currentPage.startsWith('ssc-je') || currentPage === 'ssc-je-recruitment-2026');
   const sscJeRecord = EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026');
 
@@ -145,6 +149,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isNbemsPage && nbemsRecord) ? nbemsRecord :
     (isSscJePage && sscJeRecord) ? sscJeRecord :
     (isUpTetPage && upTetRecord) ? upTetRecord :
     (isUkpscPage && ukpscRecord) ? ukpscRecord :
@@ -354,6 +359,11 @@ export default function App() {
 
       case 'aiims-norcet-11th-cut-off-2026':
         return <AiimsNorcetTopicPage exam={currentExam} topic="cut-off" onNavigate={handleNavigate} />;
+
+      case 'nbems-group-a-b-c-admit-card-2026':
+      case 'nbems-admit-card-2026':
+      case 'nbems-group-abc-2026':
+        return <NbemsAdmitCardPage exam={nbemsRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'ssc-je-recruitment-2026':
       case 'ssc-je-2026':
