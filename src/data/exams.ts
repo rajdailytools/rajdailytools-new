@@ -3,11 +3,27 @@ import { ADDITIONAL_EXAMS } from './moreExams';
 import { IBPS_RRB_XV_EXAM, generateIbpsRrbXv50Sections } from './ibpsRrbData';
 import { AIIMS_NORCET_11_EXAM, generateAiimsNorcet50Sections } from './aiimsNorcetData';
 import { SSC_CPO_2026_EXAM, generateSscCpo50Sections } from './sscCpoData';
+import { SSC_JE_2026_EXAM, generateSscJe50Sections } from './sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections } from './ukpscData';
+import { UP_SPECIAL_TET_2026_EXAM, generateUpSpecialTet50Sections } from './upSpecialTetData';
 
-export { generateIbpsRrbXv50Sections, generateAiimsNorcet50Sections, AIIMS_NORCET_11_EXAM, SSC_CPO_2026_EXAM, generateSscCpo50Sections, UKPSC_UPPER_PCS_2026_EXAM, generateUkpscUpperPcs50Sections };
+export {
+  generateIbpsRrbXv50Sections,
+  generateAiimsNorcet50Sections,
+  AIIMS_NORCET_11_EXAM,
+  SSC_CPO_2026_EXAM,
+  generateSscCpo50Sections,
+  SSC_JE_2026_EXAM,
+  generateSscJe50Sections,
+  UKPSC_UPPER_PCS_2026_EXAM,
+  generateUkpscUpperPcs50Sections,
+  UP_SPECIAL_TET_2026_EXAM,
+  generateUpSpecialTet50Sections
+};
 
 const BASE_EXAMS: ExamRecord[] = [
+  SSC_JE_2026_EXAM,
+  UP_SPECIAL_TET_2026_EXAM,
   UKPSC_UPPER_PCS_2026_EXAM,
   SSC_CPO_2026_EXAM,
   AIIMS_NORCET_11_EXAM,

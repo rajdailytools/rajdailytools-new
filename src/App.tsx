@@ -126,6 +126,12 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isSscJePage = typeof currentPage === 'string' && (currentPage.startsWith('ssc-je') || currentPage === 'ssc-je-recruitment-2026');
+  const sscJeRecord = EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026');
+
+  const isUpTetPage = typeof currentPage === 'string' && (currentPage.startsWith('up-special-tet') || currentPage.startsWith('up-tet'));
+  const upTetRecord = EXAMS_DATABASE.find((e) => e.id === 'up-special-tet-2026' || e.slug === 'up-special-tet-online-form-2026');
+
   const isUkpscPage = typeof currentPage === 'string' && currentPage.startsWith('ukpsc');
   const ukpscRecord = EXAMS_DATABASE.find((e) => e.id === 'ukpsc-upper-pcs-2026' || e.slug === 'ukpsc-upper-pcs-recruitment-2026');
 
@@ -139,6 +145,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isSscJePage && sscJeRecord) ? sscJeRecord :
+    (isUpTetPage && upTetRecord) ? upTetRecord :
     (isUkpscPage && ukpscRecord) ? ukpscRecord :
     (isChslPage && chslRecord) ? chslRecord :
     (isIbpsPage && ibpsRecord) ? ibpsRecord :
@@ -347,9 +355,17 @@ export default function App() {
       case 'aiims-norcet-11th-cut-off-2026':
         return <AiimsNorcetTopicPage exam={currentExam} topic="cut-off" onNavigate={handleNavigate} />;
 
+      case 'ssc-je-recruitment-2026':
+      case 'ssc-je-2026':
+        return <JobDetailPage exam={sscJeRecord || currentExam} onNavigate={handleNavigate} />;
+
       case 'ukpsc-upper-pcs-recruitment-2026':
       case 'ukpsc-upper-pcs-2026':
         return <JobDetailPage exam={ukpscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'up-special-tet-online-form-2026':
+      case 'up-special-tet-2026':
+        return <JobDetailPage exam={upTetRecord || currentExam} onNavigate={handleNavigate} />;
 
       default:
         return <HomePage onNavigate={handleNavigate} />;

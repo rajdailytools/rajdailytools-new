@@ -41,7 +41,9 @@ import { AIIMS_NORCET_11_EXAM } from '../src/data/aiimsNorcetData';
 import { AiimsNorcetAdmitCardPage } from '../src/pages/AiimsNorcetAdmitCardPage';
 import { AiimsNorcetTopicPage } from '../src/pages/AiimsNorcetTopicPage';
 import { SSC_CPO_2026_EXAM } from '../src/data/sscCpoData';
+import { SSC_JE_2026_EXAM } from '../src/data/sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
+import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -63,7 +65,11 @@ const searchIndex = EXAMS_DATABASE.map((exam) => ({
   category: exam.category,
   vac: exam.totalVacancy,
   url:
-    exam.slug === 'ukpsc-upper-pcs-recruitment-2026'
+    exam.slug === 'ssc-je-recruitment-2026'
+      ? 'ssc-je-recruitment-2026.html'
+      : exam.slug === 'up-special-tet-online-form-2026'
+      ? 'up-special-tet-online-form-2026.html'
+      : exam.slug === 'ukpsc-upper-pcs-recruitment-2026'
       ? 'ukpsc-upper-pcs-recruitment-2026.html'
       : exam.slug === 'ssc-cpo-si-capf-recruitment-2026'
       ? 'ssc-cpo-si-capf-recruitment-2026.html'
@@ -1150,6 +1156,48 @@ async function generateAllPages() {
       pageKey: 'ukpsc-upper-pcs-recruitment-2026',
       depth: 0,
       canonicalPath: 'ukpsc-upper-pcs-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g. DEDICATED UP SPECIAL TET 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upTetExam =
+    EXAMS_DATABASE.find((e) => e.id === 'up-special-tet-2026' || e.slug === 'up-special-tet-online-form-2026') ||
+    UP_SPECIAL_TET_2026_EXAM;
+
+  writePage(
+    'up-special-tet-online-form-2026.html',
+    wrapWithHtmlLayout({
+      title: `${upTetExam.examName} – Official UPESSC Notification, Eligibility & Apply Online`,
+      description: upTetExam.description || upTetExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: upTetExam, depth: 0 })
+      ),
+      pageKey: 'up-special-tet-online-form-2026',
+      depth: 0,
+      canonicalPath: 'up-special-tet-online-form-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2h. DEDICATED SSC JE 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const sscJeExam =
+    EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026') ||
+    SSC_JE_2026_EXAM;
+
+  writePage(
+    'ssc-je-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: `${sscJeExam.examName} – Notification, 1,748 Vacancies, Eligibility, Exam Pattern & Apply Online`,
+      description: sscJeExam.description || sscJeExam.shortSummary,
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: sscJeExam, depth: 0 })
+      ),
+      pageKey: 'ssc-je-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'ssc-je-recruitment-2026.html'
     })
   );
 
