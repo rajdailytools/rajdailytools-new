@@ -1,6 +1,14 @@
 import { AdmissionRecord } from '../types/exam';
+import { ALLAHABAD_UNIVERSITY_PHD_2026_ADMISSION } from './allahabadUniversityPhdData';
+import { NVS_CLASS_11_2027_ADMISSION } from './nvsClass11Data';
+import { NVS_CLASS_9_2027_ADMISSION } from './nvsClass9Data';
+import { AIBE_XXII_2026_ADMISSION } from './aibeData';
 
 export const ADMISSIONS_DATABASE: AdmissionRecord[] = [
+  AIBE_XXII_2026_ADMISSION,
+  NVS_CLASS_9_2027_ADMISSION,
+  NVS_CLASS_11_2027_ADMISSION,
+  ALLAHABAD_UNIVERSITY_PHD_2026_ADMISSION,
   {
     id: 'cuet-ug-2026',
     slug: 'cuet-ug-admission-2026',

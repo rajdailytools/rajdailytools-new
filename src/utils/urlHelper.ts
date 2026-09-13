@@ -8,6 +8,18 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root AIBE 22nd Online Form 2026 page
+  if (page === 'aibe-22nd-online-form-2026' || page === 'aibe-22nd-2026' || page === 'aibe-xxii-2026') return `${prefix}aibe-22nd-online-form-2026.html`;
+
+  // Map dedicated root NVS Class 9 Admission 2027 page
+  if (page === 'nvs-class-9-admission-2027' || page === 'nvs-class-9-admission') return `${prefix}nvs-class-9-admission-2027.html`;
+
+  // Map dedicated root NVS Class 11 Admission 2027 page
+  if (page === 'nvs-class-11-admission-2027' || page === 'nvs-class-11-admission') return `${prefix}nvs-class-11-admission-2027.html`;
+
+  // Map dedicated root Allahabad University PhD Admission 2026 page
+  if (page === 'allahabad-university-phd-admission-2026' || page === 'allahabad-university-phd-2026') return `${prefix}allahabad-university-phd-admission-2026.html`;
+
   // Map dedicated root MPESB Krishi Vistar Adhikari 2026 Admit Card page
   if (page === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || page === 'mpesb-krishi-vistar-adhikari-2026') return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
 
@@ -138,11 +150,35 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
     case 'cut-off-detail':
       return slug ? `${prefix}cut-off/${slug}.html` : `${prefix}cut-off.html`;
     case 'admission-detail':
+      if (slug === 'aibe-22nd-online-form-2026' || slug === 'aibe-22nd-2026' || slug === 'aibe-xxii-2026') {
+        return `${prefix}aibe-22nd-online-form-2026.html`;
+      }
+      if (slug === 'nvs-class-9-admission-2027' || slug === 'nvs-class-9-admission') {
+        return `${prefix}nvs-class-9-admission-2027.html`;
+      }
+      if (slug === 'nvs-class-11-admission-2027' || slug === 'nvs-class-11-admission') {
+        return `${prefix}nvs-class-11-admission-2027.html`;
+      }
+      if (slug === 'allahabad-university-phd-admission-2026' || slug === 'allahabad-university-phd-2026') {
+        return `${prefix}allahabad-university-phd-admission-2026.html`;
+      }
       return slug ? `${prefix}admission/${slug}.html` : `${prefix}admission.html`;
     case 'tool-detail':
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'aibe-22nd-online-form-2026' || slug === 'aibe-22nd-2026' || slug === 'aibe-xxii-2026') {
+        return `${prefix}aibe-22nd-online-form-2026.html`;
+      }
+      if (slug === 'nvs-class-9-admission-2027' || slug === 'nvs-class-9-admission') {
+        return `${prefix}nvs-class-9-admission-2027.html`;
+      }
+      if (slug === 'nvs-class-11-admission-2027' || slug === 'nvs-class-11-admission') {
+        return `${prefix}nvs-class-11-admission-2027.html`;
+      }
+      if (slug === 'allahabad-university-phd-admission-2026' || slug === 'allahabad-university-phd-2026') {
+        return `${prefix}allahabad-university-phd-admission-2026.html`;
+      }
       if (slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || slug === 'mpesb-krishi-vistar-adhikari-2026') {
         return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
       }

@@ -6,19 +6,21 @@ import { formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
 
 interface RightSidebarProps {
-  currentExam: ExamRecord;
+  currentExam?: ExamRecord;
   onNavigate?: (page: ActivePage, slug?: string) => void;
   depth?: number;
 }
 
 export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavigate, depth = 0 }) => {
+  const exam = currentExam || EXAMS_DATABASE[0];
+
   // Dynamically resolve related exams: first check relatedExamIds, then same category, then general
-  const relatedFromIds = currentExam.relatedExamIds && currentExam.relatedExamIds.length > 0
-    ? EXAMS_DATABASE.filter((e) => currentExam.relatedExamIds?.includes(e.id))
+  const relatedFromIds = exam.relatedExamIds && exam.relatedExamIds.length > 0
+    ? EXAMS_DATABASE.filter((e) => exam.relatedExamIds?.includes(e.id))
     : [];
 
   const relatedFromCategory = EXAMS_DATABASE.filter(
-    (e) => e.category === currentExam.category && e.id !== currentExam.id
+    (e) => e.category === exam.category && e.id !== exam.id
   );
 
   const otherJobs = (
@@ -26,7 +28,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
       ? relatedFromIds
       : relatedFromCategory.length > 0
       ? relatedFromCategory
-      : EXAMS_DATABASE.filter((e) => e.id !== currentExam.id)
+      : EXAMS_DATABASE.filter((e) => e.id !== exam.id)
   ).slice(0, 4);
 
   return (
@@ -38,7 +40,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
           <span>Important Dates Timeline</span>
         </h4>
         <div className="space-y-2.5">
-          {currentExam.importantDates.slice(0, 5).map((d, i) => (
+          {(exam.importantDates || []).slice(0, 5).map((d, i) => (
             <div key={i} className="flex items-start justify-between text-xs gap-2">
               <span className="text-slate-500">{d.label}</span>
               <strong className={`shrink-0 ${d.isHighlight ? 'text-blue-600 font-bold' : 'text-slate-800'}`}>
@@ -56,9 +58,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
           <span>Official Portals &amp; Links</span>
         </h4>
         <div className="space-y-2">
-          {currentExam.applyLink && (
+          {exam.applyLink && (
             <a
-              href={currentExam.applyLink}
+              href={exam.applyLink}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-between p-2.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-colors"
@@ -67,9 +69,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
-          {currentExam.officialNotification && (
+          {exam.officialNotification && (
             <a
-              href={currentExam.officialNotification}
+              href={exam.officialNotification}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 text-xs font-semibold transition-colors"
@@ -78,9 +80,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
-          {currentExam.officialWebsite && (
+          {exam.officialWebsite && (
             <a
-              href={currentExam.officialWebsite}
+              href={exam.officialWebsite}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 text-xs font-semibold transition-colors"
@@ -99,17 +101,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
           <span>Exam Prep Series</span>
         </div>
         <h4 className="font-extrabold text-base text-white font-display mb-1.5">
-          {currentExam.examName} Mock Test
+          {exam.examName} Mock Test
         </h4>
         <p className="text-xs text-blue-100 leading-relaxed mb-4">
           Attempt simulated online CBT tests with negative marking and instant accuracy report.
         </p>
         <a
-          href={currentExam.mockTestLink || getPageUrl('mock-test', undefined, depth)}
-          target={currentExam.mockTestLink ? '_blank' : undefined}
-          rel={currentExam.mockTestLink ? 'noopener noreferrer' : undefined}
+          href={exam.mockTestLink || getPageUrl('mock-test', undefined, depth)}
+          target={exam.mockTestLink ? '_blank' : undefined}
+          rel={exam.mockTestLink ? 'noopener noreferrer' : undefined}
           onClick={(e) => {
-            if (!currentExam.mockTestLink && onNavigate) {
+            if (!exam.mockTestLink && onNavigate) {
               e.preventDefault();
               onNavigate('mock-test');
             }

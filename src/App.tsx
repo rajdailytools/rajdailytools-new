@@ -36,6 +36,14 @@ import { AiimsNorcetTopicPage } from './pages/AiimsNorcetTopicPage';
 import { NbemsAdmitCardPage } from './pages/NbemsAdmitCardPage';
 import { PatnaHighCourtAdmitCardPage } from './pages/PatnaHighCourtAdmitCardPage';
 import { MpesbAdmitCardPage } from './pages/MpesbAdmitCardPage';
+import { AllahabadUniversityPhdPage } from './pages/AllahabadUniversityPhdPage';
+import { NvsClass11AdmissionPage } from './pages/NvsClass11AdmissionPage';
+import { NvsClass9AdmissionPage } from './pages/NvsClass9AdmissionPage';
+import { AibeAdmissionPage } from './pages/AibeAdmissionPage';
+import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
+import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
+import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
+import { AIBE_XXII_2026_ADMISSION } from './data/aibeData';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<ActivePage>('home');
@@ -129,6 +137,12 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isAuPhdPage = typeof currentPage === 'string' && (currentPage.startsWith('allahabad-university-phd') || currentPage === 'allahabad-university-phd-admission-2026');
+  const auPhdRecord = ALLAHABAD_UNIVERSITY_PHD_2026_EXAM;
+  const aibeAdmissionRecord = AIBE_XXII_2026_ADMISSION;
+  const nvsAdmissionRecord = NVS_CLASS_11_2027_ADMISSION;
+  const nvs9AdmissionRecord = NVS_CLASS_9_2027_ADMISSION;
+
   const isMpesbPage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb') || currentPage === 'mpesb-krishi-vistar-adhikari-admit-card-2026');
   const mpesbRecord = EXAMS_DATABASE.find((e) => e.id === 'mpesb-krishi-vistar-adhikari-2026' || e.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026');
 
@@ -157,6 +171,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isAuPhdPage && auPhdRecord) ? auPhdRecord :
     (isMpesbPage && mpesbRecord) ? mpesbRecord :
     (isPatnaHcPage && patnaHcRecord) ? patnaHcRecord :
     (isNbemsPage && nbemsRecord) ? nbemsRecord :
@@ -215,6 +230,18 @@ export default function App() {
         return <AdmissionPage onNavigate={handleNavigate} />;
 
       case 'admission-detail':
+        if (currentSlug === 'aibe-22nd-online-form-2026' || currentSlug === 'aibe-22nd-2026' || currentSlug === 'aibe-xxii-2026') {
+          return <AibeAdmissionPage admission={aibeAdmissionRecord} onNavigate={handleNavigate} />;
+        }
+        if (currentSlug === 'nvs-class-9-admission-2027' || currentSlug === 'nvs-class-9-admission') {
+          return <NvsClass9AdmissionPage admission={nvs9AdmissionRecord} onNavigate={handleNavigate} />;
+        }
+        if (currentSlug === 'nvs-class-11-admission-2027' || currentSlug === 'nvs-class-11-admission') {
+          return <NvsClass11AdmissionPage admission={nvsAdmissionRecord} onNavigate={handleNavigate} />;
+        }
+        if (currentSlug === 'allahabad-university-phd-admission-2026' || currentSlug === 'allahabad-university-phd-2026') {
+          return <AllahabadUniversityPhdPage exam={auPhdRecord} onNavigate={handleNavigate} />;
+        }
         return (
           <AdmissionDetailPage
             admission={currentAdmission}
@@ -369,6 +396,23 @@ export default function App() {
 
       case 'aiims-norcet-11th-cut-off-2026':
         return <AiimsNorcetTopicPage exam={currentExam} topic="cut-off" onNavigate={handleNavigate} />;
+
+      case 'aibe-22nd-online-form-2026':
+      case 'aibe-22nd-2026':
+      case 'aibe-xxii-2026':
+        return <AibeAdmissionPage admission={aibeAdmissionRecord} onNavigate={handleNavigate} />;
+
+      case 'nvs-class-9-admission-2027':
+      case 'nvs-class-9-admission':
+        return <NvsClass9AdmissionPage admission={nvs9AdmissionRecord} onNavigate={handleNavigate} />;
+
+      case 'nvs-class-11-admission-2027':
+      case 'nvs-class-11-admission':
+        return <NvsClass11AdmissionPage admission={nvsAdmissionRecord} onNavigate={handleNavigate} />;
+
+      case 'allahabad-university-phd-admission-2026':
+      case 'allahabad-university-phd-2026':
+        return <AllahabadUniversityPhdPage exam={auPhdRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'mpesb-krishi-vistar-adhikari-admit-card-2026':
       case 'mpesb-krishi-vistar-adhikari-2026':

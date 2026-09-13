@@ -50,6 +50,14 @@ import { PATNA_HIGH_COURT_ASSISTANT_2026_EXAM } from '../src/data/patnaHighCourt
 import { PatnaHighCourtAdmitCardPage } from '../src/pages/PatnaHighCourtAdmitCardPage';
 import { MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM } from '../src/data/mpesbData';
 import { MpesbAdmitCardPage } from '../src/pages/MpesbAdmitCardPage';
+import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from '../src/data/allahabadUniversityPhdData';
+import { AllahabadUniversityPhdPage } from '../src/pages/AllahabadUniversityPhdPage';
+import { NVS_CLASS_11_2027_ADMISSION } from '../src/data/nvsClass11Data';
+import { NvsClass11AdmissionPage } from '../src/pages/NvsClass11AdmissionPage';
+import { NVS_CLASS_9_2027_ADMISSION } from '../src/data/nvsClass9Data';
+import { NvsClass9AdmissionPage } from '../src/pages/NvsClass9AdmissionPage';
+import { AIBE_XXII_2026_ADMISSION } from '../src/data/aibeData';
+import { AibeAdmissionPage } from '../src/pages/AibeAdmissionPage';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -65,29 +73,48 @@ function escapeHtml(str: string): string {
 }
 
 // Build Search Index for client-side search across all static pages
-const searchIndex = EXAMS_DATABASE.map((exam) => ({
-  name: exam.examName,
-  org: exam.organization || 'Government of India',
-  category: exam.category,
-  vac: exam.totalVacancy,
-  url:
-    exam.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026'
-      ? 'mpesb-krishi-vistar-adhikari-admit-card-2026.html'
-      : exam.slug === 'patna-high-court-assistant-admit-card-2026'
-      ? 'patna-high-court-assistant-admit-card-2026.html'
-      : exam.slug === 'nbems-group-a-b-c-admit-card-2026'
-      ? 'nbems-group-a-b-c-admit-card-2026.html'
-      : exam.slug === 'ssc-je-recruitment-2026'
-      ? 'ssc-je-recruitment-2026.html'
-      : exam.slug === 'up-special-tet-online-form-2026'
-      ? 'up-special-tet-online-form-2026.html'
-      : exam.slug === 'ukpsc-upper-pcs-recruitment-2026'
-      ? 'ukpsc-upper-pcs-recruitment-2026.html'
-      : exam.slug === 'ssc-cpo-si-capf-recruitment-2026'
-      ? 'ssc-cpo-si-capf-recruitment-2026.html'
-      : `latest-jobs/${exam.slug}.html`,
-  icon: exam.logoIcon || '📋'
-}));
+const searchIndex = [
+  ...EXAMS_DATABASE.map((exam) => ({
+    name: exam.examName,
+    org: exam.organization || 'Government of India',
+    category: exam.category,
+    vac: exam.totalVacancy,
+    url:
+      exam.slug === 'allahabad-university-phd-admission-2026'
+        ? 'allahabad-university-phd-admission-2026.html'
+        : exam.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026'
+        ? 'mpesb-krishi-vistar-adhikari-admit-card-2026.html'
+        : exam.slug === 'patna-high-court-assistant-admit-card-2026'
+        ? 'patna-high-court-assistant-admit-card-2026.html'
+        : exam.slug === 'nbems-group-a-b-c-admit-card-2026'
+        ? 'nbems-group-a-b-c-admit-card-2026.html'
+        : exam.slug === 'ssc-je-recruitment-2026'
+        ? 'ssc-je-recruitment-2026.html'
+        : exam.slug === 'up-special-tet-online-form-2026'
+        ? 'up-special-tet-online-form-2026.html'
+        : exam.slug === 'ukpsc-upper-pcs-recruitment-2026'
+        ? 'ukpsc-upper-pcs-recruitment-2026.html'
+        : exam.slug === 'ssc-cpo-si-capf-recruitment-2026'
+        ? 'ssc-cpo-si-capf-recruitment-2026.html'
+        : `latest-jobs/${exam.slug}.html`,
+    icon: exam.logoIcon || '📋'
+  })),
+  ...ADMISSIONS_DATABASE.map((adm) => ({
+    name: adm.course,
+    org: adm.university,
+    category: 'Admission',
+    vac: adm.status === 'Open' ? 'Application Open' : 'Closed',
+    url:
+      adm.slug === 'nvs-class-9-admission-2027'
+        ? 'nvs-class-9-admission-2027.html'
+        : adm.slug === 'nvs-class-11-admission-2027'
+        ? 'nvs-class-11-admission-2027.html'
+        : adm.slug === 'allahabad-university-phd-admission-2026'
+        ? 'allahabad-university-phd-admission-2026.html'
+        : `admission/${adm.slug}.html`,
+    icon: '🎓'
+  }))
+];
 
 interface PageTemplateOptions {
   title: string;
@@ -1277,6 +1304,93 @@ async function generateAllPages() {
   );
 
   // --------------------------------------------------------------------------
+  // 2l. DEDICATED ALLAHABAD UNIVERSITY PHD ADMISSION 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const auPhdExam =
+    EXAMS_DATABASE.find((e) => e.id === 'allahabad-university-phd-2026' || e.slug === 'allahabad-university-phd-admission-2026') ||
+    ALLAHABAD_UNIVERSITY_PHD_2026_EXAM;
+
+  writePage(
+    'allahabad-university-phd-admission-2026.html',
+    wrapWithHtmlLayout({
+      title: `Allahabad University PhD Admission 2026-27 – Apply Online, 959 Seats in 49 Subjects & Brochure PDF`,
+      description: `University of Allahabad Ph.D. Admission 2026-27 online application form active from 02 to 25 September 2026. Check 959 seats across 49 departments, eligibility, fee, RAT exam and apply online at aupravesh2026.cbtexam.in.`,
+      content: renderToStaticMarkup(
+        React.createElement(AllahabadUniversityPhdPage, { exam: auPhdExam, depth: 0 })
+      ),
+      pageKey: 'allahabad-university-phd-admission-2026',
+      depth: 0,
+      canonicalPath: 'allahabad-university-phd-admission-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2m. DEDICATED NVS CLASS 11 ADMISSION 2027-28 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const nvsAdmission =
+    ADMISSIONS_DATABASE.find(
+      (a) => a.id === 'nvs-class-11-2027' || a.slug === 'nvs-class-11-admission-2027'
+    ) || NVS_CLASS_11_2027_ADMISSION;
+
+  writePage(
+    'nvs-class-11-admission-2027.html',
+    wrapWithHtmlLayout({
+      title: `NVS Class 11 Admission 2027-28 – Apply Online (cbseitms.nic.in), Prospectus PDF & Dates`,
+      description: `Navodaya Vidyalaya Samiti Class XI Lateral Entry Selection Test (LEST 2027) online form open till 30 Sept 2026 for 665 JNVs. Check eligibility, exam pattern, stream criteria and apply online free at cbseitms.nic.in.`,
+      content: renderToStaticMarkup(
+        React.createElement(NvsClass11AdmissionPage, { admission: nvsAdmission, depth: 0 })
+      ),
+      pageKey: 'nvs-class-11-admission-2027',
+      depth: 0,
+      canonicalPath: 'nvs-class-11-admission-2027.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2n. DEDICATED NVS CLASS 9 ADMISSION 2027-28 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const nvs9Admission =
+    ADMISSIONS_DATABASE.find(
+      (a) => a.id === 'nvs-class-9-admission-2027' || a.slug === 'nvs-class-9-admission-2027'
+    ) || NVS_CLASS_9_2027_ADMISSION;
+
+  writePage(
+    'nvs-class-9-admission-2027.html',
+    wrapWithHtmlLayout({
+      title: `NVS Class 9 Admission 2027-28 – Apply Online (cbseitms.nic.in), Prospectus PDF & Dates`,
+      description: `Navodaya Vidyalaya Samiti Class IX Lateral Entry Selection Test (LEST 2027) online form open till 30 Sept 2026 for 665 JNVs. Check eligibility, age limit (01 May 2012 to 31 July 2014), exam pattern and apply online free at cbseitms.nic.in.`,
+      content: renderToStaticMarkup(
+        React.createElement(NvsClass9AdmissionPage, { admission: nvs9Admission, depth: 0 })
+      ),
+      pageKey: 'nvs-class-9-admission-2027',
+      depth: 0,
+      canonicalPath: 'nvs-class-9-admission-2027.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2o. DEDICATED AIBE 22nd ONLINE FORM 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const aibeAdmission =
+    ADMISSIONS_DATABASE.find(
+      (a) => a.id === 'aibe-xxii-2026' || a.slug === 'aibe-22nd-online-form-2026'
+    ) || AIBE_XXII_2026_ADMISSION;
+
+  writePage(
+    'aibe-22nd-online-form-2026.html',
+    wrapWithHtmlLayout({
+      title: `AIBE 22nd Online Form 2026 – Registration, BCI Eligibility, Exam Date & COP Guide`,
+      description: `All India Bar Examination XXII (AIBE 22) 2026 online registration form details, Bar Council of India (BCI) eligibility, LL.B criteria, syllabus, passing marks, and Certificate of Practice (COP).`,
+      content: renderToStaticMarkup(
+        React.createElement(AibeAdmissionPage, { admission: aibeAdmission, depth: 0 })
+      ),
+      pageKey: 'aibe-22nd-online-form-2026',
+      depth: 0,
+      canonicalPath: 'aibe-22nd-online-form-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
   // 3. SUBDIRECTORIES (depth = 1)
   // --------------------------------------------------------------------------
 
@@ -1362,9 +1476,24 @@ async function generateAllPages() {
 
   // 3f. Admission Details: admission/[slug].html
   for (const admission of ADMISSIONS_DATABASE) {
-    const admissionDetailContent = renderToStaticMarkup(
-      React.createElement(AdmissionDetailPage, { admission, depth: 1 })
-    );
+    let admissionDetailContent;
+    if (admission.slug === 'aibe-22nd-online-form-2026') {
+      admissionDetailContent = renderToStaticMarkup(
+        React.createElement(AibeAdmissionPage, { admission, depth: 1 })
+      );
+    } else if (admission.slug === 'nvs-class-9-admission-2027') {
+      admissionDetailContent = renderToStaticMarkup(
+        React.createElement(NvsClass9AdmissionPage, { admission, depth: 1 })
+      );
+    } else if (admission.slug === 'nvs-class-11-admission-2027') {
+      admissionDetailContent = renderToStaticMarkup(
+        React.createElement(NvsClass11AdmissionPage, { admission, depth: 1 })
+      );
+    } else {
+      admissionDetailContent = renderToStaticMarkup(
+        React.createElement(AdmissionDetailPage, { admission, depth: 1 })
+      );
+    }
     writePage(
       `admission/${admission.slug}.html`,
       wrapWithHtmlLayout({

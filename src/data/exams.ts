@@ -15,6 +15,10 @@ import {
   MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
   generateMpesb50Sections
 } from './mpesbData';
+import {
+  ALLAHABAD_UNIVERSITY_PHD_2026_EXAM,
+  generateAllahabadUniversityPhd50Sections
+} from './allahabadUniversityPhdData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -33,7 +37,9 @@ export {
   PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
   generatePatnaHighCourt50Sections,
   MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
-  generateMpesb50Sections
+  generateMpesb50Sections,
+  ALLAHABAD_UNIVERSITY_PHD_2026_EXAM,
+  generateAllahabadUniversityPhd50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [

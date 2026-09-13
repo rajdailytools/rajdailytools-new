@@ -3,18 +3,21 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ExamInfoSection } from '../types/exam';
 
 interface AccordionProps {
-  sections: ExamInfoSection[];
+  sections?: ExamInfoSection[];
+  items?: ExamInfoSection[];
   title?: string;
   defaultOpenFirst?: boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   sections,
+  items,
   title = 'All Information & Guidelines',
   defaultOpenFirst = false
 }) => {
+  const activeSections = sections || items || [];
   const [openIds, setOpenIds] = useState<Set<number>>(
-    new Set(defaultOpenFirst && sections.length > 0 ? [sections[0].id] : [])
+    new Set(defaultOpenFirst && activeSections.length > 0 ? [activeSections[0].id] : [])
   );
 
   const toggleSection = (id: number) => {
@@ -30,7 +33,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   const expandAll = () => {
-    setOpenIds(new Set(sections.map((s) => s.id)));
+    setOpenIds(new Set(activeSections.map((s) => s.id)));
   };
 
   const collapseAll = () => {
@@ -46,7 +49,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             {title}
           </h3>
           <p className="text-xs text-slate-500">
-            Click any topic below to expand details ({sections.length} sections)
+            Click any topic below to expand details ({activeSections.length} sections)
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -71,7 +74,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
       {/* Accordion Items */}
       <div className="divide-y divide-slate-100">
-        {sections.map((section) => {
+        {activeSections.map((section) => {
           const isOpen = openIds.has(section.id);
           const contentId = `accordion-content-${section.id}`;
           const headerId = `accordion-header-${section.id}`;

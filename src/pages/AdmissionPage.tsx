@@ -62,6 +62,9 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ onNavigate, depth 
             className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer"
           >
             <option value="All">All Disciplines</option>
+            <option value="Law / Bar Council">Law / Bar Council</option>
+            <option value="School / Lateral Entry">School / Lateral Entry</option>
+            <option value="Doctoral / Ph.D.">Doctoral / Ph.D.</option>
             <option value="Central University">Central University</option>
             <option value="Technical / Diploma">Technical / Diploma</option>
             <option value="Vocational / ITI">Vocational / ITI</option>
