@@ -8,6 +8,12 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root Bank of India SO 2026 page
+  if (page === 'bank-of-india-so-recruitment-2026' || page === 'bank-of-india-so-2026') return `${prefix}bank-of-india-so-recruitment-2026.html`;
+
+  // Map dedicated root Delhi High Court SPA PA 2026 page
+  if (page === 'delhi-high-court-spa-pa-recruitment-2026' || page === 'delhi-high-court-spa-pa-2026') return `${prefix}delhi-high-court-spa-pa-recruitment-2026.html`;
+
   // Map dedicated root UPSC 11/2026 Various Posts Recruitment 2026 page
   if (page === 'upsc-11-2026-various-posts-recruitment-2026' || page === 'upsc-11-2026-various-posts-2026') return `${prefix}upsc-11-2026-various-posts-recruitment-2026.html`;
 
@@ -125,6 +131,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'bank-of-india-so-recruitment-2026' || slug === 'bank-of-india-so-2026') {
+        return `${prefix}bank-of-india-so-recruitment-2026.html`;
+      }
+      if (slug === 'delhi-high-court-spa-pa-recruitment-2026' || slug === 'delhi-high-court-spa-pa-2026') {
+        return `${prefix}delhi-high-court-spa-pa-recruitment-2026.html`;
+      }
       if (slug === 'upsc-11-2026-various-posts-recruitment-2026' || slug === 'upsc-11-2026-various-posts-2026') {
         return `${prefix}upsc-11-2026-various-posts-recruitment-2026.html`;
       }
@@ -232,6 +244,15 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       if (slug === 'rajasthan-safai-karmchari-recruitment-2026' || slug === 'rajasthan-safai-karmchari-2026') {
         return `${prefix}rajasthan-safai-karmchari-recruitment-2026.html`;
+      }
+      if (slug === 'bank-of-india-so-recruitment-2026' || slug === 'bank-of-india-so-2026') {
+        return `${prefix}bank-of-india-so-recruitment-2026.html`;
+      }
+      if (slug === 'delhi-high-court-spa-pa-recruitment-2026' || slug === 'delhi-high-court-spa-pa-2026') {
+        return `${prefix}delhi-high-court-spa-pa-recruitment-2026.html`;
+      }
+      if (slug === 'upsc-11-2026-various-posts-recruitment-2026' || slug === 'upsc-11-2026-various-posts-2026') {
+        return `${prefix}upsc-11-2026-various-posts-recruitment-2026.html`;
       }
       if (slug === 'bpssc-bihar-police-company-commander-recruitment-2026' || slug === 'bpssc-company-commander-2026') {
         return `${prefix}bpssc-bihar-police-company-commander-recruitment-2026.html`;

@@ -39,6 +39,14 @@ import {
   UPSC_11_2026_VARIOUS_POSTS_EXAM,
   generateUpsc112026VariousPosts50Sections
 } from './upsc112026VariousPostsData';
+import {
+  DELHI_HIGH_COURT_SPA_PA_2026_EXAM,
+  generateDelhiHighCourtSpaPa50Sections
+} from './delhiHighCourtSpaPaData';
+import {
+  BANK_OF_INDIA_SO_2026_EXAM,
+  generateBoiSo50Sections
+} from './bankOfIndiaSoData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -69,10 +77,16 @@ export {
   MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
   generateMpesb50Sections,
   ALLAHABAD_UNIVERSITY_PHD_2026_EXAM,
-  generateAllahabadUniversityPhd50Sections
+  generateAllahabadUniversityPhd50Sections,
+  DELHI_HIGH_COURT_SPA_PA_2026_EXAM,
+  generateDelhiHighCourtSpaPa50Sections,
+  BANK_OF_INDIA_SO_2026_EXAM,
+  generateBoiSo50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  BANK_OF_INDIA_SO_2026_EXAM,
+  DELHI_HIGH_COURT_SPA_PA_2026_EXAM,
   UPSC_11_2026_VARIOUS_POSTS_EXAM,
   BPSSC_COMPANY_COMMANDER_2026_EXAM,
   UPSSSC_VETERINARY_PHARMACIST_2026_EXAM,

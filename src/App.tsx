@@ -155,8 +155,14 @@ export default function App() {
   const isSscJePage = typeof currentPage === 'string' && (currentPage.startsWith('ssc-je') || currentPage === 'ssc-je-recruitment-2026');
   const sscJeRecord = EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026');
 
+  const isBoiSoPage = typeof currentPage === 'string' && (currentPage.startsWith('bank-of-india-so') || currentPage.startsWith('bank-of-india'));
+  const boiSoRecord = EXAMS_DATABASE.find((e) => e.id === 'bank-of-india-so-2026' || e.slug === 'bank-of-india-so-recruitment-2026');
+
   const isUpTetPage = typeof currentPage === 'string' && (currentPage.startsWith('up-special-tet') || currentPage.startsWith('up-tet'));
   const upTetRecord = EXAMS_DATABASE.find((e) => e.id === 'up-special-tet-2026' || e.slug === 'up-special-tet-online-form-2026');
+
+  const isDelhiHcPage = typeof currentPage === 'string' && (currentPage.startsWith('delhi-high-court-spa-pa') || currentPage.startsWith('delhi-high-court'));
+  const delhiHcRecord = EXAMS_DATABASE.find((e) => e.id === 'delhi-high-court-spa-pa-2026' || e.slug === 'delhi-high-court-spa-pa-recruitment-2026');
 
   const isUpscPage = typeof currentPage === 'string' && (currentPage.startsWith('upsc-11-2026-various-posts') || currentPage.startsWith('upsc-11-2026'));
   const upscRecord = EXAMS_DATABASE.find((e) => e.id === 'upsc-11-2026-various-posts-2026' || e.slug === 'upsc-11-2026-various-posts-recruitment-2026');
@@ -186,6 +192,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isBoiSoPage && boiSoRecord) ? boiSoRecord :
+    (isDelhiHcPage && delhiHcRecord) ? delhiHcRecord :
     (isUpscPage && upscRecord) ? upscRecord :
     (isAuPhdPage && auPhdRecord) ? auPhdRecord :
     (isMpesbPage && mpesbRecord) ? mpesbRecord :
@@ -462,6 +470,14 @@ export default function App() {
       case 'upsssc-senior-instructor-recruitment-2026':
       case 'upsssc-senior-instructor-2026':
         return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'bank-of-india-so-recruitment-2026':
+      case 'bank-of-india-so-2026':
+        return <JobDetailPage exam={boiSoRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'delhi-high-court-spa-pa-recruitment-2026':
+      case 'delhi-high-court-spa-pa-2026':
+        return <JobDetailPage exam={delhiHcRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'upsc-11-2026-various-posts-recruitment-2026':
       case 'upsc-11-2026-various-posts-2026':

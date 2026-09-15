@@ -48,6 +48,8 @@ import { UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM } from '../src/data/upssscSeniorInst
 import { UPSSSC_VETERINARY_PHARMACIST_2026_EXAM } from '../src/data/upssscVeterinaryPharmacistData';
 import { BPSSC_COMPANY_COMMANDER_2026_EXAM } from '../src/data/bpsscCompanyCommanderData';
 import { UPSC_11_2026_VARIOUS_POSTS_EXAM } from '../src/data/upsc112026VariousPostsData';
+import { DELHI_HIGH_COURT_SPA_PA_2026_EXAM } from '../src/data/delhiHighCourtSpaPaData';
+import { BANK_OF_INDIA_SO_2026_EXAM } from '../src/data/bankOfIndiaSoData';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -1352,6 +1354,50 @@ async function generateAllPages() {
       pageKey: 'upsc-11-2026-various-posts-recruitment-2026',
       depth: 0,
       canonicalPath: 'upsc-11-2026-various-posts-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-7. DEDICATED DELHI HIGH COURT SPA & PA 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const delhiHcSpaPaExam =
+    EXAMS_DATABASE.find((e) => e.id === 'delhi-high-court-spa-pa-2026' || e.slug === 'delhi-high-court-spa-pa-recruitment-2026') ||
+    DELHI_HIGH_COURT_SPA_PA_2026_EXAM;
+
+  writePage(
+    'delhi-high-court-spa-pa-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'Delhi High Court SPA & PA Recruitment 2026 – Apply Online, 150 Posts, Eligibility, Notification',
+      description:
+        'Delhi High Court Senior Personal Assistant (SPA) and Personal Assistant (PA) Examination 2026 – Apply online for 150 vacancies (SPA 117, PA 33). Check eligibility, 110/100 WPM shorthand, pay levels 8 & 7, syllabus, selection stages & official notice.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: delhiHcSpaPaExam, depth: 0 })
+      ),
+      pageKey: 'delhi-high-court-spa-pa-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'delhi-high-court-spa-pa-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-8. DEDICATED BANK OF INDIA SO 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const boiSoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'bank-of-india-so-2026' || e.slug === 'bank-of-india-so-recruitment-2026') ||
+    BANK_OF_INDIA_SO_2026_EXAM;
+
+  writePage(
+    'bank-of-india-so-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'Bank of India Specialist Officer Recruitment 2026 – Apply Online, 205 Vacancies, Scale I-IV Eligibility',
+      description:
+        'Bank of India Specialist Officer (SO) Recruitment 2026 (Project No. 2026-27/02) – Apply online for 205 vacancies across Scales I to IV (Credit Officers, Law, IT, Risk, Treasury, Economist, Technical). Check eligibility, pay scale, exam pattern, syllabus & official notice.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: boiSoExam, depth: 0 })
+      ),
+      pageKey: 'bank-of-india-so-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'bank-of-india-so-recruitment-2026.html'
     })
   );
 
