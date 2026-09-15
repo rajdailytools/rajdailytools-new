@@ -47,6 +47,14 @@ import {
   BANK_OF_INDIA_SO_2026_EXAM,
   generateBoiSo50Sections
 } from './bankOfIndiaSoData';
+import {
+  NIC_STA_2026_EXAM,
+  generateNicSta50Sections
+} from './nicStaData';
+import {
+  MP_POLICE_CONSTABLE_2026_EXAM,
+  generateMpPoliceConstable50Sections
+} from './mpPoliceConstableData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -81,10 +89,16 @@ export {
   DELHI_HIGH_COURT_SPA_PA_2026_EXAM,
   generateDelhiHighCourtSpaPa50Sections,
   BANK_OF_INDIA_SO_2026_EXAM,
-  generateBoiSo50Sections
+  generateBoiSo50Sections,
+  NIC_STA_2026_EXAM,
+  generateNicSta50Sections,
+  MP_POLICE_CONSTABLE_2026_EXAM,
+  generateMpPoliceConstable50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  MP_POLICE_CONSTABLE_2026_EXAM,
+  NIC_STA_2026_EXAM,
   BANK_OF_INDIA_SO_2026_EXAM,
   DELHI_HIGH_COURT_SPA_PA_2026_EXAM,
   UPSC_11_2026_VARIOUS_POSTS_EXAM,

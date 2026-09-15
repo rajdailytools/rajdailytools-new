@@ -152,8 +152,14 @@ export default function App() {
   const isNbemsPage = typeof currentPage === 'string' && (currentPage.startsWith('nbems') || currentPage === 'nbems-group-a-b-c-admit-card-2026');
   const nbemsRecord = EXAMS_DATABASE.find((e) => e.id === 'nbems-group-abc-2026' || e.slug === 'nbems-group-a-b-c-admit-card-2026');
 
+  const isMpPoliceConstablePage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb-mp-police-constable') || currentPage.startsWith('mp-police-constable'));
+  const mpPoliceConstableRecord = EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026');
+
   const isSscJePage = typeof currentPage === 'string' && (currentPage.startsWith('ssc-je') || currentPage === 'ssc-je-recruitment-2026');
   const sscJeRecord = EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026');
+
+  const isNicStaPage = typeof currentPage === 'string' && (currentPage.startsWith('nic-scientific-technical-assistant') || currentPage.startsWith('nic-sta'));
+  const nicStaRecord = EXAMS_DATABASE.find((e) => e.id === 'nic-sta-2026' || e.slug === 'nic-scientific-technical-assistant-recruitment-2026');
 
   const isBoiSoPage = typeof currentPage === 'string' && (currentPage.startsWith('bank-of-india-so') || currentPage.startsWith('bank-of-india'));
   const boiSoRecord = EXAMS_DATABASE.find((e) => e.id === 'bank-of-india-so-2026' || e.slug === 'bank-of-india-so-recruitment-2026');
@@ -192,6 +198,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isMpPoliceConstablePage && mpPoliceConstableRecord) ? mpPoliceConstableRecord :
+    (isNicStaPage && nicStaRecord) ? nicStaRecord :
     (isBoiSoPage && boiSoRecord) ? boiSoRecord :
     (isDelhiHcPage && delhiHcRecord) ? delhiHcRecord :
     (isUpscPage && upscRecord) ? upscRecord :
@@ -470,6 +478,16 @@ export default function App() {
       case 'upsssc-senior-instructor-recruitment-2026':
       case 'upsssc-senior-instructor-2026':
         return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'mpesb-mp-police-constable-recruitment-2026':
+      case 'mp-police-constable-recruitment-2026':
+      case 'mp-police-constable-2026':
+        return <JobDetailPage exam={mpPoliceConstableRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'nic-scientific-technical-assistant-recruitment-2026':
+      case 'nic-sta-recruitment-2026':
+      case 'nic-sta-2026':
+        return <JobDetailPage exam={nicStaRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'bank-of-india-so-recruitment-2026':
       case 'bank-of-india-so-2026':

@@ -39,6 +39,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
       <Breadcrumb
         items={[
           { label: 'Latest Jobs', page: 'latest-jobs' },
+          ...(exam.category === 'Police'
+            ? [
+                { label: 'Police Recruitment', page: 'latest-jobs' as ActivePage },
+                ...(exam.state === 'Madhya Pradesh' ? [{ label: 'MP State Jobs', page: 'latest-jobs' as ActivePage }] : [])
+              ]
+            : []),
           { label: exam.examName }
         ]}
         onNavigate={onNavigate}
@@ -60,6 +66,16 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
                   {exam.category}
                 </span>
+                {exam.category === 'Police' && (
+                  <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                    Police Recruitment
+                  </span>
+                )}
+                {exam.state === 'Madhya Pradesh' && (
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                    MP State Jobs
+                  </span>
+                )}
                 <span
                   className={`text-xs font-bold px-3 py-0.5 rounded-full ${
                     countdown.isClosed

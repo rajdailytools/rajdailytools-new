@@ -50,6 +50,8 @@ import { BPSSC_COMPANY_COMMANDER_2026_EXAM } from '../src/data/bpsscCompanyComma
 import { UPSC_11_2026_VARIOUS_POSTS_EXAM } from '../src/data/upsc112026VariousPostsData';
 import { DELHI_HIGH_COURT_SPA_PA_2026_EXAM } from '../src/data/delhiHighCourtSpaPaData';
 import { BANK_OF_INDIA_SO_2026_EXAM } from '../src/data/bankOfIndiaSoData';
+import { NIC_STA_2026_EXAM } from '../src/data/nicStaData';
+import { MP_POLICE_CONSTABLE_2026_EXAM } from '../src/data/mpPoliceConstableData';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -1398,6 +1400,50 @@ async function generateAllPages() {
       pageKey: 'bank-of-india-so-recruitment-2026',
       depth: 0,
       canonicalPath: 'bank-of-india-so-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-9. DEDICATED NIC SCIENTIFIC TECHNICAL ASSISTANT-A 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const nicStaExam =
+    EXAMS_DATABASE.find((e) => e.id === 'nic-sta-2026' || e.slug === 'nic-scientific-technical-assistant-recruitment-2026') ||
+    NIC_STA_2026_EXAM;
+
+  writePage(
+    'nic-scientific-technical-assistant-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'NIC Scientific/Technical Assistant-A Recruitment 2026 – Apply Online, 376 Posts, GATE Score Selection, Notification',
+      description:
+        'NIC Scientific/Technical Assistant-A Recruitment 2026 (Advt No: NIC/STA/2026/2) – Apply online for 376 vacancies across CSIT (300), ECE (26), and Data Science & AI (50). Level 6 Pay Matrix (₹35,400–₹1,12,400). Selection based strictly on valid GATE 2024/2025/2026 score + Document Verification.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: nicStaExam, depth: 0 })
+      ),
+      pageKey: 'nic-scientific-technical-assistant-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'nic-scientific-technical-assistant-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-10. DEDICATED MP POLICE CONSTABLE GD 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const mpPoliceConstableExam =
+    EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026') ||
+    MP_POLICE_CONSTABLE_2026_EXAM;
+
+  writePage(
+    'mpesb-mp-police-constable-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'MPESB MP Police Constable GD Recruitment 2026 – Apply Online, 7500 Posts, Rulebook, Physical Standards, Syllabus',
+      description:
+        'MPESB MP Police Constable GD Recruitment 2026 – Apply online for 7,500 Constable (GD) posts across SAF (700 male posts) and DEF (6,800 male/female posts). Pay Scale ₹19,500–₹62,000. Complete official rulebook breakdown, 100 marks written exam, PET scoring, physical criteria, and dates.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: mpPoliceConstableExam, depth: 0 })
+      ),
+      pageKey: 'mpesb-mp-police-constable-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'mpesb-mp-police-constable-recruitment-2026.html'
     })
   );
 

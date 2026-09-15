@@ -8,6 +8,12 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root MP Police Constable 2026 page
+  if (page === 'mpesb-mp-police-constable-recruitment-2026' || page === 'mp-police-constable-2026' || page === 'mp-police-constable-recruitment-2026') return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
+
+  // Map dedicated root NIC Scientific/Technical Assistant-A 2026 page
+  if (page === 'nic-scientific-technical-assistant-recruitment-2026' || page === 'nic-sta-recruitment-2026' || page === 'nic-sta-2026') return `${prefix}nic-scientific-technical-assistant-recruitment-2026.html`;
+
   // Map dedicated root Bank of India SO 2026 page
   if (page === 'bank-of-india-so-recruitment-2026' || page === 'bank-of-india-so-2026') return `${prefix}bank-of-india-so-recruitment-2026.html`;
 
@@ -131,6 +137,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'mpesb-mp-police-constable-recruitment-2026' || slug === 'mp-police-constable-2026' || slug === 'mp-police-constable-recruitment-2026') {
+        return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
+      }
+      if (slug === 'nic-scientific-technical-assistant-recruitment-2026' || slug === 'nic-sta-recruitment-2026' || slug === 'nic-sta-2026') {
+        return `${prefix}nic-scientific-technical-assistant-recruitment-2026.html`;
+      }
       if (slug === 'bank-of-india-so-recruitment-2026' || slug === 'bank-of-india-so-2026') {
         return `${prefix}bank-of-india-so-recruitment-2026.html`;
       }
@@ -244,6 +256,12 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       if (slug === 'rajasthan-safai-karmchari-recruitment-2026' || slug === 'rajasthan-safai-karmchari-2026') {
         return `${prefix}rajasthan-safai-karmchari-recruitment-2026.html`;
+      }
+      if (slug === 'mpesb-mp-police-constable-recruitment-2026' || slug === 'mp-police-constable-2026' || slug === 'mp-police-constable-recruitment-2026') {
+        return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
+      }
+      if (slug === 'nic-scientific-technical-assistant-recruitment-2026' || slug === 'nic-sta-recruitment-2026' || slug === 'nic-sta-2026') {
+        return `${prefix}nic-scientific-technical-assistant-recruitment-2026.html`;
       }
       if (slug === 'bank-of-india-so-recruitment-2026' || slug === 'bank-of-india-so-2026') {
         return `${prefix}bank-of-india-so-recruitment-2026.html`;
