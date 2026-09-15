@@ -19,6 +19,10 @@ import {
   ALLAHABAD_UNIVERSITY_PHD_2026_EXAM,
   generateAllahabadUniversityPhd50Sections
 } from './allahabadUniversityPhdData';
+import {
+  UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
+  generateUpssscSeniorInstructor50Sections
+} from './upssscSeniorInstructorData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -32,6 +36,8 @@ export {
   generateUkpscUpperPcs50Sections,
   UP_SPECIAL_TET_2026_EXAM,
   generateUpSpecialTet50Sections,
+  UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
+  generateUpssscSeniorInstructor50Sections,
   NBEMS_GROUP_ABC_2026_EXAM,
   generateNbems50Sections,
   PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
@@ -43,6 +49,7 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
   MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
   PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
   NBEMS_GROUP_ABC_2026_EXAM,

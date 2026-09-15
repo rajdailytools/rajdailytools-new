@@ -32,6 +32,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
   // Map dedicated root SSC JE 2026 page
   if (page === 'ssc-je-recruitment-2026' || page === 'ssc-je-2026') return `${prefix}ssc-je-recruitment-2026.html`;
 
+  // Map dedicated root UPSSSC Senior Instructor 2026 page
+  if (page === 'upsssc-senior-instructor-recruitment-2026' || page === 'upsssc-senior-instructor-2026') return `${prefix}upsssc-senior-instructor-recruitment-2026.html`;
+
   // Map dedicated root UP Special TET 2026 page
   if (page === 'up-special-tet-online-form-2026' || page === 'up-special-tet-2026') return `${prefix}up-special-tet-online-form-2026.html`;
 
@@ -122,6 +125,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       if (slug === 'ssc-je-recruitment-2026' || slug === 'ssc-je-2026') {
         return `${prefix}ssc-je-recruitment-2026.html`;
       }
+      if (slug === 'upsssc-senior-instructor-recruitment-2026' || slug === 'upsssc-senior-instructor-2026') {
+        return `${prefix}upsssc-senior-instructor-recruitment-2026.html`;
+      }
       if (slug === 'up-special-tet-online-form-2026' || slug === 'up-special-tet-2026') {
         return `${prefix}up-special-tet-online-form-2026.html`;
       }
@@ -190,6 +196,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       if (slug === 'ssc-je-recruitment-2026' || slug === 'ssc-je-2026') {
         return `${prefix}ssc-je-recruitment-2026.html`;
+      }
+      if (slug === 'upsssc-senior-instructor-recruitment-2026' || slug === 'upsssc-senior-instructor-2026') {
+        return `${prefix}upsssc-senior-instructor-recruitment-2026.html`;
       }
       if (slug === 'up-special-tet-online-form-2026' || slug === 'up-special-tet-2026') {
         return `${prefix}up-special-tet-online-form-2026.html`;

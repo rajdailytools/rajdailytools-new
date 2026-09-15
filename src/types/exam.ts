@@ -36,6 +36,7 @@ export interface ExamRecord {
   id: string;
   slug: string;
   examName: string;
+  shortName?: string;
   organization: string;
   category: ExamCategory;
   postName: string;
@@ -110,7 +111,7 @@ export interface ExamRecord {
     payScale: string;
     inHand: string;
     allowances: string;
-  };
+  } | string;
   cutOffData?: {
     stage: string;
     year: string;
@@ -130,6 +131,8 @@ export interface ExamRecord {
     rank?: number;
   }[];
   faq?: { q: string; a: string }[];
+  vacancies?: { category: string; postCount: number }[];
+  admitCardSteps?: string[];
   allInformation?: ExamInfoSection[];
 }
 

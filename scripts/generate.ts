@@ -44,6 +44,7 @@ import { SSC_CPO_2026_EXAM } from '../src/data/sscCpoData';
 import { SSC_JE_2026_EXAM } from '../src/data/sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
+import { UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM } from '../src/data/upssscSeniorInstructorData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
 import { PATNA_HIGH_COURT_ASSISTANT_2026_EXAM } from '../src/data/patnaHighCourtData';
@@ -97,7 +98,27 @@ const searchIndex = [
         : exam.slug === 'ssc-cpo-si-capf-recruitment-2026'
         ? 'ssc-cpo-si-capf-recruitment-2026.html'
         : `latest-jobs/${exam.slug}.html`,
-    icon: exam.logoIcon || '📋'
+    icon: exam.logoIcon || '📋',
+    keywords: [
+      exam.examName,
+      exam.shortName || '',
+      exam.organization || '',
+      exam.category,
+      ...(exam.slug === 'up-special-tet-online-form-2026'
+        ? [
+            'UP Special TET',
+            'UP Special TET 2026',
+            'UP Special TET Online Form',
+            'UP Special TET Apply Online',
+            'UP Special TET Syllabus',
+            'UP Special TET Exam Pattern',
+            'UP TET',
+            'UPESSC Special TET',
+            'Special Educator',
+            'CWSN'
+          ]
+        : [])
+    ]
   })),
   ...ADMISSIONS_DATABASE.map((adm) => ({
     name: adm.course,
@@ -1208,14 +1229,37 @@ async function generateAllPages() {
   writePage(
     'up-special-tet-online-form-2026.html',
     wrapWithHtmlLayout({
-      title: `${upTetExam.examName} – Official UPESSC Notification, Eligibility & Apply Online`,
-      description: upTetExam.description || upTetExam.shortSummary,
+      title: 'UP Special TET Online Form 2026 – Apply Online, Eligibility, Exam Pattern, Syllabus',
+      description:
+        'UP Special TET Online Form 2026, apply online, important dates, eligibility, age limit, application fee, exam pattern, syllabus, selection process, admit card, result and official links.',
       content: renderToStaticMarkup(
         React.createElement(JobDetailPage, { exam: upTetExam, depth: 0 })
       ),
       pageKey: 'up-special-tet-online-form-2026',
       depth: 0,
       canonicalPath: 'up-special-tet-online-form-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-2. DEDICATED UPSSSC SENIOR INSTRUCTOR 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upssscExam =
+    EXAMS_DATABASE.find((e) => e.id === 'upsssc-senior-instructor-2026' || e.slug === 'upsssc-senior-instructor-recruitment-2026') ||
+    UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM;
+
+  writePage(
+    'upsssc-senior-instructor-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UPSSSC Senior Instructor Recruitment 2026 – 132 Posts, Notification, Eligibility, Apply Online',
+      description:
+        'UPSSSC Senior Instructor (ज्येष्ठ अनुदेशक) Recruitment 2026 online form under State Rural Development Institute (Advt. 21-Exam/2026). Check 132 vacancies, PET-2025 cutoff, eligibility, salary, exam pattern, syllabus, and official link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: upssscExam, depth: 0 })
+      ),
+      pageKey: 'upsssc-senior-instructor-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'upsssc-senior-instructor-recruitment-2026.html'
     })
   );
 

@@ -124,7 +124,8 @@
         return (
           item.name.toLowerCase().includes(q) ||
           item.org.toLowerCase().includes(q) ||
-          item.category.toLowerCase().includes(q)
+          item.category.toLowerCase().includes(q) ||
+          (item.keywords && item.keywords.some(function (k) { return k.toLowerCase().includes(q); }))
         );
       }).slice(0, 8);
 
