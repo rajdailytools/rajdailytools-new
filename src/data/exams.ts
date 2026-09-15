@@ -23,6 +23,18 @@ import {
   UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
   generateUpssscSeniorInstructor50Sections
 } from './upssscSeniorInstructorData';
+import {
+  RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM,
+  generateRajasthanSafaiKarmchari50Sections
+} from './rajasthanSafaiKarmchariData';
+import {
+  UPSSSC_VETERINARY_PHARMACIST_2026_EXAM,
+  generateUpssscVeterinaryPharmacist50Sections
+} from './upssscVeterinaryPharmacistData';
+import {
+  BPSSC_COMPANY_COMMANDER_2026_EXAM,
+  generateBpsscCompanyCommander50Sections
+} from './bpsscCompanyCommanderData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -38,6 +50,12 @@ export {
   generateUpSpecialTet50Sections,
   UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
   generateUpssscSeniorInstructor50Sections,
+  UPSSSC_VETERINARY_PHARMACIST_2026_EXAM,
+  generateUpssscVeterinaryPharmacist50Sections,
+  BPSSC_COMPANY_COMMANDER_2026_EXAM,
+  generateBpsscCompanyCommander50Sections,
+  RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM,
+  generateRajasthanSafaiKarmchari50Sections,
   NBEMS_GROUP_ABC_2026_EXAM,
   generateNbems50Sections,
   PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,
@@ -49,6 +67,9 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  BPSSC_COMPANY_COMMANDER_2026_EXAM,
+  UPSSSC_VETERINARY_PHARMACIST_2026_EXAM,
+  RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM,
   UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM,
   MPESB_KRISHI_VISTAR_ADHIKARI_2026_EXAM,
   PATNA_HIGH_COURT_ASSISTANT_2026_EXAM,

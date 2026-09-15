@@ -1042,7 +1042,7 @@ export const UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM: ExamRecord = {
   shortName: 'UPSSSC Senior Instructor 2026',
   postName: 'Senior Instructor (ज्येष्ठ अनुदेशक) – State Rural Development Institute',
   organization: 'Uttar Pradesh Subordinate Services Selection Commission (UPSSSC)',
-  category: 'State PSC',
+  category: 'State Jobs',
   state: 'Uttar Pradesh',
   totalVacancy: '132 Posts',
   applicationStartDate: '2026-09-14',

@@ -45,6 +45,9 @@ import { SSC_JE_2026_EXAM } from '../src/data/sscJeData';
 import { UKPSC_UPPER_PCS_2026_EXAM } from '../src/data/ukpscData';
 import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
 import { UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM } from '../src/data/upssscSeniorInstructorData';
+import { UPSSSC_VETERINARY_PHARMACIST_2026_EXAM } from '../src/data/upssscVeterinaryPharmacistData';
+import { BPSSC_COMPANY_COMMANDER_2026_EXAM } from '../src/data/bpsscCompanyCommanderData';
+import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
 import { PATNA_HIGH_COURT_ASSISTANT_2026_EXAM } from '../src/data/patnaHighCourtData';
@@ -1260,6 +1263,72 @@ async function generateAllPages() {
       pageKey: 'upsssc-senior-instructor-recruitment-2026',
       depth: 0,
       canonicalPath: 'upsssc-senior-instructor-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-3. DEDICATED RAJASTHAN SAFAI KARMCHARI 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const safaiKarmchariExam =
+    EXAMS_DATABASE.find((e) => e.id === 'rajasthan-safai-karmchari-2026' || e.slug === 'rajasthan-safai-karmchari-recruitment-2026') ||
+    RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM;
+
+  writePage(
+    'rajasthan-safai-karmchari-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'Rajasthan Safai Karmchari Recruitment 2026 – 24,752 Posts, Notification, Eligibility, Apply Online',
+      description:
+        'Rajasthan Safai Karmchari Bharti 2026 online form under Local Self Government Department (DLB Rajasthan). Check 24,752 vacancies, lottery & practical test selection, eligibility, age limit, SSO portal direct link, and dates.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: safaiKarmchariExam, depth: 0 })
+      ),
+      pageKey: 'rajasthan-safai-karmchari-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'rajasthan-safai-karmchari-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-4. DEDICATED UPSSSC VETERINARY PHARMACIST 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const vetPharmacistExam =
+    EXAMS_DATABASE.find((e) => e.id === 'upsssc-veterinary-pharmacist-2026' || e.slug === 'upsssc-veterinary-pharmacist-recruitment-2026') ||
+    UPSSSC_VETERINARY_PHARMACIST_2026_EXAM;
+
+  writePage(
+    'upsssc-veterinary-pharmacist-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UPSSSC Veterinary Pharmacist Recruitment 2026 – Apply Online, 1308 Vacancy, Eligibility',
+      description:
+        'UPSSSC Veterinary Pharmacist Recruitment 2026 – check 1308 vacancies, important dates, PET 2025, eligibility, age limit, fee, exam pattern, syllabus, selection process and official links.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: vetPharmacistExam, depth: 0 })
+      ),
+      pageKey: 'upsssc-veterinary-pharmacist-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'upsssc-veterinary-pharmacist-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-5. DEDICATED BPSSC BIHAR POLICE COMPANY COMMANDER 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const bpsscCommanderExam =
+    EXAMS_DATABASE.find((e) => e.id === 'bpssc-company-commander-2026' || e.slug === 'bpssc-bihar-police-company-commander-recruitment-2026') ||
+    BPSSC_COMPANY_COMMANDER_2026_EXAM;
+
+  writePage(
+    'bpssc-bihar-police-company-commander-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BPSSC Bihar Police Home Guard Company Commander Recruitment 2026 – Apply Online, 65 Posts, Eligibility',
+      description:
+        'BPSSC Bihar Police Home Guard Company Commander Recruitment 2026 (Advt 11/2026) – check 65 vacancies, 5-year service criteria, age 24-50, PET standards, exam pattern, syllabus, selection process & official apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: bpsscCommanderExam, depth: 0 })
+      ),
+      pageKey: 'bpssc-bihar-police-company-commander-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'bpssc-bihar-police-company-commander-recruitment-2026.html'
     })
   );
 

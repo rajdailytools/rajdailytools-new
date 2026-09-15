@@ -158,6 +158,18 @@ export default function App() {
   const isUpTetPage = typeof currentPage === 'string' && (currentPage.startsWith('up-special-tet') || currentPage.startsWith('up-tet'));
   const upTetRecord = EXAMS_DATABASE.find((e) => e.id === 'up-special-tet-2026' || e.slug === 'up-special-tet-online-form-2026');
 
+  const isBpsscCommanderPage = typeof currentPage === 'string' && (currentPage.startsWith('bpssc-bihar-police-company-commander') || currentPage.startsWith('bpssc-company-commander'));
+  const bpsscCommanderRecord = EXAMS_DATABASE.find((e) => e.id === 'bpssc-company-commander-2026' || e.slug === 'bpssc-bihar-police-company-commander-recruitment-2026');
+
+  const isVetPharmacistPage = typeof currentPage === 'string' && (currentPage.startsWith('upsssc-veterinary-pharmacist') || currentPage.startsWith('veterinary-pharmacist'));
+  const vetPharmacistRecord = EXAMS_DATABASE.find((e) => e.id === 'upsssc-veterinary-pharmacist-2026' || e.slug === 'upsssc-veterinary-pharmacist-recruitment-2026');
+
+  const isUpssscPage = typeof currentPage === 'string' && (currentPage.startsWith('upsssc-senior-instructor') || currentPage === 'upsssc');
+  const upssscRecord = EXAMS_DATABASE.find((e) => e.id === 'upsssc-senior-instructor-2026' || e.slug === 'upsssc-senior-instructor-recruitment-2026');
+
+  const isSafaiKarmchariPage = typeof currentPage === 'string' && (currentPage.startsWith('rajasthan-safai-karmchari') || currentPage.startsWith('safai-karmchari'));
+  const safaiKarmchariRecord = EXAMS_DATABASE.find((e) => e.id === 'rajasthan-safai-karmchari-2026' || e.slug === 'rajasthan-safai-karmchari-recruitment-2026');
+
   const isUkpscPage = typeof currentPage === 'string' && currentPage.startsWith('ukpsc');
   const ukpscRecord = EXAMS_DATABASE.find((e) => e.id === 'ukpsc-upper-pcs-2026' || e.slug === 'ukpsc-upper-pcs-recruitment-2026');
 
@@ -176,6 +188,10 @@ export default function App() {
     (isPatnaHcPage && patnaHcRecord) ? patnaHcRecord :
     (isNbemsPage && nbemsRecord) ? nbemsRecord :
     (isSscJePage && sscJeRecord) ? sscJeRecord :
+    (isBpsscCommanderPage && bpsscCommanderRecord) ? bpsscCommanderRecord :
+    (isVetPharmacistPage && vetPharmacistRecord) ? vetPharmacistRecord :
+    (isSafaiKarmchariPage && safaiKarmchariRecord) ? safaiKarmchariRecord :
+    (isUpssscPage && upssscRecord) ? upssscRecord :
     (isUpTetPage && upTetRecord) ? upTetRecord :
     (isUkpscPage && ukpscRecord) ? ukpscRecord :
     (isChslPage && chslRecord) ? chslRecord :
@@ -438,6 +454,22 @@ export default function App() {
       case 'up-special-tet-online-form-2026':
       case 'up-special-tet-2026':
         return <JobDetailPage exam={upTetRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'upsssc-senior-instructor-recruitment-2026':
+      case 'upsssc-senior-instructor-2026':
+        return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'bpssc-bihar-police-company-commander-recruitment-2026':
+      case 'bpssc-company-commander-2026':
+        return <JobDetailPage exam={bpsscCommanderRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'upsssc-veterinary-pharmacist-recruitment-2026':
+      case 'upsssc-veterinary-pharmacist-2026':
+        return <JobDetailPage exam={vetPharmacistRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'rajasthan-safai-karmchari-recruitment-2026':
+      case 'rajasthan-safai-karmchari-2026':
+        return <JobDetailPage exam={safaiKarmchariRecord || currentExam} onNavigate={handleNavigate} />;
 
       default:
         return <HomePage onNavigate={handleNavigate} />;

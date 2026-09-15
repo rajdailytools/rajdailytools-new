@@ -20,8 +20,14 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
   // Map dedicated root Allahabad University PhD Admission 2026 page
   if (page === 'allahabad-university-phd-admission-2026' || page === 'allahabad-university-phd-2026') return `${prefix}allahabad-university-phd-admission-2026.html`;
 
+  // Map dedicated root UPSSSC Veterinary Pharmacist 2026 page
+  if (page === 'upsssc-veterinary-pharmacist-recruitment-2026' || page === 'upsssc-veterinary-pharmacist-2026') return `${prefix}upsssc-veterinary-pharmacist-recruitment-2026.html`;
+
   // Map dedicated root MPESB Krishi Vistar Adhikari 2026 Admit Card page
   if (page === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || page === 'mpesb-krishi-vistar-adhikari-2026') return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
+
+  // Map dedicated root Rajasthan Safai Karmchari 2026 page
+  if (page === 'rajasthan-safai-karmchari-recruitment-2026' || page === 'rajasthan-safai-karmchari-2026') return `${prefix}rajasthan-safai-karmchari-recruitment-2026.html`;
 
   // Map dedicated root Patna High Court Assistant 2026 Admit Card page
   if (page === 'patna-high-court-assistant-admit-card-2026' || page === 'patna-high-court-assistant-2026') return `${prefix}patna-high-court-assistant-admit-card-2026.html`;
@@ -113,6 +119,15 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'bpssc-bihar-police-company-commander-recruitment-2026' || slug === 'bpssc-company-commander-2026') {
+        return `${prefix}bpssc-bihar-police-company-commander-recruitment-2026.html`;
+      }
+      if (slug === 'upsssc-veterinary-pharmacist-recruitment-2026' || slug === 'upsssc-veterinary-pharmacist-2026') {
+        return `${prefix}upsssc-veterinary-pharmacist-recruitment-2026.html`;
+      }
+      if (slug === 'rajasthan-safai-karmchari-recruitment-2026' || slug === 'rajasthan-safai-karmchari-2026') {
+        return `${prefix}rajasthan-safai-karmchari-recruitment-2026.html`;
+      }
       if (slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026' || slug === 'mpesb-krishi-vistar-adhikari-2026') {
         return `${prefix}mpesb-krishi-vistar-adhikari-admit-card-2026.html`;
       }
@@ -205,6 +220,15 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       }
       if (slug === 'ukpsc-upper-pcs-recruitment-2026' || slug === 'ukpsc-upper-pcs-2026') {
         return `${prefix}ukpsc-upper-pcs-recruitment-2026.html`;
+      }
+      if (slug === 'rajasthan-safai-karmchari-recruitment-2026' || slug === 'rajasthan-safai-karmchari-2026') {
+        return `${prefix}rajasthan-safai-karmchari-recruitment-2026.html`;
+      }
+      if (slug === 'bpssc-bihar-police-company-commander-recruitment-2026' || slug === 'bpssc-company-commander-2026') {
+        return `${prefix}bpssc-bihar-police-company-commander-recruitment-2026.html`;
+      }
+      if (slug === 'upsssc-veterinary-pharmacist-recruitment-2026' || slug === 'upsssc-veterinary-pharmacist-2026') {
+        return `${prefix}upsssc-veterinary-pharmacist-recruitment-2026.html`;
       }
       if (slug === 'ssc-cpo-si-capf-recruitment-2026' || slug === 'ssc-cpo-2026') {
         return `${prefix}ssc-cpo-si-capf-recruitment-2026.html`;
