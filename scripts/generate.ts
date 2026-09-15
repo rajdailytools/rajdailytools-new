@@ -52,6 +52,8 @@ import { DELHI_HIGH_COURT_SPA_PA_2026_EXAM } from '../src/data/delhiHighCourtSpa
 import { BANK_OF_INDIA_SO_2026_EXAM } from '../src/data/bankOfIndiaSoData';
 import { NIC_STA_2026_EXAM } from '../src/data/nicStaData';
 import { MP_POLICE_CONSTABLE_2026_EXAM } from '../src/data/mpPoliceConstableData';
+import { BSF_HCM_ASI_STENO_2026_EXAM } from '../src/data/bsfHcmAsiStenoData';
+import { BsfHcmAsiStenoAnswerKeyPage } from '../src/pages/BsfHcmAsiStenoAnswerKeyPage';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -1448,6 +1450,28 @@ async function generateAllPages() {
   );
 
   // --------------------------------------------------------------------------
+  // 2g-11. DEDICATED BSF HCM & ASI STENO ANSWER KEY 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const bsfHcmExam =
+    EXAMS_DATABASE.find((e) => e.id === 'bsf-hcm-asi-steno-2026' || e.slug === 'bsf-hcm-asi-steno-answer-key-2026') ||
+    BSF_HCM_ASI_STENO_2026_EXAM;
+
+  writePage(
+    'bsf-hcm-asi-steno-answer-key-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BSF HCM & ASI Steno Answer Key 2026 – Download Response Sheet, CBT Objections & Question Paper PDF',
+      description:
+        'BSF HCM & ASI Steno Answer Key 2026 officially released on 10 September 2026. Direct candidate login link, download question paper response sheet, CBT score calculator, official objection submission steps, and 1526 vacancies details.',
+      content: renderToStaticMarkup(
+        React.createElement(BsfHcmAsiStenoAnswerKeyPage, { exam: bsfHcmExam, depth: 0 })
+      ),
+      pageKey: 'bsf-hcm-asi-steno-answer-key-2026',
+      depth: 0,
+      canonicalPath: 'bsf-hcm-asi-steno-answer-key-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
   // 2h. DEDICATED SSC JE 2026 ROOT PAGE (depth = 0)
   // --------------------------------------------------------------------------
   const sscJeExam =
@@ -1658,7 +1682,9 @@ async function generateAllPages() {
 
     // 3c. Answer Key Detail: answer-key/[slug].html
     const answerKeyDetailContent = renderToStaticMarkup(
-      React.createElement(AnswerKeyDetailPage, { exam, depth: 1 })
+      exam.slug === 'bsf-hcm-asi-steno-answer-key-2026'
+        ? React.createElement(BsfHcmAsiStenoAnswerKeyPage, { exam, depth: 1 })
+        : React.createElement(AnswerKeyDetailPage, { exam, depth: 1 })
     );
     writePage(
       `answer-key/${exam.slug}.html`,

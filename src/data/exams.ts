@@ -55,6 +55,14 @@ import {
   MP_POLICE_CONSTABLE_2026_EXAM,
   generateMpPoliceConstable50Sections
 } from './mpPoliceConstableData';
+import {
+  BSF_HCM_ASI_STENO_2026_EXAM,
+  generateBsfHcmAsiSteno50Sections
+} from './bsfHcmAsiStenoData';
+import {
+  RRB_GROUP_D_2026_EXAM,
+  generateRrbGroupD50Sections
+} from './rrbGroupDData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -93,10 +101,16 @@ export {
   NIC_STA_2026_EXAM,
   generateNicSta50Sections,
   MP_POLICE_CONSTABLE_2026_EXAM,
-  generateMpPoliceConstable50Sections
+  generateMpPoliceConstable50Sections,
+  BSF_HCM_ASI_STENO_2026_EXAM,
+  generateBsfHcmAsiSteno50Sections,
+  RRB_GROUP_D_2026_EXAM,
+  generateRrbGroupD50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  RRB_GROUP_D_2026_EXAM,
+  BSF_HCM_ASI_STENO_2026_EXAM,
   MP_POLICE_CONSTABLE_2026_EXAM,
   NIC_STA_2026_EXAM,
   BANK_OF_INDIA_SO_2026_EXAM,

@@ -8,6 +8,12 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root RRB Group D Answer Key 2026 page
+  if (page === 'rrb-group-d-answer-key-2026' || page === 'rrb-group-d-2026' || page === 'rrb-group-d-level-1-recruitment-2026') return `${prefix}rrb-group-d-answer-key-2026.html`;
+
+  // Map dedicated root BSF HCM & ASI Steno Answer Key 2026 page
+  if (page === 'bsf-hcm-asi-steno-answer-key-2026' || page === 'bsf-hcm-asi-steno-2026') return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
+
   // Map dedicated root MP Police Constable 2026 page
   if (page === 'mpesb-mp-police-constable-recruitment-2026' || page === 'mp-police-constable-2026' || page === 'mp-police-constable-recruitment-2026') return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
 
@@ -200,6 +206,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
     case 'result-detail':
       return slug ? `${prefix}result/${slug}.html` : `${prefix}result.html`;
     case 'answer-key-detail':
+      if (slug === 'bsf-hcm-asi-steno-answer-key-2026' || slug === 'bsf-hcm-asi-steno-2026') {
+        return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
+      }
       return slug ? `${prefix}answer-key/${slug}.html` : `${prefix}answer-key.html`;
     case 'cut-off-detail':
       return slug ? `${prefix}cut-off/${slug}.html` : `${prefix}cut-off.html`;
@@ -221,6 +230,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'bsf-hcm-asi-steno-answer-key-2026' || slug === 'bsf-hcm-asi-steno-2026') {
+        return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
+      }
       if (slug === 'aibe-22nd-online-form-2026' || slug === 'aibe-22nd-2026' || slug === 'aibe-xxii-2026') {
         return `${prefix}aibe-22nd-online-form-2026.html`;
       }

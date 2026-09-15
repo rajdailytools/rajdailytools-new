@@ -40,6 +40,10 @@ import { AllahabadUniversityPhdPage } from './pages/AllahabadUniversityPhdPage';
 import { NvsClass11AdmissionPage } from './pages/NvsClass11AdmissionPage';
 import { NvsClass9AdmissionPage } from './pages/NvsClass9AdmissionPage';
 import { AibeAdmissionPage } from './pages/AibeAdmissionPage';
+import { BsfHcmAsiStenoAnswerKeyPage } from './pages/BsfHcmAsiStenoAnswerKeyPage';
+import { RrbGroupDAnswerKeyPage } from './pages/RrbGroupDAnswerKeyPage';
+import { BSF_HCM_ASI_STENO_2026_EXAM } from './data/bsfHcmAsiStenoData';
+import { RRB_GROUP_D_2026_EXAM } from './data/rrbGroupDData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
 import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
@@ -152,6 +156,12 @@ export default function App() {
   const isNbemsPage = typeof currentPage === 'string' && (currentPage.startsWith('nbems') || currentPage === 'nbems-group-a-b-c-admit-card-2026');
   const nbemsRecord = EXAMS_DATABASE.find((e) => e.id === 'nbems-group-abc-2026' || e.slug === 'nbems-group-a-b-c-admit-card-2026');
 
+  const isBsfHcmPage = typeof currentPage === 'string' && (currentPage.startsWith('bsf-hcm-asi-steno') || currentPage.startsWith('bsf-hcm') || currentPage === 'bsf-hcm-asi-steno-answer-key-2026');
+  const bsfHcmRecord = BSF_HCM_ASI_STENO_2026_EXAM;
+
+  const isRrbGroupDPage = typeof currentPage === 'string' && (currentPage.startsWith('rrb-group-d') || currentPage === 'rrb-group-d-answer-key-2026' || currentSlug === 'rrb-group-d-answer-key-2026');
+  const rrbGroupDRecord = RRB_GROUP_D_2026_EXAM;
+
   const isMpPoliceConstablePage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb-mp-police-constable') || currentPage.startsWith('mp-police-constable'));
   const mpPoliceConstableRecord = EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026');
 
@@ -198,6 +208,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isRrbGroupDPage && rrbGroupDRecord) ? rrbGroupDRecord :
+    (isBsfHcmPage && bsfHcmRecord) ? bsfHcmRecord :
     (isMpPoliceConstablePage && mpPoliceConstableRecord) ? mpPoliceConstableRecord :
     (isNicStaPage && nicStaRecord) ? nicStaRecord :
     (isBoiSoPage && boiSoRecord) ? boiSoRecord :
@@ -248,6 +260,12 @@ export default function App() {
         return <AnswerKeyPage onNavigate={handleNavigate} />;
 
       case 'answer-key-detail':
+        if (currentSlug === 'rrb-group-d-answer-key-2026' || currentSlug === 'rrb-group-d-2026' || currentSlug === 'rrb-group-d-level-1-recruitment-2026') {
+          return <RrbGroupDAnswerKeyPage exam={rrbGroupDRecord || currentExam} onNavigate={handleNavigate} />;
+        }
+        if (currentSlug === 'bsf-hcm-asi-steno-answer-key-2026' || currentSlug === 'bsf-hcm-asi-steno-2026') {
+          return <BsfHcmAsiStenoAnswerKeyPage exam={bsfHcmRecord || currentExam} onNavigate={handleNavigate} />;
+        }
         return <AnswerKeyDetailPage exam={currentExam} onNavigate={handleNavigate} />;
 
       case 'result':
@@ -512,6 +530,15 @@ export default function App() {
       case 'rajasthan-safai-karmchari-recruitment-2026':
       case 'rajasthan-safai-karmchari-2026':
         return <JobDetailPage exam={safaiKarmchariRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'bsf-hcm-asi-steno-answer-key-2026':
+      case 'bsf-hcm-asi-steno-2026':
+        return <BsfHcmAsiStenoAnswerKeyPage exam={bsfHcmRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'rrb-group-d-answer-key-2026':
+      case 'rrb-group-d-2026':
+      case 'rrb-group-d-level-1-recruitment-2026':
+        return <RrbGroupDAnswerKeyPage exam={rrbGroupDRecord || currentExam} onNavigate={handleNavigate} />;
 
       default:
         return <HomePage onNavigate={handleNavigate} />;
