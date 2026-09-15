@@ -35,6 +35,10 @@ import {
   BPSSC_COMPANY_COMMANDER_2026_EXAM,
   generateBpsscCompanyCommander50Sections
 } from './bpsscCompanyCommanderData';
+import {
+  UPSC_11_2026_VARIOUS_POSTS_EXAM,
+  generateUpsc112026VariousPosts50Sections
+} from './upsc112026VariousPostsData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -54,6 +58,8 @@ export {
   generateUpssscVeterinaryPharmacist50Sections,
   BPSSC_COMPANY_COMMANDER_2026_EXAM,
   generateBpsscCompanyCommander50Sections,
+  UPSC_11_2026_VARIOUS_POSTS_EXAM,
+  generateUpsc112026VariousPosts50Sections,
   RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM,
   generateRajasthanSafaiKarmchari50Sections,
   NBEMS_GROUP_ABC_2026_EXAM,
@@ -67,6 +73,7 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  UPSC_11_2026_VARIOUS_POSTS_EXAM,
   BPSSC_COMPANY_COMMANDER_2026_EXAM,
   UPSSSC_VETERINARY_PHARMACIST_2026_EXAM,
   RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM,

@@ -8,6 +8,12 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root UPSC 11/2026 Various Posts Recruitment 2026 page
+  if (page === 'upsc-11-2026-various-posts-recruitment-2026' || page === 'upsc-11-2026-various-posts-2026') return `${prefix}upsc-11-2026-various-posts-recruitment-2026.html`;
+
+  // Map dedicated root BPSSC Company Commander 2026 page
+  if (page === 'bpssc-bihar-police-company-commander-recruitment-2026' || page === 'bpssc-company-commander-2026') return `${prefix}bpssc-bihar-police-company-commander-recruitment-2026.html`;
+
   // Map dedicated root AIBE 22nd Online Form 2026 page
   if (page === 'aibe-22nd-online-form-2026' || page === 'aibe-22nd-2026' || page === 'aibe-xxii-2026') return `${prefix}aibe-22nd-online-form-2026.html`;
 
@@ -119,6 +125,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'upsc-11-2026-various-posts-recruitment-2026' || slug === 'upsc-11-2026-various-posts-2026') {
+        return `${prefix}upsc-11-2026-various-posts-recruitment-2026.html`;
+      }
       if (slug === 'bpssc-bihar-police-company-commander-recruitment-2026' || slug === 'bpssc-company-commander-2026') {
         return `${prefix}bpssc-bihar-police-company-commander-recruitment-2026.html`;
       }

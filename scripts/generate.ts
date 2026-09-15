@@ -47,6 +47,7 @@ import { UP_SPECIAL_TET_2026_EXAM } from '../src/data/upSpecialTetData';
 import { UPSSSC_SENIOR_INSTRUCTOR_2026_EXAM } from '../src/data/upssscSeniorInstructorData';
 import { UPSSSC_VETERINARY_PHARMACIST_2026_EXAM } from '../src/data/upssscVeterinaryPharmacistData';
 import { BPSSC_COMPANY_COMMANDER_2026_EXAM } from '../src/data/bpsscCompanyCommanderData';
+import { UPSC_11_2026_VARIOUS_POSTS_EXAM } from '../src/data/upsc112026VariousPostsData';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -1329,6 +1330,28 @@ async function generateAllPages() {
       pageKey: 'bpssc-bihar-police-company-commander-recruitment-2026',
       depth: 0,
       canonicalPath: 'bpssc-bihar-police-company-commander-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-6. DEDICATED UPSC 11/2026 VARIOUS POSTS 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upsc112026Exam =
+    EXAMS_DATABASE.find((e) => e.id === 'upsc-11-2026-various-posts-2026' || e.slug === 'upsc-11-2026-various-posts-recruitment-2026') ||
+    UPSC_11_2026_VARIOUS_POSTS_EXAM;
+
+  writePage(
+    'upsc-11-2026-various-posts-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UPSC 11/2026 Various Posts Recruitment 2026 – Apply Online, 212 Vacancies, Eligibility, Notification',
+      description:
+        'UPSC Advertisement No. 11/2026 recruitment for 212 vacancies across 7 posts: Specialist Grade III, Assistant Editor, Specialist Grade II, Assistant Public Prosecutor, Public Law Officer. Check eligibility, age limits, syllabus, selection process and direct apply online links.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: upsc112026Exam, depth: 0 })
+      ),
+      pageKey: 'upsc-11-2026-various-posts-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'upsc-11-2026-various-posts-recruitment-2026.html'
     })
   );
 

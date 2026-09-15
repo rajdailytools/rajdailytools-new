@@ -158,6 +158,9 @@ export default function App() {
   const isUpTetPage = typeof currentPage === 'string' && (currentPage.startsWith('up-special-tet') || currentPage.startsWith('up-tet'));
   const upTetRecord = EXAMS_DATABASE.find((e) => e.id === 'up-special-tet-2026' || e.slug === 'up-special-tet-online-form-2026');
 
+  const isUpscPage = typeof currentPage === 'string' && (currentPage.startsWith('upsc-11-2026-various-posts') || currentPage.startsWith('upsc-11-2026'));
+  const upscRecord = EXAMS_DATABASE.find((e) => e.id === 'upsc-11-2026-various-posts-2026' || e.slug === 'upsc-11-2026-various-posts-recruitment-2026');
+
   const isBpsscCommanderPage = typeof currentPage === 'string' && (currentPage.startsWith('bpssc-bihar-police-company-commander') || currentPage.startsWith('bpssc-company-commander'));
   const bpsscCommanderRecord = EXAMS_DATABASE.find((e) => e.id === 'bpssc-company-commander-2026' || e.slug === 'bpssc-bihar-police-company-commander-recruitment-2026');
 
@@ -183,6 +186,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isUpscPage && upscRecord) ? upscRecord :
     (isAuPhdPage && auPhdRecord) ? auPhdRecord :
     (isMpesbPage && mpesbRecord) ? mpesbRecord :
     (isPatnaHcPage && patnaHcRecord) ? patnaHcRecord :
@@ -458,6 +462,10 @@ export default function App() {
       case 'upsssc-senior-instructor-recruitment-2026':
       case 'upsssc-senior-instructor-2026':
         return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'upsc-11-2026-various-posts-recruitment-2026':
+      case 'upsc-11-2026-various-posts-2026':
+        return <JobDetailPage exam={upscRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'bpssc-bihar-police-company-commander-recruitment-2026':
       case 'bpssc-company-commander-2026':
