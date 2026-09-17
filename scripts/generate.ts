@@ -64,6 +64,8 @@ import { UPESSC_PRT_TEACHER_2026_EXAM } from '../src/data/upesscPrtTeacherData';
 import { UpesscPrtTeacherPage } from '../src/pages/UpesscPrtTeacherPage';
 import { UKSSSC_SCALER_2026_EXAM } from '../src/data/ukssscScalerData';
 import { UkssscGroupCScalerPage } from '../src/pages/UkssscGroupCScalerPage';
+import { UP_PGT_TEACHER_2026_EXAM } from '../src/data/upPgtTeacherData';
+import { UpPgtTeacherPage } from '../src/pages/UpPgtTeacherPage';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -1600,6 +1602,28 @@ async function generateAllPages() {
       pageKey: 'uksssc-group-c-scaler-recruitment-2026',
       depth: 0,
       canonicalPath: 'uksssc-group-c-scaler-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-17. DEDICATED UP PGT TEACHER 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upPgtExam =
+    EXAMS_DATABASE.find((e) => e.id === 'up-pgt-teacher-2026' || e.slug === 'up-pgt-teacher-recruitment-2026') ||
+    UP_PGT_TEACHER_2026_EXAM;
+
+  writePage(
+    'up-pgt-teacher-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UP PGT Teacher Recruitment 2026 – Apply Online, 2607 Vacancies, 26 Subjects, Syllabus & Exam Pattern',
+      description:
+        'UP PGT Teacher Recruitment 2026 Advt No. 06/2026 – Apply online for 2,607 Post Graduate Teacher posts (Boys 2,329 + Girls 278) across 26 subjects under UPESSC Prayagraj. Level-8 pay matrix, 120 questions / 360 marks written exam + 40 marks interview pattern, complete syllabus & direct links.',
+      content: renderToStaticMarkup(
+        React.createElement(UpPgtTeacherPage, { exam: upPgtExam, depth: 0 })
+      ),
+      pageKey: 'up-pgt-teacher-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'up-pgt-teacher-recruitment-2026.html'
     })
   );
 

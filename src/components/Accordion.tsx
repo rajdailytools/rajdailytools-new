@@ -45,10 +45,15 @@ export const Accordion: React.FC<AccordionProps> = ({
       {/* Accordion Controls Bar */}
       <div className="p-4 sm:p-5 bg-slate-50/80 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 font-display">
-            {title}
-          </h3>
-          <p className="text-xs text-slate-500">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 font-display">
+              {title}
+            </h3>
+            <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+              ({activeSections.length} sections)
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mt-0.5">
             Click any topic below to expand details ({activeSections.length} sections)
           </p>
         </div>

@@ -46,12 +46,16 @@ import { RpscStatisticalOfficerAnswerKeyPage } from './pages/RpscStatisticalOffi
 import { RpscApoAnswerKeyPage } from './pages/RpscApoAnswerKeyPage';
 import { UpesscPrtTeacherPage } from './pages/UpesscPrtTeacherPage';
 import { UkssscGroupCScalerPage } from './pages/UkssscGroupCScalerPage';
+import { UpPgtTeacherPage } from './pages/UpPgtTeacherPage';
+import { ConcorRecruitmentPage } from './pages/ConcorRecruitmentPage';
 import { BSF_HCM_ASI_STENO_2026_EXAM } from './data/bsfHcmAsiStenoData';
 import { RRB_GROUP_D_2026_EXAM } from './data/rrbGroupDData';
 import { RPSC_STATISTICAL_OFFICER_2026_EXAM } from './data/rpscStatisticalOfficerData';
 import { RPSC_APO_2026_EXAM } from './data/rpscApoData';
 import { UPESSC_PRT_TEACHER_2026_EXAM } from './data/upesscPrtTeacherData';
 import { UKSSSC_SCALER_2026_EXAM } from './data/ukssscScalerData';
+import { UP_PGT_TEACHER_2026_EXAM } from './data/upPgtTeacherData';
+import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
 import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
@@ -149,6 +153,19 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isConcorPage = typeof currentPage === 'string' && (
+    currentPage.startsWith('concor') ||
+    currentPage === 'concor-management-trainee-assistant-officer-recruitment-2026' ||
+    currentSlug === 'concor-management-trainee-assistant-officer-recruitment-2026' ||
+    currentSlug === 'concor-recruitment-2026' ||
+    currentSlug === 'concor-mt-ao-recruitment-2026' ||
+    currentSlug === 'concor-2026'
+  );
+  const concorRecord = CONCOR_RECRUITMENT_2026_EXAM;
+
+  const isUpPgtPage = typeof currentPage === 'string' && (currentPage.startsWith('up-pgt-teacher') || currentPage.startsWith('up-pgt') || currentPage === 'up-pgt-teacher-recruitment-2026' || currentSlug === 'up-pgt-teacher-recruitment-2026');
+  const upPgtRecord = UP_PGT_TEACHER_2026_EXAM;
+
   const isUkssscScalerPage = typeof currentPage === 'string' && (currentPage.startsWith('uksssc-group-c-scaler') || currentPage.startsWith('uksssc-scaler') || currentPage === 'uksssc-group-c-scaler-recruitment-2026' || currentSlug === 'uksssc-group-c-scaler-recruitment-2026');
   const ukssscScalerRecord = UKSSSC_SCALER_2026_EXAM;
 
@@ -228,6 +245,8 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isConcorPage && concorRecord) ? concorRecord :
+    (isUpPgtPage && upPgtRecord) ? upPgtRecord :
     (isUpesscPrtPage && upesscPrtRecord) ? upesscPrtRecord :
     (isRpscApoPage && rpscApoRecord) ? rpscApoRecord :
     (isRpscSoPage && rpscSoRecord) ? rpscSoRecord :
@@ -271,6 +290,22 @@ export default function App() {
         return <LatestJobsPage onNavigate={handleNavigate} />;
 
       case 'job-detail':
+        if (
+          currentSlug === 'concor-management-trainee-assistant-officer-recruitment-2026' ||
+          currentSlug === 'concor-recruitment-2026' ||
+          currentSlug === 'concor-mt-ao-recruitment-2026' ||
+          currentSlug === 'concor-2026' ||
+          currentSlug === 'concor'
+        ) {
+          return <ConcorRecruitmentPage exam={concorRecord || currentExam} onNavigate={handleNavigate} />;
+        }
+        if (
+          currentSlug === 'up-pgt-teacher-recruitment-2026' ||
+          currentSlug === 'up-pgt-teacher-2026' ||
+          currentSlug === 'up-pgt-2026'
+        ) {
+          return <UpPgtTeacherPage exam={upPgtRecord || currentExam} onNavigate={handleNavigate} />;
+        }
         if (
           currentSlug === 'uksssc-group-c-scaler-recruitment-2026' ||
           currentSlug === 'uksssc-group-c-scaler-2026' ||
@@ -595,6 +630,19 @@ export default function App() {
       case 'uksssc-group-c-scaler-2026':
       case 'uksssc-scaler-2026':
         return <UkssscGroupCScalerPage exam={ukssscScalerRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'concor-management-trainee-assistant-officer-recruitment-2026':
+      case 'concor-management-trainee-assistant-officer-2026':
+      case 'concor-recruitment-2026':
+      case 'concor-mt-ao-recruitment-2026':
+      case 'concor-2026':
+      case 'concor':
+        return <JobDetailPage exam={concorRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'up-pgt-teacher-recruitment-2026':
+      case 'up-pgt-teacher-2026':
+      case 'up-pgt-2026':
+        return <UpPgtTeacherPage exam={upPgtRecord || currentExam} onNavigate={handleNavigate} />;
 
       default:
         return <HomePage onNavigate={handleNavigate} />;

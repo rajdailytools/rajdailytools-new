@@ -8,6 +8,18 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root UP PGT Teacher 2026 page
+  if (
+    page === 'up-pgt-teacher-recruitment-2026' ||
+    page === 'up-pgt-teacher-2026' ||
+    page === 'up-pgt-2026' ||
+    slug === 'up-pgt-teacher-recruitment-2026' ||
+    slug === 'up-pgt-teacher-2026' ||
+    slug === 'up-pgt-2026'
+  ) {
+    return `${prefix}up-pgt-teacher-recruitment-2026.html`;
+  }
+
   // Map dedicated root UKSSSC Group C Scaler 2026 page
   if (
     page === 'uksssc-group-c-scaler-recruitment-2026' ||

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ExamRecord, ActivePage } from '../types/exam';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { Accordion } from '../components/Accordion';
 import { LifecycleNavbar } from '../components/LifecycleNavbar';
 import { ShareButtons } from '../components/ShareButtons';
 import { RightSidebar } from '../components/RightSidebar';
+import { ConcorToolsModal } from '../components/ConcorToolsModal';
 import { getCountdown, formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import {
@@ -21,7 +22,12 @@ import {
   Activity,
   BookOpen,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Calculator,
+  Percent,
+  FileCheck,
+  DollarSign,
+  Award
 } from 'lucide-react';
 
 interface JobDetailPageProps {
@@ -31,7 +37,9 @@ interface JobDetailPageProps {
 }
 
 export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, depth = 1 }) => {
+  const [concorModalTool, setConcorModalTool] = useState<string | null>(null);
   const countdown = getCountdown(exam.applicationLastDate, 'deadline');
+  const isConcor = exam.id === 'concor-mt-ao-2026' || exam.slug?.includes('concor') || exam.shortName?.includes('CONCOR');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -250,172 +258,398 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {/* Tool 1: Eligibility Calculator */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </span>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase">Pre-Loaded Specs</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Calculator</h4>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Check if your degree ({exam.education.join(', ')}) and age meet the criteria for {exam.examName}.
-                  </p>
-                </div>
-                <a
-                  href={`${depth === 1 ? '../' : './'}tools/eligibility-calculator.html?exam=${exam.slug}`}
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      window.location.hash = `#/tools/eligibility-calculator?exam=${exam.slug}`;
-                      onNavigate('tool-detail', `eligibility-calculator?exam=${exam.slug}`);
-                    }
-                  }}
-                  className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>Check Eligibility</span>
-                  <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-
-              {/* Tool 2: Age Calculator */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
-                      <Clock className="w-4 h-4" />
-                    </span>
-                    <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
-                      Cut-Off: {formatDate(exam.applicationLastDate || '2026-08-01')}
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 font-display">Age Cut-Off Calculator</h4>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Calculate exact Years, Months &amp; Days on official cut-off date ({exam.ageMin}-{exam.ageMax} yrs).
-                  </p>
-                </div>
-                <a
-                  href={`${depth === 1 ? '../' : './'}tools/age-calculator.html?exam=${exam.slug}`}
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      window.location.hash = `#/tools/age-calculator?exam=${exam.slug}`;
-                      onNavigate('tool-detail', `age-calculator?exam=${exam.slug}`);
-                    }
-                  }}
-                  className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>Calculate Official Age</span>
-                  <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-
-              {/* Tool 3: Photo & Signature Resizer */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
-                      <Image className="w-4 h-4" />
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      20-50 KB &bull; 10-20 KB
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 font-display">Photo &amp; Signature Resizer</h4>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Crop and compress documents directly matching {exam.organization} upload specifications.
-                  </p>
-                </div>
-                <a
-                  href={`${depth === 1 ? '../' : './'}tools/photo-resizer.html?exam=${exam.slug}`}
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      window.location.hash = `#/tools/photo-resizer?exam=${exam.slug}`;
-                      onNavigate('tool-detail', `photo-resizer?exam=${exam.slug}`);
-                    }
-                  }}
-                  className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>Resize Documents</span>
-                  <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-
-              {/* Tool 4: Physical Eligibility Checker */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
-                      <Activity className="w-4 h-4" />
-                    </span>
-                    <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-                      PST / PET Standards
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-900 font-display">Physical Standards Checker</h4>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Check height (170/157cm), chest expansion (80-85cm), and running endurance pass/fail.
-                  </p>
-                </div>
-                <a
-                  href={`${depth === 1 ? '../' : './'}tools/physical-eligibility.html?exam=${exam.slug}`}
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      window.location.hash = `#/tools/physical-eligibility?exam=${exam.slug}`;
-                      onNavigate('tool-detail', `physical-eligibility?exam=${exam.slug}`);
-                    }
-                  }}
-                  className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>Check Physical Fitness</span>
-                  <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-
-              {/* Tool 5: Online Mock Test */}
-              <div className="sm:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
-                <div className="flex items-start gap-3">
-                  <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg shrink-0 mt-0.5">
-                    <BookOpen className="w-4 h-4" />
-                  </span>
+            {isConcor ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* CONCOR Tool 1: Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 font-display">
-                      {exam.examName} Online Mock Test
-                    </h4>
-                    <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
-                      Practice official pattern questions (Reasoning, GK, Math, English) with negative marking and instant scorecard.
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        12 Disciplines
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Check MBA, CA, CS, MCA, BE/B.Tech, or Diploma marks requirements for MT &amp; AO posts.
                     </p>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('eligibility')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
                 </div>
-                <a
-                  href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
-                  onClick={(e) => {
-                    if (onNavigate) {
-                      e.preventDefault();
-                      window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
-                      onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
-                    }
-                  }}
-                  className="py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-xs"
-                >
-                  <span>Start Mock Test</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+
+                {/* CONCOR Tool 2: Age Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Clock className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: 31-08-2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate age as on 31 August 2026 (MT 18-28 yrs, AO 18-32 yrs, Max 50 yrs).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Official Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 3: Experience Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        0 Yrs (MT) / 1-4 Yrs (AO)
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Experience Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify post-qualification experience requirements for MT freshers vs AO professionals.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('experience')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Verify Experience</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 4: Application Fee Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <DollarSign className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        ₹750 / ₹500 / NIL
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Application Fee Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate exact category registration fees and check SC/ST/PwBD/ESM exemptions.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('fee')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Application Fee</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 5: CBT Score Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Calculator className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        100 Questions / 100 Marks
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">CBT Score Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Compute gross score, negative deductions, and percentage for 90-min online CBT paper.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('cbt')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate CBT Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 6: Negative Marking Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-rose-300 hover:bg-rose-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-rose-100 text-rose-700 rounded-lg">
+                        <Percent className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                        -0.25 Per Wrong
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Negative Marking Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Simulate negative marking penalties across 5-option multiple choice questions.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('negative')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-rose-600 hover:text-white text-rose-700 border border-rose-200 hover:border-rose-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Simulate Penalties</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 7: Document Checklist */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-cyan-100 text-cyan-700 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200">
+                        DV Checklist
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Document Checklist</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify mandatory certificates (10th, Degree, OBC-NCL/EWS, Experience, NOC).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setConcorModalTool('documents')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-700 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Open Checklist</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* CONCOR Tool 8: Online Mock Test */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <BookOpen className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        100 Qs / 90 Mins
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">CONCOR CBT Mock Test</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Practice official pattern 100-question CBT with Domain (50) and Aptitude (50).
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Tool 1: Eligibility Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase">Pre-Loaded Specs</span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Check if your degree ({exam.education.join(', ')}) and age meet the criteria for {exam.examName}.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/eligibility-calculator.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/eligibility-calculator?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `eligibility-calculator?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tool 2: Age Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Clock className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: {formatDate(exam.applicationLastDate || '2026-08-01')}
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Cut-Off Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate exact Years, Months &amp; Days on official cut-off date ({exam.ageMin}-{exam.ageMax} yrs).
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/age-calculator.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/age-calculator?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `age-calculator?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Official Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tool 3: Photo & Signature Resizer */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Image className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        20-50 KB &bull; 10-20 KB
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Photo &amp; Signature Resizer</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Crop and compress documents directly matching {exam.organization} upload specifications.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/photo-resizer.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/photo-resizer?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `photo-resizer?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Resize Documents</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tool 4: Physical Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <Activity className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        PST / PET Standards
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Physical Standards Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Check height (170/157cm), chest expansion (80-85cm), and running endurance pass/fail.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/physical-eligibility.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/physical-eligibility?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `physical-eligibility?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Physical Fitness</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* Tool 5: Online Mock Test */}
+                <div className="sm:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div className="flex items-start gap-3">
+                    <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg shrink-0 mt-0.5">
+                      <BookOpen className="w-4 h-4" />
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 font-display">
+                        {exam.examName} Online Mock Test
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                        Practice official pattern questions (Reasoning, GK, Math, English) with negative marking and instant scorecard.
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 shadow-xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 50-SECTION ACCORDIONS */}
           <Accordion
             sections={exam.allInformation}
-            title="Complete 50-Section Exam Information & Guidelines"
+            title={isConcor ? "Complete 50-Section Recruitment Information & Guidelines" : "Complete 50-Section Exam Information & Guidelines"}
             defaultOpenFirst={true}
           />
+
+          {/* CONCOR Tools Modal */}
+          {isConcor && (
+            <ConcorToolsModal
+              tool={concorModalTool}
+              onClose={() => setConcorModalTool(null)}
+            />
+          )}
 
           {/* Frequently Asked Questions */}
           {exam.faq && exam.faq.length > 0 && (

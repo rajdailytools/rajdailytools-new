@@ -79,8 +79,22 @@ import {
   UKSSSC_SCALER_2026_EXAM,
   generateUkssscScaler50Sections
 } from './ukssscScalerData';
+import {
+  UP_PGT_TEACHER_2026_EXAM,
+  generateUpPgtTeacher58Sections,
+  generateUpPgtTeacher50Sections,
+  UP_PGT_TEACHER_50_SECTIONS
+} from './upPgtTeacherData';
+import {
+  CONCOR_RECRUITMENT_2026_EXAM,
+  generateConcor50Sections,
+  CONCOR_50_SECTIONS
+} from './concorData';
 
 export {
+  CONCOR_RECRUITMENT_2026_EXAM,
+  generateConcor50Sections,
+  CONCOR_50_SECTIONS,
   generateIbpsRrbXv50Sections,
   generateAiimsNorcet50Sections,
   AIIMS_NORCET_11_EXAM,
@@ -129,10 +143,16 @@ export {
   UPESSC_PRT_TEACHER_2026_EXAM,
   generateUpesscPrt50Sections,
   UKSSSC_SCALER_2026_EXAM,
-  generateUkssscScaler50Sections
+  generateUkssscScaler50Sections,
+  UP_PGT_TEACHER_2026_EXAM,
+  generateUpPgtTeacher58Sections,
+  generateUpPgtTeacher50Sections,
+  UP_PGT_TEACHER_50_SECTIONS
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  CONCOR_RECRUITMENT_2026_EXAM,
+  UP_PGT_TEACHER_2026_EXAM,
   UKSSSC_SCALER_2026_EXAM,
   UPESSC_PRT_TEACHER_2026_EXAM,
   RPSC_APO_2026_EXAM,
