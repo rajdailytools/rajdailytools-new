@@ -42,8 +42,16 @@ import { NvsClass9AdmissionPage } from './pages/NvsClass9AdmissionPage';
 import { AibeAdmissionPage } from './pages/AibeAdmissionPage';
 import { BsfHcmAsiStenoAnswerKeyPage } from './pages/BsfHcmAsiStenoAnswerKeyPage';
 import { RrbGroupDAnswerKeyPage } from './pages/RrbGroupDAnswerKeyPage';
+import { RpscStatisticalOfficerAnswerKeyPage } from './pages/RpscStatisticalOfficerAnswerKeyPage';
+import { RpscApoAnswerKeyPage } from './pages/RpscApoAnswerKeyPage';
+import { UpesscPrtTeacherPage } from './pages/UpesscPrtTeacherPage';
+import { UkssscGroupCScalerPage } from './pages/UkssscGroupCScalerPage';
 import { BSF_HCM_ASI_STENO_2026_EXAM } from './data/bsfHcmAsiStenoData';
 import { RRB_GROUP_D_2026_EXAM } from './data/rrbGroupDData';
+import { RPSC_STATISTICAL_OFFICER_2026_EXAM } from './data/rpscStatisticalOfficerData';
+import { RPSC_APO_2026_EXAM } from './data/rpscApoData';
+import { UPESSC_PRT_TEACHER_2026_EXAM } from './data/upesscPrtTeacherData';
+import { UKSSSC_SCALER_2026_EXAM } from './data/ukssscScalerData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
 import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
@@ -141,6 +149,12 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isUkssscScalerPage = typeof currentPage === 'string' && (currentPage.startsWith('uksssc-group-c-scaler') || currentPage.startsWith('uksssc-scaler') || currentPage === 'uksssc-group-c-scaler-recruitment-2026' || currentSlug === 'uksssc-group-c-scaler-recruitment-2026');
+  const ukssscScalerRecord = UKSSSC_SCALER_2026_EXAM;
+
+  const isUpesscPrtPage = typeof currentPage === 'string' && (currentPage.startsWith('upessc-prt-assistant-teacher') || currentPage.startsWith('upessc-prt') || currentPage === 'upessc-prt-assistant-teacher-recruitment-2026' || currentSlug === 'upessc-prt-assistant-teacher-recruitment-2026');
+  const upesscPrtRecord = UPESSC_PRT_TEACHER_2026_EXAM;
+
   const isAuPhdPage = typeof currentPage === 'string' && (currentPage.startsWith('allahabad-university-phd') || currentPage === 'allahabad-university-phd-admission-2026');
   const auPhdRecord = ALLAHABAD_UNIVERSITY_PHD_2026_EXAM;
   const aibeAdmissionRecord = AIBE_XXII_2026_ADMISSION;
@@ -161,6 +175,12 @@ export default function App() {
 
   const isRrbGroupDPage = typeof currentPage === 'string' && (currentPage.startsWith('rrb-group-d') || currentPage === 'rrb-group-d-answer-key-2026' || currentSlug === 'rrb-group-d-answer-key-2026');
   const rrbGroupDRecord = RRB_GROUP_D_2026_EXAM;
+
+  const isRpscSoPage = typeof currentPage === 'string' && (currentPage.startsWith('rpsc-statistical-officer') || currentPage === 'rpsc-statistical-officer-answer-key-2026' || currentSlug === 'rpsc-statistical-officer-answer-key-2026');
+  const rpscSoRecord = RPSC_STATISTICAL_OFFICER_2026_EXAM;
+
+  const isRpscApoPage = typeof currentPage === 'string' && (currentPage.startsWith('rpsc-apo') || currentPage === 'rpsc-apo-answer-key-2026' || currentSlug === 'rpsc-apo-answer-key-2026');
+  const rpscApoRecord = RPSC_APO_2026_EXAM;
 
   const isMpPoliceConstablePage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb-mp-police-constable') || currentPage.startsWith('mp-police-constable'));
   const mpPoliceConstableRecord = EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026');
@@ -208,6 +228,9 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isUpesscPrtPage && upesscPrtRecord) ? upesscPrtRecord :
+    (isRpscApoPage && rpscApoRecord) ? rpscApoRecord :
+    (isRpscSoPage && rpscSoRecord) ? rpscSoRecord :
     (isRrbGroupDPage && rrbGroupDRecord) ? rrbGroupDRecord :
     (isBsfHcmPage && bsfHcmRecord) ? bsfHcmRecord :
     (isMpPoliceConstablePage && mpPoliceConstableRecord) ? mpPoliceConstableRecord :
@@ -248,6 +271,16 @@ export default function App() {
         return <LatestJobsPage onNavigate={handleNavigate} />;
 
       case 'job-detail':
+        if (
+          currentSlug === 'uksssc-group-c-scaler-recruitment-2026' ||
+          currentSlug === 'uksssc-group-c-scaler-2026' ||
+          currentSlug === 'uksssc-scaler-2026'
+        ) {
+          return <UkssscGroupCScalerPage exam={ukssscScalerRecord || currentExam} onNavigate={handleNavigate} />;
+        }
+        if (currentSlug === 'upessc-prt-assistant-teacher-recruitment-2026' || currentSlug === 'upessc-prt-assistant-teacher-2026' || currentSlug === 'upessc-prt-2026') {
+          return <UpesscPrtTeacherPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
+        }
         return <JobDetailPage exam={currentExam} onNavigate={handleNavigate} />;
 
       case 'admit-card':
@@ -260,6 +293,9 @@ export default function App() {
         return <AnswerKeyPage onNavigate={handleNavigate} />;
 
       case 'answer-key-detail':
+        if (currentSlug === 'rpsc-statistical-officer-answer-key-2026' || currentSlug === 'rpsc-statistical-officer-2026' || currentSlug === 'rpsc-statistical-officer') {
+          return <RpscStatisticalOfficerAnswerKeyPage exam={rpscSoRecord || currentExam} onNavigate={handleNavigate} />;
+        }
         if (currentSlug === 'rrb-group-d-answer-key-2026' || currentSlug === 'rrb-group-d-2026' || currentSlug === 'rrb-group-d-level-1-recruitment-2026') {
           return <RrbGroupDAnswerKeyPage exam={rrbGroupDRecord || currentExam} onNavigate={handleNavigate} />;
         }
@@ -539,6 +575,26 @@ export default function App() {
       case 'rrb-group-d-2026':
       case 'rrb-group-d-level-1-recruitment-2026':
         return <RrbGroupDAnswerKeyPage exam={rrbGroupDRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'rpsc-statistical-officer-answer-key-2026':
+      case 'rpsc-statistical-officer-2026':
+      case 'rpsc-statistical-officer':
+        return <RpscStatisticalOfficerAnswerKeyPage exam={rpscSoRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'rpsc-apo-answer-key-2026':
+      case 'rpsc-apo-2026':
+      case 'rpsc-apo':
+        return <RpscApoAnswerKeyPage exam={rpscApoRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'upessc-prt-assistant-teacher-recruitment-2026':
+      case 'upessc-prt-assistant-teacher-2026':
+      case 'upessc-prt-2026':
+        return <UpesscPrtTeacherPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'uksssc-group-c-scaler-recruitment-2026':
+      case 'uksssc-group-c-scaler-2026':
+      case 'uksssc-scaler-2026':
+        return <UkssscGroupCScalerPage exam={ukssscScalerRecord || currentExam} onNavigate={handleNavigate} />;
 
       default:
         return <HomePage onNavigate={handleNavigate} />;

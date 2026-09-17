@@ -22,7 +22,7 @@ export const LifecycleNavbar: React.FC<LifecycleNavbarProps> = ({
       label: 'Latest Job',
       icon: Briefcase,
       page: 'job-detail' as ActivePage,
-      statusText: exam.status === 'APPLICATION_OPEN' ? 'Apply Open' : 'Form Closed',
+      statusText: exam?.status === 'APPLICATION_OPEN' ? 'Apply Open' : 'Form Closed',
       isAvailable: true,
       active: currentSection === 'job'
     },
@@ -32,9 +32,9 @@ export const LifecycleNavbar: React.FC<LifecycleNavbarProps> = ({
       icon: IdCard,
       page: 'admit-card-detail' as ActivePage,
       statusText:
-        exam.status === 'ADMIT_CARD_RELEASED'
+        exam?.status === 'ADMIT_CARD_RELEASED'
           ? 'Released'
-          : exam.status === 'EXAM_COMPLETED' || exam.status === 'ANSWER_KEY_RELEASED' || exam.status === 'RESULT_RELEASED'
+          : exam?.status === 'EXAM_COMPLETED' || exam?.status === 'ANSWER_KEY_RELEASED' || exam?.status === 'RESULT_RELEASED'
           ? 'Completed'
           : 'Coming Soon',
       isAvailable: true,
@@ -46,10 +46,10 @@ export const LifecycleNavbar: React.FC<LifecycleNavbarProps> = ({
       icon: FileCheck,
       page: 'answer-key-detail' as ActivePage,
       statusText:
-        exam.status === 'ANSWER_KEY_RELEASED' || exam.status === 'RESULT_RELEASED'
+        exam?.status === 'ANSWER_KEY_RELEASED' || exam?.status === 'RESULT_RELEASED'
           ? 'Released'
           : 'Notify Soon',
-      isAvailable: Boolean(exam.answerKeyDate || exam.status === 'ANSWER_KEY_RELEASED'),
+      isAvailable: Boolean(exam?.answerKeyDate || exam?.status === 'ANSWER_KEY_RELEASED'),
       active: currentSection === 'answer-key'
     },
     {
@@ -57,8 +57,8 @@ export const LifecycleNavbar: React.FC<LifecycleNavbarProps> = ({
       label: 'Result',
       icon: Trophy,
       page: 'result-detail' as ActivePage,
-      statusText: exam.status === 'RESULT_RELEASED' ? 'Declared' : 'Notify Soon',
-      isAvailable: Boolean(exam.resultDate || exam.status === 'RESULT_RELEASED'),
+      statusText: exam?.status === 'RESULT_RELEASED' ? 'Declared' : 'Notify Soon',
+      isAvailable: Boolean(exam?.resultDate || exam?.status === 'RESULT_RELEASED'),
       active: currentSection === 'result'
     },
     {
@@ -66,8 +66,8 @@ export const LifecycleNavbar: React.FC<LifecycleNavbarProps> = ({
       label: 'Cut Off',
       icon: BarChart2,
       page: 'cut-off-detail' as ActivePage,
-      statusText: exam.cutOffData ? 'Available' : 'Notify Soon',
-      isAvailable: Boolean(exam.cutOffData),
+      statusText: exam?.cutOffData ? 'Available' : 'Notify Soon',
+      isAvailable: Boolean(exam?.cutOffData),
       active: currentSection === 'cut-off'
     },
     {

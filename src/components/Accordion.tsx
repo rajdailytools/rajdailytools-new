@@ -125,13 +125,15 @@ export const Accordion: React.FC<AccordionProps> = ({
               >
                 <div className="p-4 sm:p-5 pt-1 text-sm text-slate-600 leading-relaxed bg-white border-t border-slate-100/80">
                   <div className="p-3.5 sm:p-4 bg-slate-50 rounded-xl border border-slate-200/60 font-medium overflow-x-auto text-slate-700">
-                    {section.content && section.content.includes('<') ? (
+                    {typeof section.content === 'string' && section.content.includes('<') ? (
                       <div
                         className="accordion-html-body prose prose-slate max-w-none text-xs sm:text-sm leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: section.content }}
                       />
-                    ) : (
+                    ) : typeof section.content === 'string' ? (
                       <p className="whitespace-pre-line leading-relaxed">{section.content}</p>
+                    ) : (
+                      section.content
                     )}
                   </div>
                 </div>

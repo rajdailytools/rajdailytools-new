@@ -119,6 +119,7 @@ export const AnswerKeyPage: React.FC<AnswerKeyPageProps> = ({ onNavigate, depth 
             className="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-800 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
+            <option value="RPSC">RPSC (Rajasthan)</option>
             <option value="SSC">Staff Selection (SSC)</option>
             <option value="Railway">Railway (RRB)</option>
             <option value="Police">Police Forces</option>

@@ -54,6 +54,16 @@ import { NIC_STA_2026_EXAM } from '../src/data/nicStaData';
 import { MP_POLICE_CONSTABLE_2026_EXAM } from '../src/data/mpPoliceConstableData';
 import { BSF_HCM_ASI_STENO_2026_EXAM } from '../src/data/bsfHcmAsiStenoData';
 import { BsfHcmAsiStenoAnswerKeyPage } from '../src/pages/BsfHcmAsiStenoAnswerKeyPage';
+import { RRB_GROUP_D_2026_EXAM } from '../src/data/rrbGroupDData';
+import { RrbGroupDAnswerKeyPage } from '../src/pages/RrbGroupDAnswerKeyPage';
+import { RPSC_STATISTICAL_OFFICER_2026_EXAM } from '../src/data/rpscStatisticalOfficerData';
+import { RpscStatisticalOfficerAnswerKeyPage } from '../src/pages/RpscStatisticalOfficerAnswerKeyPage';
+import { RPSC_APO_2026_EXAM } from '../src/data/rpscApoData';
+import { RpscApoAnswerKeyPage } from '../src/pages/RpscApoAnswerKeyPage';
+import { UPESSC_PRT_TEACHER_2026_EXAM } from '../src/data/upesscPrtTeacherData';
+import { UpesscPrtTeacherPage } from '../src/pages/UpesscPrtTeacherPage';
+import { UKSSSC_SCALER_2026_EXAM } from '../src/data/ukssscScalerData';
+import { UkssscGroupCScalerPage } from '../src/pages/UkssscGroupCScalerPage';
 import { RAJASTHAN_SAFAI_KARMCHARI_2026_EXAM } from '../src/data/rajasthanSafaiKarmchariData';
 import { NBEMS_GROUP_ABC_2026_EXAM } from '../src/data/nbemsData';
 import { NbemsAdmitCardPage } from '../src/pages/NbemsAdmitCardPage';
@@ -91,7 +101,19 @@ const searchIndex = [
     category: exam.category,
     vac: exam.totalVacancy,
     url:
-      exam.slug === 'allahabad-university-phd-admission-2026'
+      exam.slug === 'uksssc-group-c-scaler-recruitment-2026'
+        ? 'uksssc-group-c-scaler-recruitment-2026.html'
+        : exam.slug === 'upessc-prt-assistant-teacher-recruitment-2026'
+        ? 'upessc-prt-assistant-teacher-recruitment-2026.html'
+        : exam.slug === 'rpsc-apo-answer-key-2026'
+        ? 'rpsc-apo-answer-key-2026.html'
+        : exam.slug === 'rpsc-statistical-officer-answer-key-2026'
+        ? 'rpsc-statistical-officer-answer-key-2026.html'
+        : exam.slug === 'rrb-group-d-answer-key-2026'
+        ? 'rrb-group-d-answer-key-2026.html'
+        : exam.slug === 'bsf-hcm-asi-steno-answer-key-2026'
+        ? 'bsf-hcm-asi-steno-answer-key-2026.html'
+        : exam.slug === 'allahabad-university-phd-admission-2026'
         ? 'allahabad-university-phd-admission-2026.html'
         : exam.slug === 'mpesb-krishi-vistar-adhikari-admit-card-2026'
         ? 'mpesb-krishi-vistar-adhikari-admit-card-2026.html'
@@ -1472,6 +1494,116 @@ async function generateAllPages() {
   );
 
   // --------------------------------------------------------------------------
+  // 2g-12. DEDICATED RRB GROUP D ANSWER KEY 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const rrbGroupDExam =
+    EXAMS_DATABASE.find((e) => e.id === 'rrb-group-d-2026' || e.slug === 'rrb-group-d-answer-key-2026') ||
+    RRB_GROUP_D_2026_EXAM;
+
+  writePage(
+    'rrb-group-d-answer-key-2026.html',
+    wrapWithHtmlLayout({
+      title: 'Railway RRB Group D Answer Key 2026 – Download Response Sheet, CBT Objections & Question Paper PDF',
+      description:
+        'Railway RRB Group D (Level-1 CEN 09/2025) Answer Key 2026 officially released. Direct candidate login link, download question paper response sheet, CBT score calculator, official objection submission steps, and 1,03,769 vacancies details.',
+      content: renderToStaticMarkup(
+        React.createElement(RrbGroupDAnswerKeyPage, { exam: rrbGroupDExam, depth: 0 })
+      ),
+      pageKey: 'rrb-group-d-answer-key-2026',
+      depth: 0,
+      canonicalPath: 'rrb-group-d-answer-key-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-13. DEDICATED RPSC STATISTICAL OFFICER ANSWER KEY 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const rpscSoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'rpsc-statistical-officer-2026' || e.slug === 'rpsc-statistical-officer-answer-key-2026') ||
+    RPSC_STATISTICAL_OFFICER_2026_EXAM;
+
+  writePage(
+    'rpsc-statistical-officer-answer-key-2026.html',
+    wrapWithHtmlLayout({
+      title: 'RPSC Statistical Officer Answer Key 2026 – Download Model Key PDF, Press Note & Objection Link',
+      description:
+        'RPSC Statistical Officer Model Answer Key 2026 released for 113 posts in Planning (Statistics) Department. Download official Model Answer Key PDF, check exam date (30 August 2026), press note notice, and raise online SSO objections.',
+      content: renderToStaticMarkup(
+        React.createElement(RpscStatisticalOfficerAnswerKeyPage, { exam: rpscSoExam, depth: 0 })
+      ),
+      pageKey: 'rpsc-statistical-officer-answer-key-2026',
+      depth: 0,
+      canonicalPath: 'rpsc-statistical-officer-answer-key-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-14. DEDICATED RPSC APO ANSWER KEY 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const rpscApoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'rpsc-apo-2026' || e.slug === 'rpsc-apo-answer-key-2026') ||
+    RPSC_APO_2026_EXAM;
+
+  writePage(
+    'rpsc-apo-answer-key-2026.html',
+    wrapWithHtmlLayout({
+      title: 'RPSC APO Answer Key 2026 – Download Model Key PDF, Mains Exam Date & Objection Link',
+      description:
+        'RPSC Assistant Prosecution Officer (APO) Model Answer Key 2026 officially released for 371 posts in Home (Prosecution) Dept. Download official Model Answer Key PDF, check Mains exam date (27 December 2026), press notes, and raise online SSO objections.',
+      content: renderToStaticMarkup(
+        React.createElement(RpscApoAnswerKeyPage, { exam: rpscApoExam, depth: 0 })
+      ),
+      pageKey: 'rpsc-apo-answer-key-2026',
+      depth: 0,
+      canonicalPath: 'rpsc-apo-answer-key-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-15. DEDICATED UPESSC PRT ASSISTANT TEACHER 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upesscPrtExam =
+    EXAMS_DATABASE.find((e) => e.id === 'upessc-prt-assistant-teacher-2026' || e.slug === 'upessc-prt-assistant-teacher-recruitment-2026') ||
+    UPESSC_PRT_TEACHER_2026_EXAM;
+
+  writePage(
+    'upessc-prt-assistant-teacher-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UPESSC PRT Assistant Teacher Recruitment 2026 – Apply Online, 12405 Vacancy, Syllabus & Exam Pattern',
+      description:
+        'UPESSC Assistant Teacher Primary (PRT) Recruitment 2026 Advt No. 05/2026 – Apply online for 12,405 vacancies (11,508 Urban Primary + 897 Attached Primary). Check district-wise vacancy, eligibility, CTET/UPTET criteria, 360 marks exam pattern, syllabus & direct links.',
+      content: renderToStaticMarkup(
+        React.createElement(UpesscPrtTeacherPage, { exam: upesscPrtExam, depth: 0 })
+      ),
+      pageKey: 'upessc-prt-assistant-teacher-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'upessc-prt-assistant-teacher-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-16. DEDICATED UKSSSC GROUP C SCALER 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const ukssscScalerExam =
+    EXAMS_DATABASE.find((e) => e.id === 'uksssc-group-c-scaler-2026' || e.slug === 'uksssc-group-c-scaler-recruitment-2026') ||
+    UKSSSC_SCALER_2026_EXAM;
+
+  writePage(
+    'uksssc-group-c-scaler-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UKSSSC Group C Scaler Recruitment 2026 – Apply Online, 200 Vacancies, Syllabus & Exam Pattern',
+      description:
+        'UKSSSC Scaler Recruitment 2026 Advt No. 82/2026 – Apply online for 200 Scaler posts in Uttarakhand Forest Development Corporation (Van Vikas Nigam). Level-02 pay matrix, 25km run & physical standards, 100-mark written pattern, complete syllabus & direct links.',
+      content: renderToStaticMarkup(
+        React.createElement(UkssscGroupCScalerPage, { exam: ukssscScalerExam, depth: 0 })
+      ),
+      pageKey: 'uksssc-group-c-scaler-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'uksssc-group-c-scaler-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
   // 2h. DEDICATED SSC JE 2026 ROOT PAGE (depth = 0)
   // --------------------------------------------------------------------------
   const sscJeExam =
@@ -1682,7 +1814,13 @@ async function generateAllPages() {
 
     // 3c. Answer Key Detail: answer-key/[slug].html
     const answerKeyDetailContent = renderToStaticMarkup(
-      exam.slug === 'bsf-hcm-asi-steno-answer-key-2026'
+      exam.slug === 'rpsc-apo-answer-key-2026'
+        ? React.createElement(RpscApoAnswerKeyPage, { exam, depth: 1 })
+        : exam.slug === 'rpsc-statistical-officer-answer-key-2026'
+        ? React.createElement(RpscStatisticalOfficerAnswerKeyPage, { exam, depth: 1 })
+        : exam.slug === 'rrb-group-d-answer-key-2026'
+        ? React.createElement(RrbGroupDAnswerKeyPage, { exam, depth: 1 })
+        : exam.slug === 'bsf-hcm-asi-steno-answer-key-2026'
         ? React.createElement(BsfHcmAsiStenoAnswerKeyPage, { exam, depth: 1 })
         : React.createElement(AnswerKeyDetailPage, { exam, depth: 1 })
     );

@@ -63,6 +63,22 @@ import {
   RRB_GROUP_D_2026_EXAM,
   generateRrbGroupD50Sections
 } from './rrbGroupDData';
+import {
+  RPSC_STATISTICAL_OFFICER_2026_EXAM,
+  generateRpscSo50Sections
+} from './rpscStatisticalOfficerData';
+import {
+  RPSC_APO_2026_EXAM,
+  generateRpscApo50Sections
+} from './rpscApoData';
+import {
+  UPESSC_PRT_TEACHER_2026_EXAM,
+  generateUpesscPrt50Sections
+} from './upesscPrtTeacherData';
+import {
+  UKSSSC_SCALER_2026_EXAM,
+  generateUkssscScaler50Sections
+} from './ukssscScalerData';
 
 export {
   generateIbpsRrbXv50Sections,
@@ -105,10 +121,22 @@ export {
   BSF_HCM_ASI_STENO_2026_EXAM,
   generateBsfHcmAsiSteno50Sections,
   RRB_GROUP_D_2026_EXAM,
-  generateRrbGroupD50Sections
+  generateRrbGroupD50Sections,
+  RPSC_STATISTICAL_OFFICER_2026_EXAM,
+  generateRpscSo50Sections,
+  RPSC_APO_2026_EXAM,
+  generateRpscApo50Sections,
+  UPESSC_PRT_TEACHER_2026_EXAM,
+  generateUpesscPrt50Sections,
+  UKSSSC_SCALER_2026_EXAM,
+  generateUkssscScaler50Sections
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  UKSSSC_SCALER_2026_EXAM,
+  UPESSC_PRT_TEACHER_2026_EXAM,
+  RPSC_APO_2026_EXAM,
+  RPSC_STATISTICAL_OFFICER_2026_EXAM,
   RRB_GROUP_D_2026_EXAM,
   BSF_HCM_ASI_STENO_2026_EXAM,
   MP_POLICE_CONSTABLE_2026_EXAM,

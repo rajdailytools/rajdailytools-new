@@ -8,6 +8,7 @@ export type ExamCategory =
   | 'Banking'
   | 'Bank'
   | 'UPSC'
+  | 'RPSC'
   | 'Govt Exam' 
   | 'Admission'
   | 'State Jobs'
@@ -80,7 +81,11 @@ export interface ExamRecord {
   };
   officialWebsite?: string;
   officialNotification?: string;
+  revisedSchedulePdf?: string;
+  revisedVacancyPdf?: string;
+  dateExtensionPdf?: string;
   applyLink?: string;
+  applicationStatusLink?: string;
   admitCardLink?: string;
   examCityLink?: string;
   answerKeyLink?: string;

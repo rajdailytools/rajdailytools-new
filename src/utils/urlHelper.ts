@@ -8,6 +8,26 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root UKSSSC Group C Scaler 2026 page
+  if (
+    page === 'uksssc-group-c-scaler-recruitment-2026' ||
+    page === 'uksssc-scaler-2026' ||
+    page === 'uksssc-group-c-scaler-2026' ||
+    slug === 'uksssc-group-c-scaler-recruitment-2026' ||
+    slug === 'uksssc-group-c-scaler-2026'
+  ) {
+    return `${prefix}uksssc-group-c-scaler-recruitment-2026.html`;
+  }
+
+  // Map dedicated root UPESSC PRT Assistant Teacher 2026 page
+  if (page === 'upessc-prt-assistant-teacher-recruitment-2026' || page === 'upessc-prt-assistant-teacher-2026' || page === 'upessc-prt-2026') return `${prefix}upessc-prt-assistant-teacher-recruitment-2026.html`;
+
+  // Map dedicated root RPSC APO Answer Key 2026 page
+  if (page === 'rpsc-apo-answer-key-2026' || page === 'rpsc-apo-2026' || page === 'rpsc-apo') return `${prefix}rpsc-apo-answer-key-2026.html`;
+
+  // Map dedicated root RPSC Statistical Officer Answer Key 2026 page
+  if (page === 'rpsc-statistical-officer-answer-key-2026' || page === 'rpsc-statistical-officer-2026' || page === 'rpsc-statistical-officer') return `${prefix}rpsc-statistical-officer-answer-key-2026.html`;
+
   // Map dedicated root RRB Group D Answer Key 2026 page
   if (page === 'rrb-group-d-answer-key-2026' || page === 'rrb-group-d-2026' || page === 'rrb-group-d-level-1-recruitment-2026') return `${prefix}rrb-group-d-answer-key-2026.html`;
 
@@ -143,6 +163,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'upessc-prt-assistant-teacher-recruitment-2026' || slug === 'upessc-prt-assistant-teacher-2026' || slug === 'upessc-prt-2026') {
+        return `${prefix}upessc-prt-assistant-teacher-recruitment-2026.html`;
+      }
       if (slug === 'mpesb-mp-police-constable-recruitment-2026' || slug === 'mp-police-constable-2026' || slug === 'mp-police-constable-recruitment-2026') {
         return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
       }
@@ -206,6 +229,15 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
     case 'result-detail':
       return slug ? `${prefix}result/${slug}.html` : `${prefix}result.html`;
     case 'answer-key-detail':
+      if (slug === 'rpsc-apo-answer-key-2026' || slug === 'rpsc-apo-2026' || slug === 'rpsc-apo') {
+        return `${prefix}rpsc-apo-answer-key-2026.html`;
+      }
+      if (slug === 'rpsc-statistical-officer-answer-key-2026' || slug === 'rpsc-statistical-officer-2026' || slug === 'rpsc-statistical-officer') {
+        return `${prefix}rpsc-statistical-officer-answer-key-2026.html`;
+      }
+      if (slug === 'rrb-group-d-answer-key-2026' || slug === 'rrb-group-d-2026' || slug === 'rrb-group-d-level-1-recruitment-2026') {
+        return `${prefix}rrb-group-d-answer-key-2026.html`;
+      }
       if (slug === 'bsf-hcm-asi-steno-answer-key-2026' || slug === 'bsf-hcm-asi-steno-2026') {
         return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
       }
@@ -230,6 +262,15 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
       return slug ? `${prefix}tools/${slug}.html` : `${prefix}tools.html`;
 
     default:
+      if (slug === 'rpsc-apo-answer-key-2026' || slug === 'rpsc-apo-2026' || slug === 'rpsc-apo') {
+        return `${prefix}rpsc-apo-answer-key-2026.html`;
+      }
+      if (slug === 'rpsc-statistical-officer-answer-key-2026' || slug === 'rpsc-statistical-officer-2026' || slug === 'rpsc-statistical-officer') {
+        return `${prefix}rpsc-statistical-officer-answer-key-2026.html`;
+      }
+      if (slug === 'rrb-group-d-answer-key-2026' || slug === 'rrb-group-d-2026' || slug === 'rrb-group-d-level-1-recruitment-2026') {
+        return `${prefix}rrb-group-d-answer-key-2026.html`;
+      }
       if (slug === 'bsf-hcm-asi-steno-answer-key-2026' || slug === 'bsf-hcm-asi-steno-2026') {
         return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
       }
