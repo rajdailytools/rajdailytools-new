@@ -44,7 +44,6 @@ import { BsfHcmAsiStenoAnswerKeyPage } from './pages/BsfHcmAsiStenoAnswerKeyPage
 import { RrbGroupDAnswerKeyPage } from './pages/RrbGroupDAnswerKeyPage';
 import { RpscStatisticalOfficerAnswerKeyPage } from './pages/RpscStatisticalOfficerAnswerKeyPage';
 import { RpscApoAnswerKeyPage } from './pages/RpscApoAnswerKeyPage';
-import { UpesscPrtTeacherPage } from './pages/UpesscPrtTeacherPage';
 import { UkssscGroupCScalerPage } from './pages/UkssscGroupCScalerPage';
 import { UpPgtTeacherPage } from './pages/UpPgtTeacherPage';
 import { ConcorRecruitmentPage } from './pages/ConcorRecruitmentPage';
@@ -71,21 +70,32 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       setIsMobileDrawerOpen(false);
-      const hash = window.location.hash.replace('#/', '').replace('#', '');
-      if (!hash) {
+      const rawHash = window.location.hash.replace('#/', '').replace('#', '').replace(/\.html$/, '');
+      const pathname = window.location.pathname.replace(/^\//, '').replace(/\.html$/, '');
+      
+      const effectiveRoute = rawHash || pathname;
+
+      if (!effectiveRoute) {
         setCurrentPage('home');
         return;
       }
 
+      // Check direct UPESSC PRT route
+      if (effectiveRoute.includes('upessc-prt')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('upessc-prt-assistant-teacher-recruitment-2026');
+        return;
+      }
+
       // Route /tools to ToolsPage if no specific tool
-      if (hash === 'tools') {
+      if (effectiveRoute === 'tools') {
         setCurrentPage('tools' as ActivePage);
         return;
       }
 
       // Support /tools/:toolId?exam=:examSlug or tool-detail/:toolId?exam=:examSlug
-      if (hash.startsWith('tools/') || hash.startsWith('tool-detail/')) {
-        const clean = hash.replace('tools/', '').replace('tool-detail/', '');
+      if (effectiveRoute.startsWith('tools/') || effectiveRoute.startsWith('tool-detail/')) {
+        const clean = effectiveRoute.replace('tools/', '').replace('tool-detail/', '');
         let toolId = clean;
         let examParam = '';
         if (clean.includes('?exam=')) {
@@ -101,7 +111,7 @@ export default function App() {
         return;
       }
 
-      const parts = hash.split('/');
+      const parts = effectiveRoute.split('/');
       const pageKey = parts[0] as ActivePage;
       const slugKey = parts[1];
 
@@ -114,9 +124,7 @@ export default function App() {
     };
 
     // Initial check
-    if (window.location.hash) {
-      handleHashChange();
-    }
+    handleHashChange();
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
@@ -314,7 +322,7 @@ export default function App() {
           return <UkssscGroupCScalerPage exam={ukssscScalerRecord || currentExam} onNavigate={handleNavigate} />;
         }
         if (currentSlug === 'upessc-prt-assistant-teacher-recruitment-2026' || currentSlug === 'upessc-prt-assistant-teacher-2026' || currentSlug === 'upessc-prt-2026') {
-          return <UpesscPrtTeacherPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
+          return <JobDetailPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
         }
         return <JobDetailPage exam={currentExam} onNavigate={handleNavigate} />;
 
@@ -624,7 +632,7 @@ export default function App() {
       case 'upessc-prt-assistant-teacher-recruitment-2026':
       case 'upessc-prt-assistant-teacher-2026':
       case 'upessc-prt-2026':
-        return <UpesscPrtTeacherPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
+        return <JobDetailPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'uksssc-group-c-scaler-recruitment-2026':
       case 'uksssc-group-c-scaler-2026':

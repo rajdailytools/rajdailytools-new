@@ -61,7 +61,6 @@ import { RpscStatisticalOfficerAnswerKeyPage } from '../src/pages/RpscStatistica
 import { RPSC_APO_2026_EXAM } from '../src/data/rpscApoData';
 import { RpscApoAnswerKeyPage } from '../src/pages/RpscApoAnswerKeyPage';
 import { UPESSC_PRT_TEACHER_2026_EXAM } from '../src/data/upesscPrtTeacherData';
-import { UpesscPrtTeacherPage } from '../src/pages/UpesscPrtTeacherPage';
 import { UKSSSC_SCALER_2026_EXAM } from '../src/data/ukssscScalerData';
 import { UkssscGroupCScalerPage } from '../src/pages/UkssscGroupCScalerPage';
 import { UP_PGT_TEACHER_2026_EXAM } from '../src/data/upPgtTeacherData';
@@ -1575,7 +1574,7 @@ async function generateAllPages() {
       description:
         'UPESSC Assistant Teacher Primary (PRT) Recruitment 2026 Advt No. 05/2026 – Apply online for 12,405 vacancies (11,508 Urban Primary + 897 Attached Primary). Check district-wise vacancy, eligibility, CTET/UPTET criteria, 360 marks exam pattern, syllabus & direct links.',
       content: renderToStaticMarkup(
-        React.createElement(UpesscPrtTeacherPage, { exam: upesscPrtExam, depth: 0 })
+        React.createElement(JobDetailPage, { exam: upesscPrtExam, depth: 0 })
       ),
       pageKey: 'upessc-prt-assistant-teacher-recruitment-2026',
       depth: 0,

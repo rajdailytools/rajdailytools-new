@@ -6,6 +6,7 @@ import { LifecycleNavbar } from '../components/LifecycleNavbar';
 import { ShareButtons } from '../components/ShareButtons';
 import { RightSidebar } from '../components/RightSidebar';
 import { ConcorToolsModal } from '../components/ConcorToolsModal';
+import { UpesscToolsModal } from '../components/UpesscToolsModal';
 import { getCountdown, formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import {
@@ -38,8 +39,10 @@ interface JobDetailPageProps {
 
 export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, depth = 1 }) => {
   const [concorModalTool, setConcorModalTool] = useState<string | null>(null);
+  const [upesscModalTool, setUpesscModalTool] = useState<string | null>(null);
   const countdown = getCountdown(exam.applicationLastDate, 'deadline');
   const isConcor = exam.id === 'concor-mt-ao-2026' || exam.slug?.includes('concor') || exam.shortName?.includes('CONCOR');
+  const isUpesscPrt = exam.id === 'upessc-prt-assistant-teacher-2026' || exam.slug?.includes('upessc-prt') || exam.shortName?.includes('UPESSC PRT');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -51,6 +54,13 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             ? [
                 { label: 'Police Recruitment', page: 'latest-jobs' as ActivePage },
                 ...(exam.state === 'Madhya Pradesh' ? [{ label: 'MP State Jobs', page: 'latest-jobs' as ActivePage }] : [])
+              ]
+            : []),
+          ...(exam.category === 'Teaching'
+            ? [
+                { label: 'Teaching Jobs', page: 'latest-jobs' as ActivePage },
+                ...(exam.state === 'Uttar Pradesh' ? [{ label: 'Uttar Pradesh Jobs', page: 'latest-jobs' as ActivePage }] : []),
+                ...(exam.organization?.includes('UPESSC') ? [{ label: 'UPESSC', page: 'latest-jobs' as ActivePage }] : [])
               ]
             : []),
           { label: exam.examName }
@@ -82,6 +92,21 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 {exam.state === 'Madhya Pradesh' && (
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
                     MP State Jobs
+                  </span>
+                )}
+                {exam.category === 'Teaching' && (
+                  <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">
+                    Teaching Jobs
+                  </span>
+                )}
+                {exam.state === 'Uttar Pradesh' && (
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
+                    Uttar Pradesh Jobs
+                  </span>
+                )}
+                {exam.organization?.includes('UPESSC') && (
+                  <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                    UPESSC
                   </span>
                 )}
                 <span
@@ -474,6 +499,222 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </a>
                 </div>
               </div>
+            ) : isUpesscPrt ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* UPESSC Tool 1: Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        D.El.Ed / BTC / TET Mandate
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify Graduation + 2-Yr D.El.Ed./BTC &amp; UPTET/CTET Paper-I validity (B.Ed. not eligible).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('eligibility')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 2: Age Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Clock className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: 01-07-2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate exact age on 01.07.2026 (Urban 21-40 yrs, Attached up to 62 yrs, Relaxations).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Official Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 3: Application Fee Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <DollarSign className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        ₹1,000 / ₹500 / ₹300
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Application Fee Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Compute official application fees based on category and Uttar Pradesh domicile status.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('fee')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Fee</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 4: OMR Score Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Calculator className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        120 MCQs / 360 Marks
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">OMR Written Exam Score Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Simulate net marks (+3 for correct, -1 for incorrect) for the 2-hour offline OMR exam.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('omr')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate OMR Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 5: Negative Marking Simulator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-rose-300 hover:bg-rose-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-rose-100 text-rose-700 rounded-lg">
+                        <Percent className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                        -1 Mark Penalty
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Negative Marking Simulator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Analyze the risk and score impact of blind guesses and multiple bubbling per question.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('negative')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-rose-600 hover:text-white text-rose-700 border border-rose-200 hover:border-rose-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Simulate Penalties</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 6: Photo & Signature Resizer */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Image className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        30-300 KB &bull; 10-200 KB
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Photo &amp; Signature Resizer</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Resize candidate photo (30-300 KB) and signature (10-200 KB) to exact UPESSC OTR standards.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('resizer')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Resize Documents</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 7: Document Verification Checklist */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-cyan-100 text-cyan-700 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200">
+                        Appendix-6 &bull; DV Dossier
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Document Verification Checklist</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify mandatory marksheets, D.El.Ed./BTC degree, UPTET/CTET certificate, and Appendix-6 affidavit.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUpesscModalTool('documents')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-700 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Open Checklist</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* UPESSC Tool 8: Online Mock Test */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <BookOpen className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        120 MCQs Pattern
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Online Mock Test</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Practice primary teacher pedagogy, child psychology, languages, math, and GK with timed scoring.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Tool 1: Eligibility Calculator */}
@@ -639,7 +880,13 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
           {/* 50-SECTION ACCORDIONS */}
           <Accordion
             sections={exam.allInformation}
-            title={isConcor ? "Complete 50-Section Recruitment Information & Guidelines" : "Complete 50-Section Exam Information & Guidelines"}
+            title={
+              isConcor
+                ? "Complete 50-Section Recruitment Information & Guidelines"
+                : isUpesscPrt
+                ? "Complete 50-Section Recruitment Information & Guidelines (Advt 05/2026)"
+                : "Complete 50-Section Exam Information & Guidelines"
+            }
             defaultOpenFirst={true}
           />
 
@@ -648,6 +895,14 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             <ConcorToolsModal
               tool={concorModalTool}
               onClose={() => setConcorModalTool(null)}
+            />
+          )}
+
+          {/* UPESSC Tools Modal */}
+          {isUpesscPrt && (
+            <UpesscToolsModal
+              tool={upesscModalTool}
+              onClose={() => setUpesscModalTool(null)}
             />
           )}
 
