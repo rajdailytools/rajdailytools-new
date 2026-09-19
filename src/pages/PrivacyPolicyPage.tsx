@@ -31,7 +31,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
           <section className="space-y-3">
             <h2 className="text-lg font-bold text-slate-900 font-display">1. Introduction</h2>
             <p>
-              Welcome to <strong>RajDailyTools</strong> (accessible at rajdailytools.com). We value your privacy and are committed to protecting any information you share while using our exam preparation guides, recruitment notifications, syllabus overviews, and online calculators.
+              Welcome to <strong>RajDailyTools</strong> (accessible at rajdailytools.in). We value your privacy and are committed to protecting any information you share while using our exam preparation guides, recruitment notifications, syllabus overviews, and online calculators.
             </p>
           </section>
 

@@ -2056,18 +2056,211 @@ async function generateAllPages() {
     );
   }
 
-  // Generate sitemap.xml with canonical base domain https://rajdailytools.in/
-  const sitemapUrls = generatedFiles
-    .filter((f) => f.endsWith('.html'))
-    .map((f) => {
-      const pathPart = f === 'index.html' ? '' : f;
-      return `  <url>\n    <loc>https://rajdailytools.in/${pathPart}</loc>\n    <lastmod>2026-09-12</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${f === 'index.html' ? '1.0' : f.includes('/') ? '0.7' : '0.9'}</priority>\n  </url>`;
-    })
-    .join('\n');
+  // --------------------------------------------------------------------------
+  // 4. AUTOMATIC SITEMAP.XML & ROBOTS.TXT DISCOVERY & GENERATION
+  // Crawls and discovers ALL publicly generated HTML pages in the project.
+  // Guarantees that any new page generated in this project will automatically
+  // appear in sitemap.xml without manual intervention.
+  // --------------------------------------------------------------------------
+  console.log('\n🔍 Discovering all generated public pages for automatic sitemap...');
 
-  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls}\n</urlset>`;
-  fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf-8');
-  console.log(`✓ Generated: sitemap.xml with ${generatedFiles.filter((f) => f.endsWith('.html')).length} URLs`);
+  const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
+  const CANONICAL_DOMAIN = 'https://rajdailytools.in';
+
+  // Recursive directory scanner for HTML pages
+  function scanDirectoryForHtml(dir: string, baseDir: string = dir): string[] {
+    if (!fs.existsSync(dir)) return [];
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files: string[] = [];
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        // Skip hidden folders, assets, node_modules, etc.
+        if (
+          entry.name.startsWith('.') ||
+          entry.name === 'assets' ||
+          entry.name === 'node_modules' ||
+          entry.name === 'src' ||
+          entry.name === 'scripts'
+        ) {
+          continue;
+        }
+        files.push(...scanDirectoryForHtml(fullPath, baseDir));
+      } else if (entry.isFile() && entry.name.endsWith('.html')) {
+        const rel = path.relative(baseDir, fullPath).replace(/\\/g, '/');
+        files.push(rel);
+      }
+    }
+    return files;
+  }
+
+  // Combine files recorded during build + files present on disk in DIST_DIR
+  const discoveredDiskHtml = scanDirectoryForHtml(DIST_DIR);
+  const allCandidateFiles = Array.from(
+    new Set([...generatedFiles.filter((f) => f.endsWith('.html')), ...discoveredDiskHtml])
+  );
+
+  // Filter exclusions:
+  // - Exclude error/fallback/test/private pages
+  // - Exclude files marked with noindex
+  const excludedPatterns = [
+    /^(404|500|_app|test|demo|internal|preview)\.html$/i,
+    /\/test\//i,
+    /\/draft\//i,
+    /\/internal\//i
+  ];
+
+  interface SitemapEntry {
+    relPath: string;
+    loc: string;
+    lastmod: string;
+    changefreq: string;
+    priority: string;
+  }
+
+  const validEntries: SitemapEntry[] = [];
+  const processedUrls = new Set<string>();
+
+  for (const relPath of allCandidateFiles) {
+    // Check exclusion regex
+    if (excludedPatterns.some((pattern) => pattern.test(relPath))) {
+      continue;
+    }
+
+    const fullPath = path.join(DIST_DIR, relPath);
+    if (fs.existsSync(fullPath)) {
+      try {
+        const content = fs.readFileSync(fullPath, 'utf-8');
+        // Check for noindex directive
+        if (
+          /<meta[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(content) ||
+          /<meta[^>]*content=["'][^"']*noindex[^"']*["'][^>]*name=["']robots/i.test(content) ||
+          /data-noindex=["']true["']/i.test(content)
+        ) {
+          console.log(`ℹ Skipping noindex page: ${relPath}`);
+          continue;
+        }
+      } catch {
+        // If file reading fails, continue
+      }
+    }
+
+    // Determine clean canonical URL
+    const urlPath = relPath === 'index.html' ? '' : relPath;
+    const loc = `${CANONICAL_DOMAIN}/${urlPath}`;
+
+    // Deduplication check
+    if (processedUrls.has(loc)) {
+      continue;
+    }
+    processedUrls.add(loc);
+
+    // Get lastmod date from file mtime or fallback to current date (YYYY-MM-DD)
+    let lastmodDate = new Date().toISOString().split('T')[0];
+    if (fs.existsSync(fullPath)) {
+      try {
+        const stats = fs.statSync(fullPath);
+        lastmodDate = stats.mtime.toISOString().split('T')[0];
+      } catch {
+        // use fallback
+      }
+    }
+
+    // Determine priority and change frequency
+    let priority = '0.7';
+    let changefreq = 'weekly';
+
+    if (relPath === 'index.html') {
+      priority = '1.0';
+      changefreq = 'daily';
+    } else if (
+      [
+        'latest-jobs.html',
+        'admit-card.html',
+        'answer-key.html',
+        'result.html',
+        'cut-off.html',
+        'admission.html',
+        'mock-test.html',
+        'tools.html',
+        'all-exams.html'
+      ].includes(relPath)
+    ) {
+      priority = '0.9';
+      changefreq = 'daily';
+    } else if (
+      relPath.startsWith('tools/') ||
+      !relPath.includes('/') // Root-level ranking, guide, and 50-section pages
+    ) {
+      if (['about.html', 'contact.html', 'privacy-policy.html', 'terms.html'].includes(relPath)) {
+        priority = '0.5';
+        changefreq = 'monthly';
+      } else {
+        priority = '0.8';
+        changefreq = 'daily';
+      }
+    } else {
+      // Subdirectory pages like latest-jobs/xyz.html, admit-card/xyz.html, etc.
+      priority = '0.7';
+      changefreq = 'weekly';
+    }
+
+    validEntries.push({
+      relPath,
+      loc,
+      lastmod: lastmodDate,
+      changefreq,
+      priority
+    });
+  }
+
+  // Sort entries: index.html first, then high priority, then alphabetically by URL
+  validEntries.sort((a, b) => {
+    if (a.relPath === 'index.html') return -1;
+    if (b.relPath === 'index.html') return 1;
+    const aPriority = parseFloat(a.priority);
+    const bPriority = parseFloat(b.priority);
+    if (bPriority !== aPriority) {
+      return bPriority - aPriority;
+    }
+    return a.loc.localeCompare(b.loc);
+  });
+
+  const sitemapXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${validEntries
+  .map(
+    (e) => `  <url>
+    <loc>${e.loc}</loc>
+    <lastmod>${e.lastmod}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority}</priority>
+  </url>`
+  )
+  .join('\n')}
+</urlset>
+`;
+
+  // Write sitemap.xml to both dist/ and public/
+  fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXmlContent, 'utf-8');
+  if (fs.existsSync(PUBLIC_DIR)) {
+    fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapXmlContent, 'utf-8');
+  }
+  console.log(`✓ Generated: sitemap.xml with ${validEntries.length} automatically discovered URLs`);
+
+  // Generate robots.txt
+  const robotsTxtContent = `User-agent: *
+Allow: /
+
+Sitemap: ${CANONICAL_DOMAIN}/sitemap.xml
+`;
+
+  fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), robotsTxtContent, 'utf-8');
+  if (fs.existsSync(PUBLIC_DIR)) {
+    fs.writeFileSync(path.join(PUBLIC_DIR, 'robots.txt'), robotsTxtContent, 'utf-8');
+  }
+  console.log(`✓ Generated: robots.txt pointing to ${CANONICAL_DOMAIN}/sitemap.xml`);
 
   console.log('\n✨ All static HTML pages generated successfully in dist/!\n');
 }
