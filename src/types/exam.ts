@@ -24,7 +24,7 @@ export type LifecycleStage =
   | 'RESULT_RELEASED'
   | 'CUT_OFF_RELEASED';
 
-export type EducationLevel = '10th' | '12th' | 'Graduation' | 'Post Graduation' | 'ITI' | 'Diploma' | 'Other';
+export type EducationLevel = '10th' | '12th' | 'Graduation' | 'Post Graduation' | 'ITI' | 'Diploma' | '8th' | 'Other';
 
 export interface ExamInfoSection {
   id: number;

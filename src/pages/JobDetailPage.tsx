@@ -7,6 +7,7 @@ import { ShareButtons } from '../components/ShareButtons';
 import { RightSidebar } from '../components/RightSidebar';
 import { ConcorToolsModal } from '../components/ConcorToolsModal';
 import { UpesscToolsModal } from '../components/UpesscToolsModal';
+import { RankingToolEngine } from '../components/RankingTools';
 import { getCountdown, formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import {
@@ -235,6 +236,9 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Main Column */}
         <div className="lg:col-span-8 space-y-8">
+          {/* Interactive Ranking Tool Engine (if applicable) */}
+          <RankingToolEngine exam={exam} />
+
           {/* Quick Notification Summary */}
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <h3 className="text-base font-bold text-slate-900 font-display pb-3 border-b border-slate-100">

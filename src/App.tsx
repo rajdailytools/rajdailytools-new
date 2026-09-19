@@ -55,6 +55,7 @@ import { UPESSC_PRT_TEACHER_2026_EXAM } from './data/upesscPrtTeacherData';
 import { UKSSSC_SCALER_2026_EXAM } from './data/ukssscScalerData';
 import { UP_PGT_TEACHER_2026_EXAM } from './data/upPgtTeacherData';
 import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
+import { ALL_15_RANKING_EXAMS } from './data/rankingPagesData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
 import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
@@ -84,6 +85,16 @@ export default function App() {
       if (effectiveRoute.includes('upessc-prt')) {
         setCurrentPage('job-detail');
         setCurrentSlug('upessc-prt-assistant-teacher-recruitment-2026');
+        return;
+      }
+
+      // Check ranking page direct route
+      const matchedRankingExam = ALL_15_RANKING_EXAMS.find(
+        (e) => e.slug === effectiveRoute || e.id === effectiveRoute
+      );
+      if (matchedRankingExam) {
+        setCurrentPage('job-detail');
+        setCurrentSlug(matchedRankingExam.slug);
         return;
       }
 
@@ -279,7 +290,8 @@ export default function App() {
     (isChslPage && chslRecord) ? chslRecord :
     (isIbpsPage && ibpsRecord) ? ibpsRecord :
     (isAiimsPage && aiimsRecord) ? aiimsRecord :
-    (EXAMS_DATABASE.find((e) => e.slug === currentSlug) ||
+    (ALL_15_RANKING_EXAMS.find((e) => e.slug === currentSlug || e.id === currentSlug) ||
+    EXAMS_DATABASE.find((e) => e.slug === currentSlug) ||
     EXAMS_DATABASE.find((e) => e.id === currentSlug) ||
     EXAMS_DATABASE[0]);
 

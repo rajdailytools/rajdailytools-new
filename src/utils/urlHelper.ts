@@ -34,6 +34,23 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
   // Map dedicated root UPESSC PRT Assistant Teacher 2026 page
   if (page === 'upessc-prt-assistant-teacher-recruitment-2026' || page === 'upessc-prt-assistant-teacher-2026' || page === 'upessc-prt-2026') return `${prefix}upessc-prt-assistant-teacher-recruitment-2026.html`;
 
+  // Map 15 Specific Ranking Pages
+  if (page === 'agniveer-age-calculator-2026' || slug === 'agniveer-age-calculator-2026') return `${prefix}agniveer-age-calculator-2026.html`;
+  if (page === 'iob-llo-exam-pattern-selection-process-2026' || slug === 'iob-llo-exam-pattern-selection-process-2026') return `${prefix}iob-llo-exam-pattern-selection-process-2026.html`;
+  if (page === 'mp-police-eligibility-2026' || slug === 'mp-police-eligibility-2026') return `${prefix}mp-police-eligibility-2026.html`;
+  if (page === 'ssc-gd-height-eligibility-checker-2026' || slug === 'ssc-gd-height-eligibility-checker-2026') return `${prefix}ssc-gd-height-eligibility-checker-2026.html`;
+  if (page === 'army-running-time-calculator-1600m-2026' || slug === 'army-running-time-calculator-1600m-2026') return `${prefix}army-running-time-calculator-1600m-2026.html`;
+  if (page === 'army-promotion-timeline-tool-1' || slug === 'army-promotion-timeline-tool-1') return `${prefix}army-promotion-timeline-tool-1.html`;
+  if (page === 'ssc-cgl-age-limit-2026-calculator' || slug === 'ssc-cgl-age-limit-2026-calculator') return `${prefix}ssc-cgl-age-limit-2026-calculator.html`;
+  if (page === 'government-exam-height-eligibility-checker-india' || slug === 'government-exam-height-eligibility-checker-india') return `${prefix}government-exam-height-eligibility-checker-india.html`;
+  if (page === 'ssc-gd-eligibility-2026' || slug === 'ssc-gd-eligibility-2026') return `${prefix}ssc-gd-eligibility-2026.html`;
+  if (page === 'army-height-checker-region-wise-2026' || slug === 'army-height-checker-region-wise-2026') return `${prefix}army-height-checker-region-wise-2026.html`;
+  if (page === 'ssc-gd-running-marks-calculator-2026' || slug === 'ssc-gd-running-marks-calculator-2026') return `${prefix}ssc-gd-running-marks-calculator-2026.html`;
+  if (page === 'army-document-checklist-generator-1' || slug === 'army-document-checklist-generator-1') return `${prefix}army-document-checklist-generator-1.html`;
+  if (page === 'ssc-gd-female-eligibility-checker-2026' || slug === 'ssc-gd-female-eligibility-checker-2026') return `${prefix}ssc-gd-female-eligibility-checker-2026.html`;
+  if (page === 'nda-age-limit-calculator-2026' || slug === 'nda-age-limit-calculator-2026') return `${prefix}nda-age-limit-calculator-2026.html`;
+  if (page === 'ssc-gd-medical-fitness-checker-2026' || slug === 'ssc-gd-medical-fitness-checker-2026') return `${prefix}ssc-gd-medical-fitness-checker-2026.html`;
+
   // Map dedicated root RPSC APO Answer Key 2026 page
   if (page === 'rpsc-apo-answer-key-2026' || page === 'rpsc-apo-2026' || page === 'rpsc-apo') return `${prefix}rpsc-apo-answer-key-2026.html`;
 

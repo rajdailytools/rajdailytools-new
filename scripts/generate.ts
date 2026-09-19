@@ -80,6 +80,7 @@ import { NVS_CLASS_9_2027_ADMISSION } from '../src/data/nvsClass9Data';
 import { NvsClass9AdmissionPage } from '../src/pages/NvsClass9AdmissionPage';
 import { AIBE_XXII_2026_ADMISSION } from '../src/data/aibeData';
 import { AibeAdmissionPage } from '../src/pages/AibeAdmissionPage';
+import { ALL_15_RANKING_EXAMS } from '../src/data/rankingPagesData';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -167,6 +168,23 @@ const searchIndex = [
         ? 'allahabad-university-phd-admission-2026.html'
         : `admission/${adm.slug}.html`,
     icon: '🎓'
+  })),
+  ...ALL_15_RANKING_EXAMS.map((exam) => ({
+    name: exam.examName,
+    org: exam.organization || 'Government of India',
+    category: exam.category,
+    vac: exam.totalVacancy,
+    url: `${exam.slug}.html`,
+    icon: exam.logoIcon || '⚡',
+    keywords: [
+      exam.examName,
+      exam.shortName || '',
+      exam.organization || '',
+      exam.category,
+      'calculator',
+      'checker',
+      'tool'
+    ]
   }))
 ];
 
@@ -1796,6 +1814,34 @@ async function generateAllPages() {
       canonicalPath: 'aibe-22nd-online-form-2026.html'
     })
   );
+
+  // --------------------------------------------------------------------------
+  // 2p. 15 DEDICATED RANKING PAGES (depth = 0)
+  // Reusing MPESB MP Police Constable GD Recruitment 2026 Master Template
+  // --------------------------------------------------------------------------
+  console.log(`\n📄 Generating 15 dedicated ranking pages using MP Police master template...`);
+
+  for (const rankingExam of ALL_15_RANKING_EXAMS) {
+    const filename = `${rankingExam.slug}.html`;
+    const content = renderToStaticMarkup(
+      React.createElement(JobDetailPage, { exam: rankingExam, depth: 0 })
+    );
+
+    writePage(
+      filename,
+      wrapWithHtmlLayout({
+        title: `${rankingExam.examName} – Official Calculator, Eligibility, Rules & Standards`,
+        description:
+          rankingExam.description ||
+          rankingExam.shortSummary ||
+          `${rankingExam.examName} – Check official criteria, eligibility checker, age limits, syllabus, physical standards and selection process on RajDailyTools.`,
+        content,
+        pageKey: rankingExam.slug,
+        depth: 0,
+        canonicalPath: filename
+      })
+    );
+  }
 
   // --------------------------------------------------------------------------
   // 3. SUBDIRECTORIES (depth = 1)
