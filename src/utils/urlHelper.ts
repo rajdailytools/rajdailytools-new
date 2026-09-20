@@ -8,6 +8,19 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated root HPSC Food Safety Officer (FSO) Recruitment 2026 page
+  if (
+    page === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
+    page === 'hpsc-food-safety-officer-fso-2026' ||
+    page === 'hpsc-fso-2026' ||
+    page === 'hpsc-fso' ||
+    slug === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
+    slug === 'hpsc-food-safety-officer-fso-2026' ||
+    slug === 'hpsc-fso-2026'
+  ) {
+    return `${prefix}hpsc-food-safety-officer-fso-recruitment-2026.html`;
+  }
+
   // Map dedicated root UP PGT Teacher 2026 page
   if (
     page === 'up-pgt-teacher-recruitment-2026' ||

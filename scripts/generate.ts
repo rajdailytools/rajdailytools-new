@@ -61,6 +61,7 @@ import { RpscStatisticalOfficerAnswerKeyPage } from '../src/pages/RpscStatistica
 import { RPSC_APO_2026_EXAM } from '../src/data/rpscApoData';
 import { RpscApoAnswerKeyPage } from '../src/pages/RpscApoAnswerKeyPage';
 import { UPESSC_PRT_TEACHER_2026_EXAM } from '../src/data/upesscPrtTeacherData';
+import { HPSC_FSO_2026_EXAM } from '../src/data/hpscFsoData';
 import { UKSSSC_SCALER_2026_EXAM } from '../src/data/ukssscScalerData';
 import { UkssscGroupCScalerPage } from '../src/pages/UkssscGroupCScalerPage';
 import { UP_PGT_TEACHER_2026_EXAM } from '../src/data/upPgtTeacherData';
@@ -103,7 +104,9 @@ const searchIndex = [
     category: exam.category,
     vac: exam.totalVacancy,
     url:
-      exam.slug === 'uksssc-group-c-scaler-recruitment-2026'
+      exam.slug === 'hpsc-food-safety-officer-fso-recruitment-2026'
+        ? 'hpsc-food-safety-officer-fso-recruitment-2026.html'
+        : exam.slug === 'uksssc-group-c-scaler-recruitment-2026'
         ? 'uksssc-group-c-scaler-recruitment-2026.html'
         : exam.slug === 'upessc-prt-assistant-teacher-recruitment-2026'
         ? 'upessc-prt-assistant-teacher-recruitment-2026.html'
@@ -474,9 +477,9 @@ async function generateAllPages() {
   writePage(
     'mock-test.html',
     wrapWithHtmlLayout({
-      title: 'Mock Tests & Free Practice Papers 2026 – RajDailyTools',
+      title: 'RajDailyTools Mock Test – Free & Premium Government Exam Mock Tests',
       description:
-        'Free online mock test series and practice question papers for SSC CGL, RRB NTPC, State Police, Banking, and Defense examinations.',
+        'Practice government exam mock tests with real exam-style interface, timer, detailed solutions, performance analysis, mistakes tracking and progress tracking on RajDailyTools.',
       content: mockTestContent,
       pageKey: 'mock-test',
       depth: 0
@@ -1575,6 +1578,28 @@ async function generateAllPages() {
       pageKey: 'rpsc-apo-answer-key-2026',
       depth: 0,
       canonicalPath: 'rpsc-apo-answer-key-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-14b. DEDICATED HPSC FOOD SAFETY OFFICER (FSO) 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const hpscFsoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'hpsc-food-safety-officer-fso-2026' || e.slug === 'hpsc-food-safety-officer-fso-recruitment-2026') ||
+    HPSC_FSO_2026_EXAM;
+
+  writePage(
+    'hpsc-food-safety-officer-fso-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'HPSC Food Safety Officer (FSO) Recruitment 2026 – Apply Online, 45 Vacancies, Eligibility, Syllabus & Exam Pattern',
+      description:
+        'HPSC Food Safety Officer (Group-B) Recruitment 2026 Advt No. 25/2026 in Food & Drugs Administration Dept Haryana. Apply online for 45 vacancies (UR 22, DSC 5, OSC 5, BC-A 5, BC-B 3, EWS 5). FPL-6 ₹35,400 pay scale, full 50-section guide, eligibility, fee, syllabus & direct links.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: hpscFsoExam, depth: 0 })
+      ),
+      pageKey: 'hpsc-food-safety-officer-fso-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'hpsc-food-safety-officer-fso-recruitment-2026.html'
     })
   );
 

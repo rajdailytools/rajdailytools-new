@@ -7,6 +7,7 @@ import { ShareButtons } from '../components/ShareButtons';
 import { RightSidebar } from '../components/RightSidebar';
 import { ConcorToolsModal } from '../components/ConcorToolsModal';
 import { UpesscToolsModal } from '../components/UpesscToolsModal';
+import { HpscFsoToolsModal } from '../components/HpscFsoToolsModal';
 import { RankingToolEngine } from '../components/RankingTools';
 import { getCountdown, formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
@@ -41,9 +42,11 @@ interface JobDetailPageProps {
 export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, depth = 1 }) => {
   const [concorModalTool, setConcorModalTool] = useState<string | null>(null);
   const [upesscModalTool, setUpesscModalTool] = useState<string | null>(null);
+  const [hpscFsoModalTool, setHpscFsoModalTool] = useState<string | null>(null);
   const countdown = getCountdown(exam.applicationLastDate, 'deadline');
   const isConcor = exam.id === 'concor-mt-ao-2026' || exam.slug?.includes('concor') || exam.shortName?.includes('CONCOR');
   const isUpesscPrt = exam.id === 'upessc-prt-assistant-teacher-2026' || exam.slug?.includes('upessc-prt') || exam.shortName?.includes('UPESSC PRT');
+  const isHpscFso = exam.id === 'hpsc-food-safety-officer-fso-2026' || exam.slug?.includes('hpsc-food-safety-officer') || exam.shortName?.includes('HPSC FSO');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -62,6 +65,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 { label: 'Teaching Jobs', page: 'latest-jobs' as ActivePage },
                 ...(exam.state === 'Uttar Pradesh' ? [{ label: 'Uttar Pradesh Jobs', page: 'latest-jobs' as ActivePage }] : []),
                 ...(exam.organization?.includes('UPESSC') ? [{ label: 'UPESSC', page: 'latest-jobs' as ActivePage }] : [])
+              ]
+            : []),
+          ...(exam.state === 'Haryana' || exam.organization?.includes('HPSC')
+            ? [
+                { label: 'Haryana Jobs', page: 'latest-jobs' as ActivePage },
+                { label: 'HPSC', page: 'latest-jobs' as ActivePage }
               ]
             : []),
           { label: exam.examName }
@@ -108,6 +117,16 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 {exam.organization?.includes('UPESSC') && (
                   <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
                     UPESSC
+                  </span>
+                )}
+                {exam.state === 'Haryana' && (
+                  <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">
+                    Haryana Jobs
+                  </span>
+                )}
+                {exam.organization?.includes('HPSC') && (
+                  <span className="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100">
+                    HPSC
                   </span>
                 )}
                 <span
@@ -719,6 +738,138 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </a>
                 </div>
               </div>
+            ) : isHpscFso ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* HPSC Tool 1: Eligibility & Degree Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        Degree / Allied Sciences
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">FSO Qualification Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify Food Tech, Agri, Dairy, Biotech, Chemistry, or Medical degree + Hindi/Sanskrit language.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setHpscFsoModalTool('checklist')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Qualification</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* HPSC Tool 2: Age Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Clock className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: 19-10-2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate exact age as on 19.10.2026 (18-42 yrs, SC/BC +5 yrs, Contractual/ESM, Max 52 yrs cap).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setHpscFsoModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Official Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* HPSC Tool 3: Application Fee Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <DollarSign className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        ₹0 / ₹250 / ₹1000
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Application Fee Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Instant calculation of official application fee for PwBD (NIL), Reserved/Women (₹250), and UR Male (₹1000).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setHpscFsoModalTool('fee')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Fee Structure</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* HPSC Tool 4: Application Countdown */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-700 rounded-lg">
+                        <Calendar className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        Closes 19 Oct 05:00 PM
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Application Deadline Timer</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Live countdown to 19.10.2026 (05:00 PM) submission and signed application form upload window.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setHpscFsoModalTool('countdown')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-700 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>View Live Countdown</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* HPSC Tool 5: Selection Process & Training Guide */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all sm:col-span-2">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        Screening &bull; SKT &bull; Interview &bull; Training
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Selection &amp; Training Roadmap</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Step-by-step roadmap: Screening Test, Subject Knowledge Test, Interview Viva-Voce, and post-appointment Food Authority training.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setHpscFsoModalTool('selection')}
+                    className="mt-3.5 w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Explore Selection Roadmap</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Tool 1: Eligibility Calculator */}
@@ -907,6 +1058,14 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             <UpesscToolsModal
               tool={upesscModalTool}
               onClose={() => setUpesscModalTool(null)}
+            />
+          )}
+
+          {/* HPSC FSO Tools Modal */}
+          {isHpscFso && (
+            <HpscFsoToolsModal
+              tool={hpscFsoModalTool}
+              onClose={() => setHpscFsoModalTool(null)}
             />
           )}
 

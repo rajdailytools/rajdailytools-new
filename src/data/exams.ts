@@ -90,8 +90,16 @@ import {
   generateConcor50Sections,
   CONCOR_50_SECTIONS
 } from './concorData';
+import {
+  HPSC_FSO_2026_EXAM,
+  generateHpscFso50Sections
+} from './hpscFsoData';
+import { HPSC_FSO_50_SECTIONS } from './hpscFso50Sections';
 
 export {
+  HPSC_FSO_2026_EXAM,
+  generateHpscFso50Sections,
+  HPSC_FSO_50_SECTIONS,
   CONCOR_RECRUITMENT_2026_EXAM,
   generateConcor50Sections,
   CONCOR_50_SECTIONS,
@@ -151,6 +159,7 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  HPSC_FSO_2026_EXAM,
   CONCOR_RECRUITMENT_2026_EXAM,
   UP_PGT_TEACHER_2026_EXAM,
   UKSSSC_SCALER_2026_EXAM,

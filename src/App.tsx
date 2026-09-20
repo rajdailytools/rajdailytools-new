@@ -55,6 +55,7 @@ import { UPESSC_PRT_TEACHER_2026_EXAM } from './data/upesscPrtTeacherData';
 import { UKSSSC_SCALER_2026_EXAM } from './data/ukssscScalerData';
 import { UP_PGT_TEACHER_2026_EXAM } from './data/upPgtTeacherData';
 import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
+import { HPSC_FSO_2026_EXAM } from './data/hpscFsoData';
 import { ALL_15_RANKING_EXAMS } from './data/rankingPagesData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
@@ -78,6 +79,13 @@ export default function App() {
 
       if (!effectiveRoute) {
         setCurrentPage('home');
+        return;
+      }
+
+      // Check direct HPSC FSO route
+      if (effectiveRoute.includes('hpsc-food-safety-officer') || effectiveRoute.includes('hpsc-fso')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('hpsc-food-safety-officer-fso-recruitment-2026');
         return;
       }
 
@@ -172,6 +180,17 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isHpscFsoPage = typeof currentPage === 'string' && (
+    currentPage.startsWith('hpsc-food-safety-officer') ||
+    currentPage.startsWith('hpsc-fso') ||
+    currentPage === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
+    currentSlug === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
+    currentSlug === 'hpsc-food-safety-officer-fso-2026' ||
+    currentSlug === 'hpsc-fso-2026' ||
+    currentSlug === 'hpsc-fso'
+  );
+  const hpscFsoRecord = HPSC_FSO_2026_EXAM;
+
   const isConcorPage = typeof currentPage === 'string' && (
     currentPage.startsWith('concor') ||
     currentPage === 'concor-management-trainee-assistant-officer-recruitment-2026' ||
@@ -264,6 +283,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isHpscFsoPage && hpscFsoRecord) ? hpscFsoRecord :
     (isConcorPage && concorRecord) ? concorRecord :
     (isUpPgtPage && upPgtRecord) ? upPgtRecord :
     (isUpesscPrtPage && upesscPrtRecord) ? upesscPrtRecord :
@@ -310,6 +330,14 @@ export default function App() {
         return <LatestJobsPage onNavigate={handleNavigate} />;
 
       case 'job-detail':
+        if (
+          currentSlug === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
+          currentSlug === 'hpsc-food-safety-officer-fso-2026' ||
+          currentSlug === 'hpsc-fso-2026' ||
+          currentSlug === 'hpsc-fso'
+        ) {
+          return <JobDetailPage exam={hpscFsoRecord || currentExam} onNavigate={handleNavigate} />;
+        }
         if (
           currentSlug === 'concor-management-trainee-assistant-officer-recruitment-2026' ||
           currentSlug === 'concor-recruitment-2026' ||
