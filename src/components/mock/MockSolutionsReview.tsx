@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { MockQuestion, UserResponse } from '../../types/mockTest';
-import { Check, X, Bookmark, ChevronLeft, Sparkles, Filter, CheckCircle2, XCircle } from 'lucide-react';
+import {
+  Check,
+  X,
+  Bookmark,
+  ChevronLeft,
+  Sparkles,
+  Filter,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Flag,
+  BookOpen,
+  CheckCheck
+} from 'lucide-react';
 
 interface MockSolutionsReviewProps {
   questions: MockQuestion[];
@@ -8,6 +21,7 @@ interface MockSolutionsReviewProps {
   mockTitle: string;
   onBackToResult: () => void;
   onPracticeTopic?: (topic: string) => void;
+  onSaveToNotebook?: (question: MockQuestion) => void;
 }
 
 export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
@@ -15,10 +29,27 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
   userResponses,
   mockTitle,
   onBackToResult,
-  onPracticeTopic
+  onPracticeTopic,
+  onSaveToNotebook
 }) => {
   const [filter, setFilter] = useState<'ALL' | 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED'>('ALL');
   const [selectedLang, setSelectedLang] = useState<'English' | 'Hindi'>('English');
+  const [bookmarkedIds, setBookmarkedIds] = useState<Record<string, boolean>>({});
+  const [reportedIds, setReportedIds] = useState<Record<string, boolean>>({});
+  const [savedToNotebookIds, setSavedToNotebookIds] = useState<Record<string, boolean>>({});
+
+  const toggleBookmark = (qId: string) => {
+    setBookmarkedIds((prev) => ({ ...prev, [qId]: !prev[qId] }));
+  };
+
+  const handleReport = (qId: string) => {
+    setReportedIds((prev) => ({ ...prev, [qId]: true }));
+  };
+
+  const handleAddToNotebook = (q: MockQuestion) => {
+    setSavedToNotebookIds((prev) => ({ ...prev, [q.id]: true }));
+    onSaveToNotebook?.(q);
+  };
 
   const filteredQuestions = questions.filter((q) => {
     const res = userResponses[q.id];
@@ -32,21 +63,21 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
   });
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 py-4">
+    <div id="mock-solutions-review" className="max-w-4xl mx-auto space-y-6 py-4">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-5 bg-white border border-slate-200 rounded-3xl shadow-xs">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onBackToResult}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
             title="Back to Result"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
             <span className="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
-              Detailed Answer Key & Solutions
+              Detailed Answer Key & Step-by-Step Solutions
             </span>
             <h2 className="text-lg font-black text-slate-900 font-display">
               {mockTitle}
@@ -60,7 +91,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
           <button
             type="button"
             onClick={() => setSelectedLang(selectedLang === 'English' ? 'Hindi' : 'English')}
-            className="px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 transition-colors"
+            className="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
           >
             {selectedLang === 'English' ? 'हिन्दी में देखें' : 'View in English'}
           </button>
@@ -72,7 +103,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
         <button
           type="button"
           onClick={() => setFilter('ALL')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
             filter === 'ALL'
               ? 'bg-slate-900 text-white shadow-xs'
               : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -83,7 +114,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
         <button
           type="button"
           onClick={() => setFilter('CORRECT')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
             filter === 'CORRECT'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50'
@@ -94,7 +125,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
         <button
           type="button"
           onClick={() => setFilter('INCORRECT')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
             filter === 'INCORRECT'
               ? 'bg-rose-600 text-white shadow-xs'
               : 'bg-white border border-rose-200 text-rose-700 hover:bg-rose-50'
@@ -105,7 +136,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
         <button
           type="button"
           onClick={() => setFilter('UNATTEMPTED')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
             filter === 'UNATTEMPTED'
               ? 'bg-slate-600 text-white shadow-xs'
               : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -122,11 +153,16 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
           const userAns = res?.selectedOption;
           const isCorrect = userAns === q.correctAnswer;
           const isUnattempted = !userAns;
+          const timeSpent = res?.timeSpentSeconds || 0;
 
           const questionText =
             selectedLang === 'Hindi' && q.questionHindi ? q.questionHindi : q.question;
           const explanationText =
             selectedLang === 'Hindi' && q.explanationHindi ? q.explanationHindi : q.explanation;
+
+          const isBookmarked = !!bookmarkedIds[q.id];
+          const isReported = !!reportedIds[q.id];
+          const isSavedToNotebook = !!savedToNotebookIds[q.id];
 
           return (
             <div
@@ -139,9 +175,9 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
                   : 'border-rose-200'
               }`}
             >
-              {/* Question Meta */}
+              {/* Question Meta Bar */}
               <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="font-bold text-xs text-slate-400">Q{q.number}.</span>
                   <span className="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
                     {q.subject}
@@ -149,6 +185,23 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
                   <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">
                     {q.topic}
                   </span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                      q.difficulty === 'Easy'
+                        ? 'bg-emerald-50 text-emerald-700'
+                        : q.difficulty === 'Medium'
+                        ? 'bg-blue-50 text-blue-700'
+                        : 'bg-purple-50 text-purple-700'
+                    }`}
+                  >
+                    {q.difficulty}
+                  </span>
+                  {timeSpent > 0 && (
+                    <span className="flex items-center gap-1 text-[11px] text-slate-500 font-mono">
+                      <Clock className="w-3 h-3 text-slate-400" />
+                      <span>{timeSpent}s spent</span>
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -233,7 +286,7 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
                     <button
                       type="button"
                       onClick={() => onPracticeTopic(q.topic)}
-                      className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline"
+                      className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline cursor-pointer"
                     >
                       Practice Topic: {q.topic} →
                     </button>
@@ -241,6 +294,61 @@ export const MockSolutionsReview: React.FC<MockSolutionsReviewProps> = ({
                 </div>
                 <div className="text-slate-700 leading-relaxed whitespace-pre-line select-text">
                   {explanationText}
+                </div>
+              </div>
+
+              {/* Option to Bookmark, Report, Add to Revision Notebook */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleBookmark(q.id)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer ${
+                      isBookmarked
+                        ? 'bg-amber-50 border-amber-300 text-amber-800 font-bold'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-amber-500 text-amber-500' : ''}`} />
+                    <span>{isBookmarked ? 'Bookmarked' : 'Bookmark Question'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleAddToNotebook(q)}
+                    disabled={isSavedToNotebook}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer ${
+                      isSavedToNotebook
+                        ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-bold'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {isSavedToNotebook ? (
+                      <>
+                        <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Saved to Notebook</span>
+                      </>
+                    ) : (
+                      <>
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>Add to Revision Notebook</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => handleReport(q.id)}
+                    disabled={isReported}
+                    className={`inline-flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer text-[11px] ${
+                      isReported ? 'text-emerald-600 font-bold' : ''
+                    }`}
+                  >
+                    <Flag className="w-3 h-3" />
+                    <span>{isReported ? 'Reported ✓' : 'Report Question'}</span>
+                  </button>
                 </div>
               </div>
             </div>

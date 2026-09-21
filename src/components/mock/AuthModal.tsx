@@ -191,31 +191,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Continue with Google</span>
+              <span>SIGN IN WITH GOOGLE</span>
             </button>
 
             {googleAuthPending && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 space-y-2 animate-in fade-in duration-150">
-                <div className="flex items-center gap-1.5 font-bold text-amber-950">
-                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span>Google OAuth Integration Pending</span>
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-2 animate-in fade-in duration-150">
+                <div className="flex items-center gap-1.5 font-bold text-blue-950">
+                  <Shield className="w-4 h-4 text-blue-600 shrink-0" />
+                  <span>Google Sign-In ready to connect</span>
                 </div>
-                <p className="text-[11px] text-amber-800 leading-relaxed">
-                  Production Google Client ID credentials are in pending deployment state. You can continue instantly with your candidate name or email to test all mock test features.
+                <p className="text-xs text-blue-800 leading-relaxed font-medium">
+                  Mock progress saved locally until account linked.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onLoginSuccess({
-                      name: 'Candidate User',
-                      email: 'candidate@rajdailytools.in'
-                    });
-                    onClose();
-                  }}
-                  className="w-full py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px]"
-                >
-                  Continue with Candidate Demo Profile
-                </button>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  All test attempts, mistakes notebook, and speed stats are securely stored in your browser's local cache.
+                </p>
               </div>
             )}
 

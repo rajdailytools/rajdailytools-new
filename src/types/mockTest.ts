@@ -127,6 +127,19 @@ export interface MockResult {
   topicScores: TopicScore[];
   difficultyScores: DifficultyScore[];
   userResponses: Record<string, UserResponse>;
+  fastQuestionsCount: number;
+  normalQuestionsCount: number;
+  slowQuestionsCount: number;
+  slowestQuestions: {
+    id: string;
+    number: number;
+    subject: string;
+    topic: string;
+    timeSpentSeconds: number;
+    isCorrect: boolean;
+  }[];
+  subjectAvgTimes: { subject: string; avgSeconds: number }[];
+  topicAvgTimes: { topic: string; subject: string; avgSeconds: number }[];
 }
 
 export interface StoredMistake {
@@ -145,6 +158,11 @@ export interface AttemptHistoryRecord {
   maxMarks: number;
   accuracy: number;
   timeSeconds: number;
+  correct: number;
+  wrong: number;
+  unattempted: number;
   timestamp: number;
   date: string;
+  mockId?: string;
+  mockTitle?: string;
 }

@@ -126,27 +126,52 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
     }
   }, []);
 
-  // Timer interval handling
+  // Refs for stable timer callback
+  const currentQuestionIndexRef = useRef(currentQuestionIndex);
+  currentQuestionIndexRef.current = currentQuestionIndex;
+
+  const activeQuestionsRef = useRef(activeQuestions);
+  activeQuestionsRef.current = activeQuestions;
+
+  // Stable timer interval handling
   useEffect(() => {
-    if (testMode === 'ACTIVE_TEST' && remainingSeconds > 0) {
-      timerRef.current = setInterval(() => {
-        setRemainingSeconds((prev) => {
-          if (prev <= 1) {
-            clearInterval(timerRef.current!);
-            handleFinalSubmit(); // Auto-submit when time reaches zero
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
+    if (testMode !== 'ACTIVE_TEST') {
       if (timerRef.current) clearInterval(timerRef.current);
+      return;
     }
+
+    timerRef.current = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          handleFinalSubmit(); // Auto-submit when time reaches zero
+          return 0;
+        }
+        return prev - 1;
+      });
+
+      // Track time on active question
+      const currIdx = currentQuestionIndexRef.current;
+      const currQ = activeQuestionsRef.current[currIdx];
+      if (currQ) {
+        setUserResponses((prev) => {
+          const res = prev[currQ.id];
+          if (!res) return prev;
+          return {
+            ...prev,
+            [currQ.id]: {
+              ...res,
+              timeSpentSeconds: (res.timeSpentSeconds || 0) + 1
+            }
+          };
+        });
+      }
+    }, 1000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [testMode, remainingSeconds]);
+  }, [testMode]);
 
   // Fullscreen Toggle
   const toggleFullscreen = () => {
@@ -317,6 +342,21 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
     }
   };
 
+  const handleNext = () => {
+    if (currentQuestionIndex < activeQuestions.length - 1) {
+      const nextIndex = currentQuestionIndex + 1;
+      const nextQ = activeQuestions[nextIndex];
+      setCurrentQuestionIndex(nextIndex);
+
+      if (userResponses[nextQ.id]?.status === 'NOT_VISITED') {
+        setUserResponses((prev) => ({
+          ...prev,
+          [nextQ.id]: { ...prev[nextQ.id], status: 'NOT_ANSWERED' }
+        }));
+      }
+    }
+  };
+
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -359,7 +399,22 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
       Hard: { total: 0, correct: 0, wrong: 0 }
     };
 
-    activeQuestions.forEach((q) => {
+    let fastQuestionsCount = 0;
+    let normalQuestionsCount = 0;
+    let slowQuestionsCount = 0;
+    const slowestList: {
+      id: string;
+      number: number;
+      subject: string;
+      topic: string;
+      timeSpentSeconds: number;
+      isCorrect: boolean;
+    }[] = [];
+
+    const subjectTimeSums: Record<string, { totalTime: number; count: number }> = {};
+    const topicTimeSums: Record<string, { totalTime: number; count: number; subject: string }> = {};
+
+    activeQuestions.forEach((q, idx) => {
       if (!subjectsMap[q.subject]) {
         subjectsMap[q.subject] = { total: 0, attempted: 0, correct: 0, wrong: 0, score: 0, maxScore: 0 };
       }
@@ -375,6 +430,37 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
 
       const res = userResponses[q.id];
       const selected = res?.selectedOption;
+      const timeSpent = res?.timeSpentSeconds || 0;
+
+      // Speed metrics per question
+      if (timeSpent < 45) {
+        fastQuestionsCount++;
+      } else if (timeSpent <= 90) {
+        normalQuestionsCount++;
+      } else {
+        slowQuestionsCount++;
+      }
+
+      slowestList.push({
+        id: q.id,
+        number: idx + 1,
+        subject: q.subject,
+        topic: q.topic,
+        timeSpentSeconds: timeSpent,
+        isCorrect: selected === q.correctAnswer
+      });
+
+      if (!subjectTimeSums[q.subject]) {
+        subjectTimeSums[q.subject] = { totalTime: 0, count: 0 };
+      }
+      subjectTimeSums[q.subject].totalTime += timeSpent;
+      subjectTimeSums[q.subject].count++;
+
+      if (!topicTimeSums[q.topic]) {
+        topicTimeSums[q.topic] = { totalTime: 0, count: 0, subject: q.subject };
+      }
+      topicTimeSums[q.topic].totalTime += timeSpent;
+      topicTimeSums[q.topic].count++;
 
       if (selected) {
         attempted++;
@@ -409,6 +495,20 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
         unattempted++;
       }
     });
+
+    // Sort slowest list descending
+    slowestList.sort((a, b) => b.timeSpentSeconds - a.timeSpentSeconds);
+
+    const subjectAvgTimes = Object.keys(subjectTimeSums).map((sub) => ({
+      subject: sub,
+      avgSeconds: Math.round(subjectTimeSums[sub].totalTime / Math.max(1, subjectTimeSums[sub].count))
+    }));
+
+    const topicAvgTimes = Object.keys(topicTimeSums).map((top) => ({
+      topic: top,
+      subject: topicTimeSums[top].subject,
+      avgSeconds: Math.round(topicTimeSums[top].totalTime / Math.max(1, topicTimeSums[top].count))
+    }));
 
     netScore = Math.max(0, netScore);
     const maxMarks = currentMockItem?.maximumMarks || 200;
@@ -467,6 +567,12 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
       subjectScores,
       topicScores,
       difficultyScores,
+      fastQuestionsCount,
+      normalQuestionsCount,
+      slowQuestionsCount,
+      slowestQuestions: slowestList,
+      subjectAvgTimes,
+      topicAvgTimes,
       userResponses
     };
 
@@ -478,6 +584,11 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
       maxMarks,
       accuracy,
       timeSeconds: timeUsed,
+      correct,
+      wrong,
+      unattempted,
+      mockId: currentMockItem?.id,
+      mockTitle: currentMockItem?.title,
       timestamp: Date.now(),
       date: new Date().toLocaleDateString('en-IN')
     };
@@ -581,6 +692,7 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
               onMarkForReview={handleMarkForReview}
               onSaveAndNext={handleSaveAndNext}
               onPrevious={handlePrevious}
+              onNext={handleNext}
               onOpenPaletteMobile={() => setIsPaletteOpenMobile(true)}
             />
           )}
@@ -637,6 +749,7 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
         <MockResultDashboard
           result={currentResult}
           previousBest={previousBest}
+          historyList={historyList}
           onReviewSolutions={() => setTestMode('SOLUTIONS')}
           onReattempt={handleReattempt}
           onViewMistakes={() => {
@@ -675,6 +788,26 @@ export const MockTestPage: React.FC<MockTestPageProps> = ({ onNavigate, depth = 
             const matchedQs = activeQuestions.filter((q) => q.topic === topic);
             if (matchedQs.length > 0) {
               handleStartWeaknessRetest(matchedQs);
+            }
+          }}
+          onSaveToNotebook={(q) => {
+            const notebookItem: StoredMistake = {
+              id: `notebook_${q.id}_${Date.now()}`,
+              examId: currentExamConfig.examId,
+              mockId: currentMockItem?.id || 'mock',
+              mockNumber: currentMockItem?.mockNumber || 1,
+              question: q,
+              userAnswer: currentResult.userResponses[q.id]?.selectedOption || '',
+              attemptDate: new Date().toLocaleDateString('en-IN')
+            };
+            const updated = [notebookItem, ...mistakesList];
+            setMistakesList(updated);
+            try {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('rajdailytools_mistakes', JSON.stringify(updated));
+              }
+            } catch (err) {
+              console.warn(err);
             }
           }}
         />

@@ -14,6 +14,7 @@ interface CbtQuestionAreaProps {
   onMarkForReview: () => void;
   onSaveAndNext: () => void;
   onPrevious: () => void;
+  onNext: () => void;
   onOpenPaletteMobile: () => void;
 }
 
@@ -29,6 +30,7 @@ export const CbtQuestionArea: React.FC<CbtQuestionAreaProps> = ({
   onMarkForReview,
   onSaveAndNext,
   onPrevious,
+  onNext,
   onOpenPaletteMobile
 }) => {
   const displayQuestion =
@@ -146,21 +148,36 @@ export const CbtQuestionArea: React.FC<CbtQuestionAreaProps> = ({
 
       {/* Navigation Buttons Row */}
       <div id="cbt-navigation-bar" className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
-        {/* Left Side: Previous & Clear Response */}
-        <div className="flex items-center gap-2">
+        {/* Left Side: Previous, Next & Clear Response */}
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             id="btn-cbt-previous"
             onClick={onPrevious}
             disabled={currentIndex === 0}
-            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               currentIndex === 0
                 ? 'opacity-40 cursor-not-allowed border-slate-200 text-slate-400 bg-slate-50'
                 : 'border-slate-300 text-slate-700 bg-white hover:bg-slate-100 active:scale-95'
             }`}
           >
             <ChevronLeft className="w-4 h-4" />
-            <span>Previous</span>
+            <span>PREVIOUS</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-cbt-next"
+            onClick={onNext}
+            disabled={currentIndex === totalQuestions - 1}
+            className={`flex items-center gap-1 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              currentIndex === totalQuestions - 1
+                ? 'opacity-40 cursor-not-allowed border-slate-200 text-slate-400 bg-slate-50'
+                : 'border-slate-300 text-slate-700 bg-white hover:bg-slate-100 active:scale-95'
+            }`}
+          >
+            <span>NEXT</span>
+            <ChevronRight className="w-4 h-4" />
           </button>
 
           <button
@@ -175,12 +192,12 @@ export const CbtQuestionArea: React.FC<CbtQuestionAreaProps> = ({
             }`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Clear Response</span>
+            <span>CLEAR RESPONSE</span>
           </button>
         </div>
 
-        {/* Right Side: Mark for Review & Save and Next */}
-        <div className="flex items-center gap-2 ml-auto">
+        {/* Right Side: Mark for Review & Next, and Save & Next */}
+        <div className="flex flex-wrap items-center gap-2 ml-auto">
           <button
             type="button"
             id="btn-cbt-mark-review"
@@ -192,7 +209,7 @@ export const CbtQuestionArea: React.FC<CbtQuestionAreaProps> = ({
             }`}
           >
             <Bookmark className="w-4 h-4" />
-            <span>{isMarkedForReview ? 'Marked' : 'Mark for Review'}</span>
+            <span>MARK FOR REVIEW & NEXT</span>
           </button>
 
           <button
@@ -201,7 +218,7 @@ export const CbtQuestionArea: React.FC<CbtQuestionAreaProps> = ({
             onClick={onSaveAndNext}
             className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-blue-500/20 active:scale-95 transition-all cursor-pointer"
           >
-            <span>{currentIndex === totalQuestions - 1 ? 'Save & Review' : 'Save & Next'}</span>
+            <span>{currentIndex === totalQuestions - 1 ? 'SAVE & REVIEW' : 'SAVE & NEXT'}</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
