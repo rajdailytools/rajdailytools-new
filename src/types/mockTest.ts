@@ -26,6 +26,7 @@ export interface MockQuestion {
   difficulty: 'Easy' | 'Medium' | 'Hard';
   marks: number;
   negativeMarks: number;
+  sourceLabel?: string; // e.g. "RajDailyTools Practice Question"
 }
 
 export interface ExamMockConfig {
@@ -34,18 +35,25 @@ export interface ExamMockConfig {
   shortName: string;
   year: string;
   category: 'SSC' | 'Railway' | 'Police' | 'Banking' | 'Teaching' | 'Defense' | 'State Exams' | 'Other';
+  organization: string;
   totalQuestions: number;
   durationMinutes: number;
   maximumMarks: number;
   marksPerQuestion: number;
   negativeMarks: number;
   subjects: { name: string; questionCount: number; marks: number }[];
+  sections?: string[];
   languages: ('English' | 'Hindi')[];
   difficulty: 'Easy' | 'Moderate' | 'Hard';
+  examPattern: string;
   logoIcon: string;
-  organization: string;
   slug: string;
   description: string;
+  freeMocksCount: number;
+  paidMocksCount: number;
+  totalMocksCount: number;
+  price: number;
+  isAvailable: boolean;
 }
 
 export interface MockTestItem {
@@ -58,6 +66,7 @@ export interface MockTestItem {
   totalQuestions: number;
   durationMinutes: number;
   maximumMarks: number;
+  isAvailable: boolean;
   questions?: MockQuestion[];
 }
 
