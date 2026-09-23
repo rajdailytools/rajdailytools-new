@@ -135,11 +135,11 @@ export const Accordion: React.FC<AccordionProps> = ({
                     <div className="mb-4">
                       <LiveCountdownWidget
                         targetDate="2026-10-07T23:59:59+05:30"
-                        title="Application & Fee Deadline"
-                        subtitle="Target: 07 October 2026 (23:59:59 IST)"
-                        badgeLabel="Application Closes"
+                        title="Application Deadline"
+                        subtitle="07 October 2026 (23:59:59 IST)"
+                        badgeLabel="Fee &amp; Form Close"
                         variant="red"
-                        passedText="Application Deadline Passed"
+                        passedText="Application Closed"
                       />
                     </div>
                   )}
@@ -147,9 +147,9 @@ export const Accordion: React.FC<AccordionProps> = ({
                     <div className="mb-4">
                       <LiveCountdownWidget
                         targetDate="2026-10-11T23:59:59+05:30"
-                        title="Application Form Correction Window"
-                        subtitle="Target: 11 October 2026 (23:59:59 IST)"
-                        badgeLabel="Correction Closes"
+                        title="Correction Deadline"
+                        subtitle="11 October 2026 (23:59:59 IST)"
+                        badgeLabel="Correction Window Closes"
                         variant="purple"
                         passedText="Correction Window Closed"
                       />
@@ -158,12 +158,12 @@ export const Accordion: React.FC<AccordionProps> = ({
                   {section.title.toLowerCase().includes('exam countdown') && (
                     <div className="mb-4">
                       <LiveCountdownWidget
-                        targetDate="2026-11-19T09:00:00+05:30"
-                        title="Written Examination Starts In"
-                        subtitle="Target: 19 November 2026 (09:00:00 IST)"
-                        badgeLabel="OMR Exam Date"
+                        targetDate="2026-11-19T00:00:00+05:30"
+                        title="Exam Starts On 19 November 2026"
+                        subtitle="19 November 2026 (Official Date Boundary IST)"
+                        badgeLabel="Written Exam Date"
                         variant="emerald"
-                        passedText="Written Exam Commenced"
+                        passedText="Exam Started / Ongoing"
                       />
                     </div>
                   )}

@@ -452,6 +452,137 @@
       .replace(/'/g, '&#039;');
   }
 
+  // --- 7. Live Universal Countdown Engine ---
+  function initLiveCountdowns() {
+    function parseTarget(targetStr) {
+      if (!targetStr) return NaN;
+      var str = targetStr.trim();
+      if (str.indexOf('+') !== -1 || str.endsWith('Z') || /T\d{2}:\d{2}:\d{2}[-+]\d{2}/.test(str)) {
+        var p = new Date(str).getTime();
+        if (!isNaN(p)) return p;
+      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+        return new Date(str + 'T23:59:59+05:30').getTime();
+      }
+      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(str)) {
+        var full = str.length === 16 ? str + ':00' : str;
+        return new Date(full + '+05:30').getTime();
+      }
+      return new Date(str).getTime();
+    }
+
+    function tick() {
+      var now = Date.now();
+
+      // 1. Live Countdown Widgets
+      var countdownWidgets = document.querySelectorAll('[data-live-countdown="true"]');
+      countdownWidgets.forEach(function (widget) {
+        var targetStr = widget.getAttribute('data-target-date');
+        var targetMs = parseTarget(targetStr);
+        if (isNaN(targetMs)) return;
+
+        var diffMs = targetMs - now;
+        var passedBox = widget.querySelector('[data-countdown-passed="true"]');
+        var liveBox = widget.querySelector('[data-countdown-live="true"]');
+
+        if (diffMs <= 0) {
+          if (passedBox) {
+            passedBox.classList.remove('hidden');
+            passedBox.classList.add('block');
+          }
+          if (liveBox) {
+            liveBox.classList.add('hidden');
+            liveBox.classList.remove('grid');
+          }
+          return;
+        }
+
+        // Active state: ensure live grid is shown and passed box hidden
+        if (passedBox) {
+          passedBox.classList.add('hidden');
+          passedBox.classList.remove('block');
+        }
+        if (liveBox) {
+          liveBox.classList.remove('hidden');
+          liveBox.classList.add('grid');
+        }
+
+        var totalSecs = Math.floor(diffMs / 1000);
+        var seconds = totalSecs % 60;
+        var totalMins = Math.floor(totalSecs / 60);
+        var minutes = totalMins % 60;
+        var totalHours = Math.floor(totalMins / 60);
+        var hours = totalHours % 24;
+        var days = Math.floor(totalHours / 24);
+
+        var daysEl = widget.querySelector('[data-countdown-days="true"]');
+        var hoursEl = widget.querySelector('[data-countdown-hours="true"]');
+        var minsEl = widget.querySelector('[data-countdown-minutes="true"]');
+        var secsEl = widget.querySelector('[data-countdown-seconds="true"]');
+
+        if (daysEl) daysEl.textContent = String(Math.max(0, days));
+        if (hoursEl) hoursEl.textContent = (hours < 10 ? '0' : '') + Math.max(0, hours);
+        if (minsEl) minsEl.textContent = (minutes < 10 ? '0' : '') + Math.max(0, minutes);
+        if (secsEl) secsEl.textContent = (seconds < 10 ? '0' : '') + Math.max(0, seconds);
+      });
+
+      // 2. Top "Days Left" / Status Badges
+      var badgeEls = document.querySelectorAll('[data-countdown-badge="true"]');
+      badgeEls.forEach(function (badge) {
+        var targetStr = badge.getAttribute('data-target-date');
+        var badgeType = badge.getAttribute('data-badge-type') || 'deadline';
+        var targetMs = parseTarget(targetStr);
+        if (isNaN(targetMs)) return;
+
+        var diffMs = targetMs - now;
+
+        if (diffMs <= 0) {
+          badge.textContent = badgeType === 'deadline' ? 'Application Closed' : 'Exam Commenced / Completed';
+          badge.className = 'text-xs font-bold px-3 py-0.5 rounded-full bg-slate-100 text-slate-600 transition-colors';
+          return;
+        }
+
+        var totalSecs = Math.floor(diffMs / 1000);
+        var seconds = totalSecs % 60;
+        var totalMins = Math.floor(totalSecs / 60);
+        var minutes = totalMins % 60;
+        var totalHours = Math.floor(totalMins / 60);
+        var hours = totalHours % 24;
+        var days = Math.floor(totalHours / 24);
+
+        var isUrgent = days <= 3;
+        badge.className = 'text-xs font-bold px-3 py-0.5 rounded-full transition-colors ' +
+          (isUrgent ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200');
+
+        if (badgeType === 'deadline') {
+          if (days === 0) {
+            badge.textContent = 'Ends Today (' + hours + 'h ' + minutes + 'm ' + seconds + 's left)';
+          } else {
+            badge.textContent = days + ' Days Left';
+          }
+        } else {
+          if (days === 0) {
+            badge.textContent = 'Exam Today (' + hours + 'h ' + minutes + 'm left)';
+          } else {
+            badge.textContent = 'Starts in ' + days + ' Days';
+          }
+        }
+      });
+    }
+
+    // Run tick immediately on initialization
+    tick();
+
+    // Set 1-second continuous timer
+    setInterval(tick, 1000);
+
+    // Refresh immediately when returning from other tab or unlocking device
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) tick();
+    });
+    window.addEventListener('focus', tick);
+  }
+
   // Run initializations on DOM Ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
@@ -466,5 +597,6 @@
     initAccordions();
     initAgeCalculator();
     initSharePrint();
+    initLiveCountdowns();
   }
 })();

@@ -13,6 +13,7 @@ import { UpesscAssistantProfessorToolsModal } from '../components/UpesscAssistan
 import { LiveCountdownWidget } from '../components/LiveCountdownWidget';
 import { RankingToolEngine } from '../components/RankingTools';
 import { getCountdown, formatDate } from '../utils/dateUtils';
+import { getLiveBadgeStatus, LiveBadgeResult } from '../utils/countdownEngine';
 import { getPageUrl } from '../utils/urlHelper';
 import {
   Briefcase,
@@ -48,6 +49,31 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
   const [hpscFsoModalTool, setHpscFsoModalTool] = useState<string | null>(null);
   const [ntpcModalTool, setNtpcModalTool] = useState<string | null>(null);
   const [upesscApModalTool, setUpesscApModalTool] = useState<string | null>(null);
+  const [badgeStatus, setBadgeStatus] = useState<LiveBadgeResult>(() =>
+    getLiveBadgeStatus(exam.applicationLastDate, 'deadline')
+  );
+
+  useEffect(() => {
+    setBadgeStatus(getLiveBadgeStatus(exam.applicationLastDate, 'deadline'));
+    const timer = setInterval(() => {
+      setBadgeStatus(getLiveBadgeStatus(exam.applicationLastDate, 'deadline'));
+    }, 1000);
+
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        setBadgeStatus(getLiveBadgeStatus(exam.applicationLastDate, 'deadline'));
+      }
+    };
+    window.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleVisibility);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleVisibility);
+    };
+  }, [exam.applicationLastDate]);
+
   const countdown = getCountdown(exam.applicationLastDate, 'deadline');
   const isConcor = exam.id === 'concor-mt-ao-2026' || exam.slug?.includes('concor') || exam.shortName?.includes('CONCOR');
   const isUpesscPrt = exam.id === 'upessc-prt-assistant-teacher-2026' || exam.slug?.includes('upessc-prt') || exam.shortName?.includes('UPESSC PRT');
@@ -146,15 +172,18 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </span>
                 )}
                 <span
-                  className={`text-xs font-bold px-3 py-0.5 rounded-full ${
-                    countdown.isClosed
+                  data-countdown-badge="true"
+                  data-target-date={exam.applicationLastDate}
+                  data-badge-type="deadline"
+                  className={`text-xs font-bold px-3 py-0.5 rounded-full transition-colors ${
+                    badgeStatus.isClosed
                       ? 'bg-slate-100 text-slate-600'
-                      : countdown.isUrgent
+                      : badgeStatus.isUrgent
                       ? 'bg-red-50 text-red-700 border border-red-200'
                       : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                   }`}
                 >
-                  {countdown.text}
+                  {badgeStatus.text}
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
@@ -213,7 +242,7 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             <LiveCountdownWidget
               targetDate="2026-10-07T23:59:59+05:30"
               title="Application Deadline"
-              subtitle="07 October 2026 (23:59 IST)"
+              subtitle="07 October 2026 (23:59:59 IST)"
               badgeLabel="Fee &amp; Form Close"
               variant="red"
               passedText="Application Closed"
@@ -221,18 +250,18 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             <LiveCountdownWidget
               targetDate="2026-10-11T23:59:59+05:30"
               title="Correction Deadline"
-              subtitle="11 October 2026 (23:59 IST)"
-              badgeLabel="Correction Closes"
+              subtitle="11 October 2026 (23:59:59 IST)"
+              badgeLabel="Correction Window Closes"
               variant="purple"
-              passedText="Correction Closed"
+              passedText="Correction Window Closed"
             />
             <LiveCountdownWidget
-              targetDate="2026-11-19T09:00:00+05:30"
-              title="Exam Starts In"
-              subtitle="19 November 2026 (09:00 IST)"
+              targetDate="2026-11-19T00:00:00+05:30"
+              title="Exam Starts On 19 November 2026"
+              subtitle="19 November 2026 (Official Date Boundary IST)"
               badgeLabel="Written Exam Date"
               variant="emerald"
-              passedText="Exam Commenced"
+              passedText="Exam Started / Ongoing"
             />
           </div>
         )}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { LiveCountdownWidget } from './LiveCountdownWidget';
 import {
   X,
   Camera,
@@ -59,13 +60,6 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
   // ===================== AGE CHECKER STATE =====================
   const [dob, setDob] = useState<string>('1985-06-15');
   const [category, setCategory] = useState<string>('UR');
-
-  // ===================== COUNTDOWN STATE =====================
-  const [now, setNow] = useState<Date>(new Date());
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   // ===================== OMR SCORE STATE =====================
   const [correctAnswers, setCorrectAnswers] = useState<number>(80);
@@ -253,21 +247,6 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
   };
 
   const ageInfo = calculateAge();
-
-  // Deadline Countdown (07 October 2026, 23:59:59)
-  const deadlineDate = new Date('2026-10-07T23:59:59+05:30');
-  const timeDiff = deadlineDate.getTime() - now.getTime();
-  const deadlineDays = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
-  const deadlineHours = Math.max(0, Math.floor((timeDiff / (1000 * 60 * 60)) % 24));
-  const deadlineMinutes = Math.max(0, Math.floor((timeDiff / 1000 / 60) % 60));
-  const deadlineSeconds = Math.max(0, Math.floor((timeDiff / 1000) % 60));
-  const isDeadlinePassed = timeDiff <= 0;
-
-  // Exam Countdown (19 November 2026, 09:00:00)
-  const examDate = new Date('2026-11-19T09:00:00+05:30');
-  const examDiff = examDate.getTime() - now.getTime();
-  const examDays = Math.max(0, Math.floor(examDiff / (1000 * 60 * 60 * 24)));
-  const examHours = Math.max(0, Math.floor((examDiff / (1000 * 60 * 60)) % 24));
 
   // OMR Calculation
   const totalQuestions = 120;
@@ -1036,71 +1015,36 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
 
           {/* ===================== TAB 5: DEADLINE & EXAM COUNTDOWN ===================== */}
           {activeTab === 'countdown' && (
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Application Deadline Countdown */}
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 uppercase">
-                      Application Fee Deadline
-                    </span>
-                    <span className="text-[10px] font-mono bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">
-                      07 Oct 2026
-                    </span>
-                  </div>
-                  {isDeadlinePassed ? (
-                    <div className="p-4 bg-red-100 text-red-800 rounded-xl text-center font-bold text-sm">
-                      Application Deadline Passed
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="p-2 bg-white rounded-xl border border-slate-200">
-                        <span className="text-xl font-black text-slate-900 font-display">{deadlineDays}</span>
-                        <span className="text-[10px] text-slate-400 block uppercase">Days</span>
-                      </div>
-                      <div className="p-2 bg-white rounded-xl border border-slate-200">
-                        <span className="text-xl font-black text-slate-900 font-display">{deadlineHours}</span>
-                        <span className="text-[10px] text-slate-400 block uppercase">Hours</span>
-                      </div>
-                      <div className="p-2 bg-white rounded-xl border border-slate-200">
-                        <span className="text-xl font-black text-slate-900 font-display">{deadlineMinutes}</span>
-                        <span className="text-[10px] text-slate-400 block uppercase">Mins</span>
-                      </div>
-                      <div className="p-2 bg-white rounded-xl border border-slate-200">
-                        <span className="text-xl font-black text-red-600 font-display">{deadlineSeconds}</span>
-                        <span className="text-[10px] text-slate-400 block uppercase">Secs</span>
-                      </div>
-                    </div>
-                  )}
-                  <p className="text-[11px] text-slate-500">
-                    Fee payments close at 23:59:59 IST on 07 October 2026. Correction window extends to 11 October 2026.
-                  </p>
-                </div>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <LiveCountdownWidget
+                  targetDate="2026-10-07T23:59:59+05:30"
+                  title="Application Deadline"
+                  subtitle="07 October 2026 (23:59:59 IST)"
+                  badgeLabel="Fee &amp; Form Close"
+                  variant="red"
+                  passedText="Application Closed"
+                />
+                <LiveCountdownWidget
+                  targetDate="2026-10-11T23:59:59+05:30"
+                  title="Correction Deadline"
+                  subtitle="11 October 2026 (23:59:59 IST)"
+                  badgeLabel="Correction Window Closes"
+                  variant="purple"
+                  passedText="Correction Window Closed"
+                />
+                <LiveCountdownWidget
+                  targetDate="2026-11-19T00:00:00+05:30"
+                  title="Exam Starts On 19 November 2026"
+                  subtitle="19 November 2026 (Official Date Boundary IST)"
+                  badgeLabel="Written Exam Date"
+                  variant="emerald"
+                  passedText="Exam Started / Ongoing"
+                />
+              </div>
 
-                {/* Exam Date Countdown */}
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 uppercase">
-                      Written Examination
-                    </span>
-                    <span className="text-[10px] font-mono bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">
-                      19 Nov 2026
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-center">
-                    <div className="p-2 bg-white rounded-xl border border-slate-200">
-                      <span className="text-xl font-black text-emerald-800 font-display">{examDays}</span>
-                      <span className="text-[10px] text-slate-400 block uppercase">Days Left</span>
-                    </div>
-                    <div className="p-2 bg-white rounded-xl border border-slate-200">
-                      <span className="text-xl font-black text-emerald-800 font-display">{examHours}</span>
-                      <span className="text-[10px] text-slate-400 block uppercase">Hours Left</span>
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    Exams will be held on 19 and 20 November 2026 across UP centers. Admit cards will be available 10 days before exam.
-                  </p>
-                </div>
+              <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
+                <strong>Official UPESSC Guidelines:</strong> Online application &amp; examination fee payments close strictly at 23:59:59 IST on 07 October 2026. The correction window remains active through 11 October 2026 (23:59:59 IST). The OMR written examination commences on 19 November 2026 across commission-designated centers in Uttar Pradesh.
               </div>
             </div>
           )}

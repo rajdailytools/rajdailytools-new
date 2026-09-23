@@ -158,7 +158,7 @@ export function generateUpesscAssistantProfessor50Sections(): ExamInfoSection[] 
       badge: 'Live Timer',
       content: `
         <div class="space-y-3 text-slate-700 leading-relaxed text-xs sm:text-sm">
-          <p>The written examination will be held on <strong>19 and 20 November 2026</strong> across designated examination centers in Uttar Pradesh. Below is the countdown to the start of the examination on 19 November 2026 (09:00:00 IST).</p>
+          <p>The written examination will be held on <strong>19 and 20 November 2026</strong> across designated examination centers in Uttar Pradesh. Below is the real-time countdown to Exam Starts On 19 November 2026.</p>
           <div class="p-4 bg-blue-50/80 border border-blue-200 rounded-2xl">
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="text-xs font-bold text-blue-900 uppercase">Written Exam Commences</span>
