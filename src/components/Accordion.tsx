@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ExamInfoSection } from '../types/exam';
+import { LiveCountdownWidget } from './LiveCountdownWidget';
 
 interface AccordionProps {
   sections?: ExamInfoSection[];
@@ -129,6 +130,44 @@ export const Accordion: React.FC<AccordionProps> = ({
                 }`}
               >
                 <div className="p-4 sm:p-5 pt-1 text-sm text-slate-600 leading-relaxed bg-white border-t border-slate-100/80">
+                  {/* Dynamic Countdown Embed for UPESSC Countdown sections */}
+                  {section.title.toLowerCase().includes('application deadline countdown') && (
+                    <div className="mb-4">
+                      <LiveCountdownWidget
+                        targetDate="2026-10-07T23:59:59+05:30"
+                        title="Application & Fee Deadline"
+                        subtitle="Target: 07 October 2026 (23:59:59 IST)"
+                        badgeLabel="Application Closes"
+                        variant="red"
+                        passedText="Application Deadline Passed"
+                      />
+                    </div>
+                  )}
+                  {section.title.toLowerCase().includes('correction deadline countdown') && (
+                    <div className="mb-4">
+                      <LiveCountdownWidget
+                        targetDate="2026-10-11T23:59:59+05:30"
+                        title="Application Form Correction Window"
+                        subtitle="Target: 11 October 2026 (23:59:59 IST)"
+                        badgeLabel="Correction Closes"
+                        variant="purple"
+                        passedText="Correction Window Closed"
+                      />
+                    </div>
+                  )}
+                  {section.title.toLowerCase().includes('exam countdown') && (
+                    <div className="mb-4">
+                      <LiveCountdownWidget
+                        targetDate="2026-11-19T09:00:00+05:30"
+                        title="Written Examination Starts In"
+                        subtitle="Target: 19 November 2026 (09:00:00 IST)"
+                        badgeLabel="OMR Exam Date"
+                        variant="emerald"
+                        passedText="Written Exam Commenced"
+                      />
+                    </div>
+                  )}
+
                   <div className="p-3.5 sm:p-4 bg-slate-50 rounded-xl border border-slate-200/60 font-medium overflow-x-auto text-slate-700">
                     {typeof section.content === 'string' && section.content.includes('<') ? (
                       <div

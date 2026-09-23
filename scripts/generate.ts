@@ -51,6 +51,8 @@ import { UPSC_11_2026_VARIOUS_POSTS_EXAM } from '../src/data/upsc112026VariousPo
 import { DELHI_HIGH_COURT_SPA_PA_2026_EXAM } from '../src/data/delhiHighCourtSpaPaData';
 import { BANK_OF_INDIA_SO_2026_EXAM } from '../src/data/bankOfIndiaSoData';
 import { NIC_STA_2026_EXAM } from '../src/data/nicStaData';
+import { NTPC_ASSISTANT_OFFICER_2026_EXAM } from '../src/data/ntpcAssistantOfficerData';
+import { UPESSC_ASSISTANT_PROFESSOR_2026_EXAM } from '../src/data/upesscAssistantProfessorData';
 import { MP_POLICE_CONSTABLE_2026_EXAM } from '../src/data/mpPoliceConstableData';
 import { BSF_HCM_ASI_STENO_2026_EXAM } from '../src/data/bsfHcmAsiStenoData';
 import { BsfHcmAsiStenoAnswerKeyPage } from '../src/pages/BsfHcmAsiStenoAnswerKeyPage';
@@ -104,7 +106,11 @@ const searchIndex = [
     category: exam.category,
     vac: exam.totalVacancy,
     url:
-      exam.slug === 'hpsc-food-safety-officer-fso-recruitment-2026'
+      exam.slug === 'upessc-assistant-professor-recruitment-2026'
+        ? 'latest-jobs/upessc-assistant-professor-recruitment-2026.html'
+        : exam.slug === 'ntpc-assistant-officer-recruitment-2026'
+        ? 'latest-jobs/ntpc-assistant-officer-recruitment-2026.html'
+        : exam.slug === 'hpsc-food-safety-officer-fso-recruitment-2026'
         ? 'hpsc-food-safety-officer-fso-recruitment-2026.html'
         : exam.slug === 'uksssc-group-c-scaler-recruitment-2026'
         ? 'uksssc-group-c-scaler-recruitment-2026.html'
@@ -1468,6 +1474,50 @@ async function generateAllPages() {
       pageKey: 'nic-scientific-technical-assistant-recruitment-2026',
       depth: 0,
       canonicalPath: 'nic-scientific-technical-assistant-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-9b. DEDICATED NTPC ASSISTANT OFFICER 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const ntpcAoExam =
+    EXAMS_DATABASE.find((e) => e.id === 'ntpc-assistant-officer-2026' || e.slug === 'ntpc-assistant-officer-recruitment-2026') ||
+    NTPC_ASSISTANT_OFFICER_2026_EXAM;
+
+  writePage(
+    'ntpc-assistant-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'NTPC Assistant Officer Recruitment 2026 – Apply Online, Eligibility, Vacancy, Salary',
+      description:
+        'NTPC Assistant Officer Recruitment 2026 for Assistant Officer (Corporate Communication), Advt. 12/26. Check 15 vacancies, eligibility, age limit, salary, important dates, application process and official links.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: ntpcAoExam, depth: 0 })
+      ),
+      pageKey: 'ntpc-assistant-officer-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'ntpc-assistant-officer-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-9c. DEDICATED UPESSC ASSISTANT PROFESSOR 2026 ROOT PAGE (depth = 0)
+  // --------------------------------------------------------------------------
+  const upesscApExam =
+    EXAMS_DATABASE.find((e) => e.id === 'upessc-assistant-professor-2026' || e.slug === 'upessc-assistant-professor-recruitment-2026') ||
+    UPESSC_ASSISTANT_PROFESSOR_2026_EXAM;
+
+  writePage(
+    'upessc-assistant-professor-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'UPESSC UP Assistant Professor Recruitment 2026 – Apply Online, 1936 Posts, Eligibility, Exam Pattern',
+      description:
+        'UPESSC Assistant Professor Recruitment 2026 (Advt. No. 04/2026) for 1,936 vacancies in non-government aided colleges across 42 subjects. Check eligibility, age limit (max 62 years), salary (Level-10), exam pattern (120 MCQs, 360 marks), negative marking (-1), interview (40 marks), photo/signature tools, and official links.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: upesscApExam, depth: 0 })
+      ),
+      pageKey: 'upessc-assistant-professor-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'upessc-assistant-professor-recruitment-2026.html'
     })
   );
 

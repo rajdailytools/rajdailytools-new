@@ -95,8 +95,20 @@ import {
   generateHpscFso50Sections
 } from './hpscFsoData';
 import { HPSC_FSO_50_SECTIONS } from './hpscFso50Sections';
+import {
+  NTPC_ASSISTANT_OFFICER_2026_EXAM,
+  generateNtpcAssistantOfficer50Sections
+} from './ntpcAssistantOfficerData';
+import {
+  UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
+  generateUpesscAssistantProfessor50Sections
+} from './upesscAssistantProfessorData';
 
 export {
+  UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
+  generateUpesscAssistantProfessor50Sections,
+  NTPC_ASSISTANT_OFFICER_2026_EXAM,
+  generateNtpcAssistantOfficer50Sections,
   HPSC_FSO_2026_EXAM,
   generateHpscFso50Sections,
   HPSC_FSO_50_SECTIONS,
@@ -159,6 +171,8 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
+  NTPC_ASSISTANT_OFFICER_2026_EXAM,
   HPSC_FSO_2026_EXAM,
   CONCOR_RECRUITMENT_2026_EXAM,
   UP_PGT_TEACHER_2026_EXAM,

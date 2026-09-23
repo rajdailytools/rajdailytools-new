@@ -12,7 +12,8 @@ export type ExamCategory =
   | 'Govt Exam' 
   | 'Admission'
   | 'State Jobs'
-  | 'UKPSC';
+  | 'UKPSC'
+  | 'Recruitment';
 
 export type LifecycleStage =
   | 'APPLICATION_OPEN'

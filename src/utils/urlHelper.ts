@@ -76,6 +76,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
   // Map dedicated root BSF HCM & ASI Steno Answer Key 2026 page
   if (page === 'bsf-hcm-asi-steno-answer-key-2026' || page === 'bsf-hcm-asi-steno-2026') return `${prefix}bsf-hcm-asi-steno-answer-key-2026.html`;
 
+  // Map dedicated root NTPC Assistant Officer 2026 page
+  if (page === 'ntpc-assistant-officer-recruitment-2026' || page === 'ntpc-assistant-officer-2026' || page === 'ntpc-assistant-officer') return `${prefix}ntpc-assistant-officer-recruitment-2026.html`;
+
   // Map dedicated root MP Police Constable 2026 page
   if (page === 'mpesb-mp-police-constable-recruitment-2026' || page === 'mp-police-constable-2026' || page === 'mp-police-constable-recruitment-2026') return `${prefix}mpesb-mp-police-constable-recruitment-2026.html`;
 
@@ -205,6 +208,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'ntpc-assistant-officer-recruitment-2026' || slug === 'ntpc-assistant-officer-2026' || slug === 'ntpc-assistant-officer') {
+        return `${prefix}latest-jobs/ntpc-assistant-officer-recruitment-2026.html`;
+      }
       if (slug === 'upessc-prt-assistant-teacher-recruitment-2026' || slug === 'upessc-prt-assistant-teacher-2026' || slug === 'upessc-prt-2026') {
         return `${prefix}upessc-prt-assistant-teacher-recruitment-2026.html`;
       }

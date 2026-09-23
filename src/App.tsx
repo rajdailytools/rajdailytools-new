@@ -56,6 +56,7 @@ import { UKSSSC_SCALER_2026_EXAM } from './data/ukssscScalerData';
 import { UP_PGT_TEACHER_2026_EXAM } from './data/upPgtTeacherData';
 import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
 import { HPSC_FSO_2026_EXAM } from './data/hpscFsoData';
+import { UPESSC_ASSISTANT_PROFESSOR_2026_EXAM } from './data/upesscAssistantProfessorData';
 import { ALL_15_RANKING_EXAMS } from './data/rankingPagesData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
@@ -79,6 +80,20 @@ export default function App() {
 
       if (!effectiveRoute) {
         setCurrentPage('home');
+        return;
+      }
+
+      // Check direct UPESSC Assistant Professor route
+      if (effectiveRoute.includes('upessc-assistant-professor') || effectiveRoute.includes('upessc-ap')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('upessc-assistant-professor-recruitment-2026');
+        return;
+      }
+
+      // Check direct NTPC Assistant Officer route
+      if (effectiveRoute.includes('ntpc-assistant-officer') || effectiveRoute.includes('ntpc-ao')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('ntpc-assistant-officer-recruitment-2026');
         return;
       }
 
@@ -180,6 +195,15 @@ export default function App() {
   };
 
   // Resolve Exam Record
+  const isUpesscAssistantProfessorPage = typeof currentPage === 'string' && (
+    currentPage.startsWith('upessc-assistant-professor') ||
+    currentPage === 'upessc-assistant-professor-recruitment-2026' ||
+    currentSlug === 'upessc-assistant-professor-recruitment-2026' ||
+    currentSlug === 'upessc-assistant-professor-2026' ||
+    currentSlug === 'upessc-ap-2026'
+  );
+  const upesscAssistantProfessorRecord = UPESSC_ASSISTANT_PROFESSOR_2026_EXAM;
+
   const isHpscFsoPage = typeof currentPage === 'string' && (
     currentPage.startsWith('hpsc-food-safety-officer') ||
     currentPage.startsWith('hpsc-fso') ||
@@ -283,6 +307,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isUpesscAssistantProfessorPage && upesscAssistantProfessorRecord) ? upesscAssistantProfessorRecord :
     (isHpscFsoPage && hpscFsoRecord) ? hpscFsoRecord :
     (isConcorPage && concorRecord) ? concorRecord :
     (isUpPgtPage && upPgtRecord) ? upPgtRecord :
