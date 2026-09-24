@@ -57,6 +57,8 @@ import { UP_PGT_TEACHER_2026_EXAM } from './data/upPgtTeacherData';
 import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
 import { HPSC_FSO_2026_EXAM } from './data/hpscFsoData';
 import { UPESSC_ASSISTANT_PROFESSOR_2026_EXAM } from './data/upesscAssistantProfessorData';
+import { IBPS_HINDI_OFFICER_2026_EXAM } from './data/ibpsHindiOfficerData';
+import { IbpsHindiOfficerPage } from './pages/IbpsHindiOfficerPage';
 import { ALL_15_RANKING_EXAMS } from './data/rankingPagesData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
 import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
@@ -84,6 +86,12 @@ export default function App() {
       }
 
       // Check direct UPESSC Assistant Professor route
+      if (effectiveRoute.includes('ibps-hindi-officer')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('ibps-hindi-officer-recruitment-2026');
+        return;
+      }
+
       if (effectiveRoute.includes('upessc-assistant-professor') || effectiveRoute.includes('upessc-ap')) {
         setCurrentPage('job-detail');
         setCurrentSlug('upessc-assistant-professor-recruitment-2026');
@@ -355,6 +363,13 @@ export default function App() {
         return <LatestJobsPage onNavigate={handleNavigate} />;
 
       case 'job-detail':
+        if (
+          currentSlug === 'ibps-hindi-officer-recruitment-2026' ||
+          currentSlug === 'ibps-hindi-officer-2026' ||
+          currentSlug === 'ibps-hindi-officer'
+        ) {
+          return <IbpsHindiOfficerPage exam={IBPS_HINDI_OFFICER_2026_EXAM} onNavigate={handleNavigate} />;
+        }
         if (
           currentSlug === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
           currentSlug === 'hpsc-food-safety-officer-fso-2026' ||

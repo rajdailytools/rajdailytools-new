@@ -84,7 +84,14 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
   // ===================== SUBJECT LOOKUP STATE =====================
   const [subjectQuery, setSubjectQuery] = useState<string>('');
 
-  if (!tool) return null;
+  // Keep active tab synced if tool is passed
+  useEffect(() => {
+    if (tool) {
+      setActiveTab(tool);
+    }
+  }, [tool]);
+
+  const isModalOpen = Boolean(tool);
 
   // Handle Photo File Upload
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,11 +246,10 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
       months += 12;
     }
 
-    const minAge = 21;
     const maxAge = 62; // Under Section 2.7 / 6(ख) of Advt. 04/2026
-    const eligible = years >= minAge && (years < maxAge || (years === maxAge && months === 0 && days === 0));
+    const eligible = years > 0 && (years < maxAge || (years === maxAge && months === 0 && days === 0));
 
-    return { years, months, days, eligible, minAge, maxAge };
+    return { years, months, days, eligible, maxAge };
   };
 
   const ageInfo = calculateAge();
@@ -253,7 +259,7 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
   const unattempted = Math.max(0, totalQuestions - (correctAnswers + wrongAnswers));
   const grossMarks = correctAnswers * 3;
   const negativePenalty = wrongAnswers * 1;
-  const netWrittenScore = Math.max(0, grossMarks - negativePenalty);
+  const netWrittenScore = grossMarks - negativePenalty;
   const totalSelectionScore = netWrittenScore + interviewScore;
 
   // 42 Subject Matrix Data
@@ -309,7 +315,19 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
   );
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div
+      id="upessc-ap-tools-modal"
+      data-modal-tool="upessc-ap"
+      className={`fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 ${
+        isModalOpen ? '' : 'hidden pointer-events-none'
+      }`}
+      style={{ display: isModalOpen ? 'flex' : 'none' }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in duration-200">
         {/* Header */}
         <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between shrink-0">
@@ -332,16 +350,21 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             </div>
           </div>
           <button
+            type="button"
+            data-modal-close="true"
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-white rounded-full hover:bg-slate-800 transition-colors cursor-pointer"
+            aria-label="Close Modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 pointer-events-none" />
           </button>
         </div>
 
         {/* Tab Navigation */}
         <div className="flex border-b border-slate-200 bg-slate-50 px-4 overflow-x-auto gap-2 shrink-0 py-2">
           <button
+            type="button"
+            data-tool-tab-switch="photo"
             onClick={() => setActiveTab('photo')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'photo'
@@ -353,6 +376,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             <span>Photo Resizer (30-300 KB)</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="signature"
             onClick={() => setActiveTab('signature')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'signature'
@@ -364,6 +389,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             <span>Signature Resizer (140x110)</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="age"
             onClick={() => setActiveTab('age')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'age'
@@ -375,6 +402,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             <span>Age Checker (Max 62)</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="omr"
             onClick={() => setActiveTab('omr')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'omr'
@@ -386,6 +415,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             <span>OMR Marks (+3 / -1)</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="countdown"
             onClick={() => setActiveTab('countdown')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'countdown'
@@ -394,9 +425,11 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             }`}
           >
             <Clock className="w-3.5 h-3.5" />
-            <span>Deadlines & Exam Countdown</span>
+            <span>Deadlines &amp; Exam Countdown</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="subjects"
             onClick={() => setActiveTab('subjects')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'subjects'
@@ -408,6 +441,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             <span>42 Subjects Explorer</span>
           </button>
           <button
+            type="button"
+            data-tool-tab-switch="documents"
             onClick={() => setActiveTab('documents')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
               activeTab === 'documents'
@@ -416,251 +451,283 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
             }`}
           >
             <FileCheck className="w-3.5 h-3.5" />
-            <span>18 DV Checklist & PDF Guide</span>
+            <span>18 DV Checklist &amp; PDF Guide</span>
           </button>
         </div>
 
         {/* Modal Content Body */}
         <div className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1">
           {/* ===================== TAB 1: PHOTO RESIZER ===================== */}
-          {activeTab === 'photo' && (
-            <div className="space-y-5">
-              <div className="bg-blue-50/70 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
-                <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <div className="text-xs text-blue-900 leading-relaxed">
-                  <strong>Official Notification Advt 04/2026 Photo Rule (Section 2.13):</strong>
-                  <br />
-                  Format: <strong>JPG / JPEG</strong> | File Size: <strong>30 KB to 300 KB</strong> | Pixel Resolution:{' '}
-                  <strong>300 to 600 pixels</strong>. Light or plain white background.
-                  <p className="text-[11px] text-blue-700 mt-1 italic">
-                    Disclaimer: Processed entirely inside your web browser. Check the official notification before uploading.
-                  </p>
-                </div>
+          <div
+            id="upessc-tab-photo"
+            data-tool-tab-panel="photo"
+            className={`space-y-5 ${activeTab === 'photo' ? '' : 'hidden'}`}
+          >
+            <div className="bg-blue-50/70 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
+              <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-blue-900 leading-relaxed">
+                <strong>Official Notification Advt 04/2026 Photo Rule (Section 2.13):</strong>
+                <br />
+                Format: <strong>JPG / JPEG</strong> | File Size: <strong>30 KB to 300 KB</strong> | Pixel Resolution:{' '}
+                <strong>300 to 600 pixels</strong>. Light or plain white background.
+                <p className="text-[11px] text-blue-700 mt-1 italic">
+                  Disclaimer: Processed entirely inside your web browser. Check the official notification before uploading.
+                </p>
               </div>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Upload & Controls */}
-                <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Upload & Controls */}
+              <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                    Upload Passport Photograph
+                  </label>
+                  <input
+                    id="upessc-photo-input"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png"
+                    onChange={handlePhotoUpload}
+                    className="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+                  />
+                  {photoOrigSize > 0 && (
+                    <p id="upessc-photo-orig-size" className="text-[11px] text-slate-500 mt-1">
+                      Original file size: <strong>{photoOrigSize} KB</strong>
+                    </p>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-800 mb-1.5">
-                      Upload Passport Photograph
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Width (px) [300-600]
                     </label>
                     <input
-                      type="file"
-                      accept="image/jpeg,image/jpg,image/png"
-                      onChange={handlePhotoUpload}
-                      className="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+                      id="upessc-photo-width"
+                      type="number"
+                      min="200"
+                      max="800"
+                      value={photoWidth}
+                      onChange={(e) => {
+                        const w = Number(e.target.value);
+                        setPhotoWidth(w);
+                        if (photoKeepAspect && photoAspectRatio > 0) {
+                          setPhotoHeight(Math.round(w / photoAspectRatio));
+                        }
+                      }}
+                      className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
                     />
-                    {photoOrigSize > 0 && (
-                      <p className="text-[11px] text-slate-500 mt-1">
-                        Original file size: <strong>{photoOrigSize} KB</strong>
-                      </p>
-                    )}
                   </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                        Width (px) [300-600]
-                      </label>
-                      <input
-                        type="number"
-                        min="200"
-                        max="800"
-                        value={photoWidth}
-                        onChange={(e) => {
-                          const w = Number(e.target.value);
-                          setPhotoWidth(w);
-                          if (photoKeepAspect && photoAspectRatio > 0) {
-                            setPhotoHeight(Math.round(w / photoAspectRatio));
-                          }
-                        }}
-                        className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                        Height (px) [300-600]
-                      </label>
-                      <input
-                        type="number"
-                        min="200"
-                        max="800"
-                        value={photoHeight}
-                        onChange={(e) => {
-                          const h = Number(e.target.value);
-                          setPhotoHeight(h);
-                          if (photoKeepAspect && photoAspectRatio > 0) {
-                            setPhotoWidth(Math.round(h * photoAspectRatio));
-                          }
-                        }}
-                        className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="keepAspect"
-                      checked={photoKeepAspect}
-                      onChange={(e) => setPhotoKeepAspect(e.target.checked)}
-                      className="rounded text-blue-600"
-                    />
-                    <label htmlFor="keepAspect" className="text-xs text-slate-700 font-medium">
-                      Lock aspect ratio
-                    </label>
-                  </div>
-
                   <div>
-                    <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span>Compression Quality</span>
-                      <span className="font-mono text-blue-700">{Math.round(photoQuality * 100)}%</span>
-                    </div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Height (px) [300-600]
+                    </label>
                     <input
-                      type="range"
-                      min="0.1"
-                      max="1.0"
-                      step="0.05"
-                      value={photoQuality}
-                      onChange={(e) => setPhotoQuality(Number(e.target.value))}
-                      className="w-full accent-blue-600"
+                      id="upessc-photo-height"
+                      type="number"
+                      min="200"
+                      max="800"
+                      value={photoHeight}
+                      onChange={(e) => {
+                        const h = Number(e.target.value);
+                        setPhotoHeight(h);
+                        if (photoKeepAspect && photoAspectRatio > 0) {
+                          setPhotoWidth(Math.round(h * photoAspectRatio));
+                        }
+                      }}
+                      className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
                     />
                   </div>
+                </div>
 
-                  {/* Target Presets */}
-                  <div className="space-y-1.5">
-                    <span className="text-[11px] font-bold text-slate-600">Quick Target File Size Presets:</span>
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPhotoWidth(350);
-                          setPhotoHeight(450);
-                          setPhotoQuality(0.7);
-                        }}
-                        className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium"
-                      >
-                        ~50 KB (350×450)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPhotoWidth(400);
-                          setPhotoHeight(500);
-                          setPhotoQuality(0.85);
-                        }}
-                        className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium"
-                      >
-                        ~100 KB (Recommended)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPhotoWidth(500);
-                          setPhotoHeight(600);
-                          setPhotoQuality(0.9);
-                        }}
-                        className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium"
-                      >
-                        ~200 KB (High Res)
-                      </button>
-                    </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="keepAspect"
+                    checked={photoKeepAspect}
+                    onChange={(e) => setPhotoKeepAspect(e.target.checked)}
+                    className="rounded text-blue-600 cursor-pointer"
+                  />
+                  <label htmlFor="keepAspect" className="text-xs text-slate-700 font-medium cursor-pointer">
+                    Lock aspect ratio
+                  </label>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-semibold mb-1">
+                    <span>Compression Quality</span>
+                    <span id="upessc-photo-quality-val" className="font-mono text-blue-700">{Math.round(photoQuality * 100)}%</span>
                   </div>
+                  <input
+                    id="upessc-photo-quality"
+                    type="range"
+                    min="0.1"
+                    max="1.0"
+                    step="0.05"
+                    value={photoQuality}
+                    onChange={(e) => setPhotoQuality(Number(e.target.value))}
+                    className="w-full accent-blue-600 cursor-pointer"
+                  />
+                </div>
 
-                  <div className="flex gap-2 pt-2">
+                {/* Target Presets */}
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-bold text-slate-600">Quick Target File Size Presets:</span>
+                  <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
-                      onClick={applyPhotoChanges}
-                      disabled={!photoSrc}
-                      className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-bold text-xs rounded-xl transition cursor-pointer"
+                      onClick={() => {
+                        setPhotoWidth(350);
+                        setPhotoHeight(450);
+                        setPhotoQuality(0.7);
+                      }}
+                      className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium cursor-pointer"
                     >
-                      Update &amp; Re-compress
+                      ~50 KB (350×450)
                     </button>
                     <button
                       type="button"
                       onClick={() => {
-                        setPhotoSrc(null);
-                        setPhotoResizedUrl(null);
-                        setPhotoOrigSize(0);
-                        setPhotoResizedSize(0);
+                        setPhotoWidth(400);
+                        setPhotoHeight(500);
+                        setPhotoQuality(0.85);
                       }}
-                      className="p-2 border border-slate-300 rounded-xl hover:bg-slate-100 text-slate-600"
+                      className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium cursor-pointer"
                     >
-                      <RotateCcw className="w-4 h-4" />
+                      ~100 KB (Recommended)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPhotoWidth(500);
+                        setPhotoHeight(600);
+                        setPhotoQuality(0.9);
+                      }}
+                      className="px-2.5 py-1 text-[11px] bg-white border border-slate-200 rounded-md hover:bg-slate-100 font-medium cursor-pointer"
+                    >
+                      ~200 KB (High Res)
                     </button>
                   </div>
                 </div>
 
-                {/* Preview & Output */}
-                <div className="flex flex-col items-center justify-center p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                  {photoResizedUrl ? (
-                    <div className="space-y-4 w-full flex flex-col items-center">
-                      <div className="p-2 bg-white border border-slate-200 rounded-2xl shadow-xs">
-                        <img
-                          src={photoResizedUrl}
-                          alt="UPESSC Resized Preview"
-                          style={{ maxWidth: '220px', maxHeight: '280px' }}
-                          className="rounded-lg object-contain"
-                        />
-                      </div>
-                      <div className="w-full bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-1 text-center">
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>Output File Size:</span>
-                          <span
-                            className={`font-mono font-bold ${
-                              photoResizedSize >= 30 && photoResizedSize <= 300
-                                ? 'text-emerald-700'
-                                : 'text-red-600'
-                            }`}
-                          >
-                            {photoResizedSize} KB
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>Pixel Dimensions:</span>
-                          <span className="font-mono text-slate-800">
-                            {photoWidth} × {photoHeight} px
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>UPESSC Compliance:</span>
-                          {photoResizedSize >= 30 && photoResizedSize <= 300 ? (
-                            <span className="text-emerald-700 font-bold flex items-center gap-1">
-                              <CheckCircle2 className="w-3.5 h-3.5" /> Valid (30-300 KB)
-                            </span>
-                          ) : (
-                            <span className="text-red-600 font-bold flex items-center gap-1">
-                              <AlertCircle className="w-3.5 h-3.5" /> Outside 30-300 KB
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    id="upessc-photo-compress-btn"
+                    type="button"
+                    onClick={applyPhotoChanges}
+                    disabled={!photoSrc}
+                    className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-bold text-xs rounded-xl transition cursor-pointer"
+                  >
+                    Update &amp; Re-compress
+                  </button>
+                  <button
+                    id="upessc-photo-reset-btn"
+                    type="button"
+                    onClick={() => {
+                      setPhotoSrc(null);
+                      setPhotoResizedUrl(null);
+                      setPhotoOrigSize(0);
+                      setPhotoResizedSize(0);
+                    }}
+                    className="p-2 border border-slate-300 rounded-xl hover:bg-slate-100 text-slate-600 cursor-pointer"
+                    aria-label="Reset photo"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
 
-                      <a
-                        href={photoResizedUrl}
-                        download={`upessc_photo_${photoWidth}x${photoHeight}.jpg`}
-                        className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-xs"
+              {/* Preview & Output */}
+              <div className="flex flex-col items-center justify-center p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div
+                  id="upessc-photo-preview-box"
+                  className={`space-y-4 w-full flex flex-col items-center ${
+                    photoResizedUrl ? '' : 'hidden'
+                  }`}
+                >
+                  <div className="p-2 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                    <img
+                      id="upessc-photo-preview-img"
+                      src={photoResizedUrl || ''}
+                      alt="UPESSC Resized Preview"
+                      style={{ maxWidth: '220px', maxHeight: '280px' }}
+                      className="rounded-lg object-contain"
+                    />
+                  </div>
+                  <div className="w-full bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-1 text-center">
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>Output File Size:</span>
+                      <span
+                        id="upessc-photo-size-text"
+                        className={`font-mono font-bold ${
+                          photoResizedSize >= 30 && photoResizedSize <= 300
+                            ? 'text-emerald-700'
+                            : 'text-red-600'
+                        }`}
                       >
-                        <Download className="w-4 h-4" />
-                        <span>Download Resized Photo (JPG)</span>
-                      </a>
+                        {photoResizedSize} KB
+                      </span>
                     </div>
-                  ) : (
-                    <div className="text-center p-6 text-slate-400">
-                      <Camera className="w-12 h-12 mx-auto mb-2 text-slate-300" />
-                      <p className="text-xs font-medium">Upload a photograph to preview and download</p>
-                      <p className="text-[10px] text-slate-400 mt-1">Target: 30 KB to 300 KB JPG</p>
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>Pixel Dimensions:</span>
+                      <span id="upessc-photo-dims-text" className="font-mono text-slate-800">
+                        {photoWidth} × {photoHeight} px
+                      </span>
                     </div>
-                  )}
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>UPESSC Compliance:</span>
+                      <span
+                        id="upessc-photo-status"
+                        className={
+                          photoResizedSize >= 30 && photoResizedSize <= 300
+                            ? 'text-emerald-700 font-bold flex items-center gap-1 justify-center'
+                            : 'text-red-600 font-bold flex items-center gap-1 justify-center'
+                        }
+                      >
+                        {photoResizedSize >= 30 && photoResizedSize <= 300 ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Valid (30-300 KB)
+                          </>
+                        ) : (
+                          <>
+                            <AlertCircle className="w-3.5 h-3.5" /> Outside 30-300 KB
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  <a
+                    id="upessc-photo-download-btn"
+                    href={photoResizedUrl || '#'}
+                    download={`upessc_photo_${photoWidth}x${photoHeight}.jpg`}
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-xs cursor-pointer"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download Resized Photo (JPG)</span>
+                  </a>
+                </div>
+
+                <div
+                  id="upessc-photo-placeholder"
+                  className={`text-center p-6 text-slate-400 ${
+                    photoResizedUrl ? 'hidden' : ''
+                  }`}
+                >
+                  <Camera className="w-12 h-12 mx-auto mb-2 text-slate-300" />
+                  <p className="text-xs font-medium">Upload a photograph to preview and download</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Target: 30 KB to 300 KB JPG</p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
           {/* ===================== TAB 2: SIGNATURE RESIZER ===================== */}
-          {activeTab === 'signature' && (
-            <div className="space-y-5">
+          <div
+            id="upessc-tab-signature"
+            data-tool-tab-panel="signature"
+            className={`space-y-5 ${activeTab === 'signature' ? '' : 'hidden'}`}
+          >
               <div className="bg-purple-50/70 border border-purple-200 rounded-2xl p-4 flex items-start gap-3">
                 <Info className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
                 <div className="text-xs text-purple-900 leading-relaxed">
@@ -679,13 +746,14 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                       Upload Scanned Signature
                     </label>
                     <input
+                      id="upessc-sign-input"
                       type="file"
                       accept="image/jpeg,image/jpg,image/png"
                       onChange={handleSignUpload}
                       className="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-purple-600 file:text-white hover:file:bg-purple-700 cursor-pointer"
                     />
                     {signOrigSize > 0 && (
-                      <p className="text-[11px] text-slate-500 mt-1">
+                      <p id="upessc-sign-orig-size" className="text-[11px] text-slate-500 mt-1">
                         Original file size: <strong>{signOrigSize} KB</strong>
                       </p>
                     )}
@@ -697,6 +765,7 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                         Width (px) [Fixed: 140]
                       </label>
                       <input
+                        id="upessc-sign-width"
                         type="number"
                         value={signWidth}
                         onChange={(e) => setSignWidth(Number(e.target.value))}
@@ -708,6 +777,7 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                         Height (px) [Fixed: 110]
                       </label>
                       <input
+                        id="upessc-sign-height"
                         type="number"
                         value={signHeight}
                         onChange={(e) => setSignHeight(Number(e.target.value))}
@@ -719,21 +789,23 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
                       <span>Compression Quality</span>
-                      <span className="font-mono text-purple-700">{Math.round(signQuality * 100)}%</span>
+                      <span id="upessc-sign-quality-val" className="font-mono text-purple-700">{Math.round(signQuality * 100)}%</span>
                     </div>
                     <input
+                      id="upessc-sign-quality"
                       type="range"
                       min="0.1"
                       max="1.0"
                       step="0.05"
                       value={signQuality}
                       onChange={(e) => setSignQuality(Number(e.target.value))}
-                      className="w-full accent-purple-600"
+                      className="w-full accent-purple-600 cursor-pointer"
                     />
                   </div>
 
                   <div className="flex gap-2 pt-2">
                     <button
+                      id="upessc-sign-compress-btn"
                       type="button"
                       onClick={applySignChanges}
                       disabled={!signSrc}
@@ -742,6 +814,7 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                       Process &amp; Re-scale
                     </button>
                     <button
+                      id="upessc-sign-reset-btn"
                       type="button"
                       onClick={() => {
                         setSignSrc(null);
@@ -749,7 +822,8 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                         setSignOrigSize(0);
                         setSignResizedSize(0);
                       }}
-                      className="p-2 border border-slate-300 rounded-xl hover:bg-slate-100 text-slate-600"
+                      className="p-2 border border-slate-300 rounded-xl hover:bg-slate-100 text-slate-600 cursor-pointer"
+                      aria-label="Reset signature"
                     >
                       <RotateCcw className="w-4 h-4" />
                     </button>
@@ -758,73 +832,96 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
 
                 {/* Preview & Output */}
                 <div className="flex flex-col items-center justify-center p-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                  {signResizedUrl ? (
-                    <div className="space-y-4 w-full flex flex-col items-center">
-                      <div className="p-3 bg-white border border-slate-200 rounded-2xl shadow-xs">
-                        <img
-                          src={signResizedUrl}
-                          alt="UPESSC Signature Preview"
-                          style={{ width: `${signWidth}px`, height: `${signHeight}px` }}
-                          className="border border-dashed border-slate-300 object-contain"
-                        />
+                  <div
+                    id="upessc-sign-preview-box"
+                    className={`space-y-4 w-full flex flex-col items-center ${
+                      signResizedUrl ? '' : 'hidden'
+                    }`}
+                  >
+                    <div className="p-3 bg-white border border-slate-200 rounded-2xl shadow-xs">
+                      <img
+                        id="upessc-sign-preview-img"
+                        src={signResizedUrl || ''}
+                        alt="UPESSC Signature Preview"
+                        style={{ width: `${signWidth}px`, height: `${signHeight}px` }}
+                        className="border border-dashed border-slate-300 object-contain"
+                      />
+                    </div>
+                    <div className="w-full bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-1 text-center">
+                      <div className="flex justify-between items-center text-slate-600">
+                        <span>Output File Size:</span>
+                        <span
+                          id="upessc-sign-size-text"
+                          className={`font-mono font-bold ${
+                            signResizedSize >= 10 && signResizedSize <= 200
+                              ? 'text-emerald-700'
+                              : 'text-red-600'
+                          }`}
+                        >
+                          {signResizedSize} KB
+                        </span>
                       </div>
-                      <div className="w-full bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-1 text-center">
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>Output File Size:</span>
-                          <span
-                            className={`font-mono font-bold ${
-                              signResizedSize >= 10 && signResizedSize <= 200
-                                ? 'text-emerald-700'
-                                : 'text-red-600'
-                            }`}
-                          >
-                            {signResizedSize} KB
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>Pixel Dimensions:</span>
-                          <span className="font-mono text-slate-800">
-                            {signWidth} × {signHeight} px
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-600">
-                          <span>UPESSC Compliance:</span>
+                      <div className="flex justify-between items-center text-slate-600">
+                        <span>Pixel Dimensions:</span>
+                        <span id="upessc-sign-dims-text" className="font-mono text-slate-800">
+                          {signWidth} × {signHeight} px
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center text-slate-600">
+                        <span>UPESSC Compliance:</span>
+                        <span
+                          id="upessc-sign-status"
+                          className={
+                            signResizedSize >= 10 && signResizedSize <= 200 && signWidth === 140 && signHeight === 110
+                              ? 'text-emerald-700 font-bold flex items-center gap-1 justify-center'
+                              : 'text-amber-600 font-bold flex items-center gap-1 justify-center'
+                          }
+                        >
                           {signResizedSize >= 10 && signResizedSize <= 200 && signWidth === 140 && signHeight === 110 ? (
-                            <span className="text-emerald-700 font-bold flex items-center gap-1">
+                            <>
                               <CheckCircle2 className="w-3.5 h-3.5" /> 100% Compliant (140x110, 10-200KB)
-                            </span>
+                            </>
                           ) : (
-                            <span className="text-amber-600 font-bold flex items-center gap-1">
+                            <>
                               <AlertCircle className="w-3.5 h-3.5" /> Verify dimensions &amp; size
-                            </span>
+                            </>
                           )}
-                        </div>
+                        </span>
                       </div>
+                    </div>
 
-                      <a
-                        href={signResizedUrl}
-                        download="upessc_signature_140x110.jpg"
-                        className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-xs"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Download Signature (JPG)</span>
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="text-center p-6 text-slate-400">
-                      <FileSignature className="w-12 h-12 mx-auto mb-2 text-slate-300" />
-                      <p className="text-xs font-medium">Upload signature image to format</p>
-                      <p className="text-[10px] text-slate-400 mt-1">Preset: 140 × 110 px, 10 KB to 200 KB</p>
-                    </div>
-                  )}
+                    <a
+                      id="upessc-sign-download-btn"
+                      href={signResizedUrl || '#'}
+                      download="upessc_signature_140x110.jpg"
+                      className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-xs cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>Download Signature (JPG)</span>
+                    </a>
+                  </div>
+
+                  <div
+                    id="upessc-sign-placeholder"
+                    className={`text-center p-6 text-slate-400 ${
+                      signResizedUrl ? 'hidden' : ''
+                    }`}
+                  >
+                    <FileSignature className="w-12 h-12 mx-auto mb-2 text-slate-300" />
+                    <p className="text-xs font-medium">Upload signature image to format</p>
+                    <p className="text-[10px] text-slate-400 mt-1">Preset: 140 × 110 px, 10 KB to 200 KB</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
+          </div>
 
           {/* ===================== TAB 3: AGE CHECKER ===================== */}
-          {activeTab === 'age' && (
-            <div className="space-y-5">
+          <div
+            id="upessc-tab-age"
+            data-tool-tab-panel="age"
+            className={`space-y-5 ${activeTab === 'age' ? '' : 'hidden'}`}
+          >
               <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 flex items-start gap-3">
                 <Info className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div className="text-xs text-emerald-900 leading-relaxed">
@@ -905,12 +1002,14 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
 
           {/* ===================== TAB 4: OMR SCORE CALCULATOR ===================== */}
-          {activeTab === 'omr' && (
-            <div className="space-y-5">
+          <div
+            id="upessc-tab-omr"
+            data-tool-tab-panel="omr"
+            className={`space-y-5 ${activeTab === 'omr' ? '' : 'hidden'}`}
+          >
               <div className="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4 flex items-start gap-3">
                 <Info className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="text-xs text-indigo-900 leading-relaxed">
@@ -1010,12 +1109,14 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
 
           {/* ===================== TAB 5: DEADLINE & EXAM COUNTDOWN ===================== */}
-          {activeTab === 'countdown' && (
-            <div className="space-y-4">
+          <div
+            id="upessc-tab-countdown"
+            data-tool-tab-panel="countdown"
+            className={`space-y-4 ${activeTab === 'countdown' ? '' : 'hidden'}`}
+          >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <LiveCountdownWidget
                   targetDate="2026-10-07T23:59:59+05:30"
@@ -1046,12 +1147,14 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
               <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
                 <strong>Official UPESSC Guidelines:</strong> Online application &amp; examination fee payments close strictly at 23:59:59 IST on 07 October 2026. The correction window remains active through 11 October 2026 (23:59:59 IST). The OMR written examination commences on 19 November 2026 across commission-designated centers in Uttar Pradesh.
               </div>
-            </div>
-          )}
+          </div>
 
           {/* ===================== TAB 6: 42 SUBJECTS EXPLORER ===================== */}
-          {activeTab === 'subjects' && (
-            <div className="space-y-4">
+          <div
+            id="upessc-tab-subjects"
+            data-tool-tab-panel="subjects"
+            className={`space-y-4 ${activeTab === 'subjects' ? '' : 'hidden'}`}
+          >
               <div className="flex items-center gap-3">
                 <div className="relative flex-1">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -1095,67 +1198,84 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                 </table>
               </div>
             </div>
-          )}
+          </div>
 
           {/* ===================== TAB 7: 18 DV CHECKLIST & PDF GUIDE ===================== */}
-          {activeTab === 'documents' && (
-            <div className="space-y-4">
-              <div className="bg-cyan-50/70 border border-cyan-200 rounded-2xl p-4 flex items-start gap-3">
-                <Info className="w-5 h-5 text-cyan-600 shrink-0 mt-0.5" />
-                <div className="text-xs text-cyan-900 leading-relaxed">
-                  <strong>PDF Upload Size Guide (Advt 04/2026 Section 2.14):</strong>
-                  <br />
-                  All certificates &amp; records uploaded must be in <strong>PDF format</strong> between{' '}
-                  <strong>50 KB and 500 KB</strong> each.
-                  <br />
-                  At interview (Section 13.5), candidates must submit <strong>two separate sets</strong> of self-attested photocopies of all 18 documents.
-                </div>
+          <div
+            id="upessc-tab-documents"
+            data-tool-tab-panel="documents"
+            className={`space-y-4 ${activeTab === 'documents' ? '' : 'hidden'}`}
+          >
+            <div className="bg-cyan-50/70 border border-cyan-200 rounded-2xl p-4 flex items-start gap-3">
+              <Info className="w-5 h-5 text-cyan-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-cyan-900 leading-relaxed">
+                <strong>PDF Upload Size Guide (Advt 04/2026 Section 2.14):</strong>
+                <br />
+                All certificates &amp; records uploaded must be in <strong>PDF format</strong> between{' '}
+                <strong>50 KB and 500 KB</strong> each.
+                <br />
+                At interview (Section 13.5), candidates must submit <strong>two separate sets</strong> of self-attested photocopies of all 18 documents.
               </div>
+            </div>
 
-              <div className="space-y-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
                 <h4 className="text-xs font-bold text-slate-800 uppercase">
                   Interview Document Verification Checklist (Section 13.5):
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  {[
-                    { id: 'doc_app', label: '1. Online Application Form (2 Self-attested copies)' },
-                    { id: 'doc_10th', label: '2. High School Marksheet & Certificate (DOB Proof)' },
-                    { id: 'doc_12th', label: '3. Intermediate Marksheet & Certificate' },
-                    { id: 'doc_grad', label: '4. Graduation Marksheets (All Years) & Degree' },
-                    { id: 'doc_pg', label: '5. Postgraduation Marksheets (All Years) & Degree' },
-                    { id: 'doc_net', label: '6. UGC / CSIR NET or SLET/SET Certificate' },
-                    { id: 'doc_phd', label: '7. Ph.D. Degree & UGC 2009/2016 Compliance Certificate' },
-                    { id: 'doc_caste', label: '8. UP Domicile & Caste (SC/ST/OBC) / EWS Certificate' },
-                    { id: 'doc_affidavit', label: '9. Affidavit (Appendix 6 format on stamp paper)' },
-                    { id: 'doc_char1', label: '10. Character Certificate from Last Institution' },
-                    { id: 'doc_char2', label: '11. Two Character Certificates from Gazetted Officers' },
-                    { id: 'doc_noc', label: '12. NOC from Appointing Authority (if employed)' }
-                  ].map((item) => (
-                    <label
-                      key={item.id}
-                      className="flex items-center gap-2 p-2 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={!!checkedDocs[item.id]}
-                        onChange={(e) =>
-                          setCheckedDocs((prev) => ({ ...prev, [item.id]: e.target.checked }))
-                        }
-                        className="rounded text-cyan-600"
-                      />
-                      <span className="text-slate-800 text-[11px]">{item.label}</span>
-                    </label>
-                  ))}
-                </div>
+                <span id="upessc-dv-count" className="text-xs font-bold text-cyan-700 bg-cyan-100/70 px-2 py-0.5 rounded-md">
+                  {Object.values(checkedDocs).filter(Boolean).length} of 18 Verified
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {[
+                  { id: 'doc_app', label: '1. Online Application Form (2 Self-attested copies with fee receipt)' },
+                  { id: 'doc_10th', label: '2. High School (10th) Marksheet & Certificate (DOB Proof)' },
+                  { id: 'doc_12th', label: '3. Intermediate (10+2) Marksheet & Passing Certificate' },
+                  { id: 'doc_grad_m', label: '4. Graduation Marksheets (All Semesters / All Years)' },
+                  { id: 'doc_grad_d', label: '5. Graduation Degree Certificate' },
+                  { id: 'doc_pg_m', label: '6. Postgraduation Marksheets (All Semesters, >=55% marks or 50% SC/ST/PwD)' },
+                  { id: 'doc_pg_d', label: '7. Postgraduation Degree Certificate in concerned/allied subject' },
+                  { id: 'doc_net', label: '8. UGC / CSIR NET or UP SLET/SET Qualified Certificate' },
+                  { id: 'doc_phd_d', label: '9. Ph.D. Degree Certificate (if applicable)' },
+                  { id: 'doc_phd_reg', label: '10. Ph.D. UGC 2009/2016 Regular Mode Compliance Certificate (for NET exemption)' },
+                  { id: 'doc_domicile', label: '11. Uttar Pradesh Domicile / Residence Certificate (mandatory for quota)' },
+                  { id: 'doc_caste', label: '12. UP Caste Certificate (SC/ST/OBC Non-Creamy Layer in prescribed format)' },
+                  { id: 'doc_ews', label: '13. EWS Certificate (Valid for FY 2026-27 based on FY 2025-26 income)' },
+                  { id: 'doc_pwd', label: '14. Divyangjan / PwD Disability Certificate (40%+ by competent board)' },
+                  { id: 'doc_dff', label: '15. Freedom Fighter Dependent (DFF) / Ex-Servicemen Certificate' },
+                  { id: 'doc_affidavit', label: '16. Affidavit (Appendix 6 format on Non-Judicial Stamp Paper)' },
+                  { id: 'doc_char1', label: '17. Character Certificate from Head of Institution last attended' },
+                  { id: 'doc_char2', label: '18. Two Distinct Character Certificates from Gazetted Officers (last 6 months)' },
+                  { id: 'doc_noc', label: '19. No Objection Certificate (NOC) from Appointing Authority (if employed)' }
+                ].map((item) => (
+                  <label
+                    key={item.id}
+                    className="flex items-center gap-2 p-2 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100"
+                  >
+                    <input
+                      type="checkbox"
+                      data-upessc-dv-check="true"
+                      checked={!!checkedDocs[item.id]}
+                      onChange={(e) =>
+                        setCheckedDocs((prev) => ({ ...prev, [item.id]: e.target.checked }))
+                      }
+                      className="rounded text-cyan-600 cursor-pointer"
+                    />
+                    <span className="text-slate-800 text-[11px]">{item.label}</span>
+                  </label>
+                ))}
               </div>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Modal Footer */}
         <div className="p-3 bg-slate-100 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
           <span>Uttar Pradesh Education Service Selection Commission (UPESSC) – Advt 04/2026</span>
           <button
+            type="button"
+            data-modal-close="true"
             onClick={onClose}
             className="px-4 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg cursor-pointer transition"
           >

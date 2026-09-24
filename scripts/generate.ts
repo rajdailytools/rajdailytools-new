@@ -84,6 +84,8 @@ import { NvsClass9AdmissionPage } from '../src/pages/NvsClass9AdmissionPage';
 import { AIBE_XXII_2026_ADMISSION } from '../src/data/aibeData';
 import { AibeAdmissionPage } from '../src/pages/AibeAdmissionPage';
 import { ALL_15_RANKING_EXAMS } from '../src/data/rankingPagesData';
+import { IBPS_HINDI_OFFICER_2026_EXAM } from '../src/data/ibpsHindiOfficerData';
+import { IbpsHindiOfficerPage } from '../src/pages/IbpsHindiOfficerPage';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const generatedFiles: string[] = [];
@@ -106,7 +108,9 @@ const searchIndex = [
     category: exam.category,
     vac: exam.totalVacancy,
     url:
-      exam.slug === 'upessc-assistant-professor-recruitment-2026'
+      exam.slug === 'ibps-hindi-officer-recruitment-2026'
+        ? 'latest-exam/ibps-hindi-officer-recruitment-2026.html'
+        : exam.slug === 'upessc-assistant-professor-recruitment-2026'
         ? 'latest-jobs/upessc-assistant-professor-recruitment-2026.html'
         : exam.slug === 'ntpc-assistant-officer-recruitment-2026'
         ? 'latest-jobs/ntpc-assistant-officer-recruitment-2026.html'
@@ -1654,6 +1658,45 @@ async function generateAllPages() {
   );
 
   // --------------------------------------------------------------------------
+  // 2g-14c. DEDICATED IBPS HINDI OFFICER RECRUITMENT 2026 (ROOT & LATEST EXAM)
+  // --------------------------------------------------------------------------
+  const ibpsHindiOfficerExam =
+    EXAMS_DATABASE.find((e) => e.id === 'ibps-hindi-officer-2026' || e.slug === 'ibps-hindi-officer-recruitment-2026') ||
+    IBPS_HINDI_OFFICER_2026_EXAM;
+
+  // Root level page (depth = 0)
+  writePage(
+    'ibps-hindi-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'IBPS Hindi Officer Recruitment 2026 – Apply Online, Grade E Regular Post, Eligibility & Notification',
+      description:
+        'IBPS Hindi Officer Recruitment 2026 Advt IBPS/2026-27/04 for Grade E Regular Post at IBPS Mumbai. Check 1 confirmed vacancy + waitlist, age limit (23-30 yrs), master degree qualification, salary CTC ~₹17.39 Lakhs, official notification PDF & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(IbpsHindiOfficerPage, { exam: ibpsHindiOfficerExam, depth: 0 })
+      ),
+      pageKey: 'ibps-hindi-officer-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'latest-exam/ibps-hindi-officer-recruitment-2026.html'
+    })
+  );
+
+  // Dedicated Latest Exam Page: latest-exam/ibps-hindi-officer-recruitment-2026.html (depth = 1)
+  writePage(
+    'latest-exam/ibps-hindi-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'IBPS Hindi Officer Recruitment 2026 – Apply Online, Grade E Regular Post, Eligibility & Notification',
+      description:
+        'IBPS Hindi Officer Recruitment 2026 Advt IBPS/2026-27/04 for Grade E Regular Post at IBPS Mumbai. Check 1 confirmed vacancy + waitlist, age limit (23-30 yrs), master degree qualification, salary CTC ~₹17.39 Lakhs, official notification PDF & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(IbpsHindiOfficerPage, { exam: ibpsHindiOfficerExam, depth: 1 })
+      ),
+      pageKey: 'ibps-hindi-officer-recruitment-2026',
+      depth: 1,
+      canonicalPath: 'latest-exam/ibps-hindi-officer-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
   // 2g-15. DEDICATED UPESSC PRT ASSISTANT TEACHER 2026 ROOT PAGE (depth = 0)
   // --------------------------------------------------------------------------
   const upesscPrtExam =
@@ -1928,7 +1971,9 @@ async function generateAllPages() {
   for (const exam of EXAMS_DATABASE) {
     // 3a. Job Detail: latest-jobs/[slug].html
     const jobDetailContent = renderToStaticMarkup(
-      React.createElement(JobDetailPage, { exam, depth: 1 })
+      exam.slug === 'ibps-hindi-officer-recruitment-2026'
+        ? React.createElement(IbpsHindiOfficerPage, { exam, depth: 1 })
+        : React.createElement(JobDetailPage, { exam, depth: 1 })
     );
     writePage(
       `latest-jobs/${exam.slug}.html`,

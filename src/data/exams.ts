@@ -103,8 +103,14 @@ import {
   UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
   generateUpesscAssistantProfessor50Sections
 } from './upesscAssistantProfessorData';
+import {
+  IBPS_HINDI_OFFICER_2026_EXAM,
+  generateIbpsHindiOfficer50Sections
+} from './ibpsHindiOfficerData';
 
 export {
+  IBPS_HINDI_OFFICER_2026_EXAM,
+  generateIbpsHindiOfficer50Sections,
   UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
   generateUpesscAssistantProfessor50Sections,
   NTPC_ASSISTANT_OFFICER_2026_EXAM,
@@ -171,6 +177,7 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  IBPS_HINDI_OFFICER_2026_EXAM,
   UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
   NTPC_ASSISTANT_OFFICER_2026_EXAM,
   HPSC_FSO_2026_EXAM,

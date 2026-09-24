@@ -30,6 +30,7 @@ export const UPESSC_ASSISTANT_PROFESSOR_2026_EXAM: ExamRecord = {
   acceptedQualificationLevels: ['Post Graduation', 'Ph.D.', 'M.Phil.', 'NET/JRF/SET'],
   officialWebsite: 'https://upessc.up.gov.in/',
   officialNotification: 'https://www.upessc.up.gov.in/Notice/51a0-7a2c-4bdd-884b-4ae7.pdf',
+  syllabusLink: 'https://www.upessc.up.gov.in/Home/Syllabus_all',
   applyLink: 'https://apply.upessc.org/',
   description: 'UPESSC Assistant Professor Recruitment 2026 (Advt. No. 04/2026) for 1,936 vacancies in aided co-education (1,564) and women’s (372) colleges across 42 subjects. Check eligibility, maximum age limit (62 years on 01.07.2026), Level-10 pay scale (₹57,700–₹1,82,400), exam pattern (120 MCQs, 360 marks, -1 negative penalty), viva-voce (40 marks), photo/signature resizers, and apply online details.',
   salary: {

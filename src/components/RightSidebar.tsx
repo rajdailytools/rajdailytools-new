@@ -80,6 +80,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
+          {exam.syllabusLink && (
+            <a
+              href={exam.syllabusLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 text-xs font-semibold transition-colors"
+            >
+              <span>Syllabus &amp; Exam Pattern</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          )}
           {exam.officialWebsite && (
             <a
               href={exam.officialWebsite}

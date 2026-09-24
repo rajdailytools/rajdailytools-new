@@ -10,6 +10,7 @@ import { UpesscToolsModal } from '../components/UpesscToolsModal';
 import { HpscFsoToolsModal } from '../components/HpscFsoToolsModal';
 import { NtpcToolsModal } from '../components/NtpcToolsModal';
 import { UpesscAssistantProfessorToolsModal } from '../components/UpesscAssistantProfessorToolsModal';
+import { IbpsHindiOfficerToolsModal } from '../components/IbpsHindiOfficerToolsModal';
 import { LiveCountdownWidget } from '../components/LiveCountdownWidget';
 import { RankingToolEngine } from '../components/RankingTools';
 import { getCountdown, formatDate } from '../utils/dateUtils';
@@ -33,6 +34,7 @@ import {
   Calculator,
   Percent,
   FileCheck,
+  FileSignature,
   DollarSign,
   Award
 } from 'lucide-react';
@@ -49,6 +51,7 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
   const [hpscFsoModalTool, setHpscFsoModalTool] = useState<string | null>(null);
   const [ntpcModalTool, setNtpcModalTool] = useState<string | null>(null);
   const [upesscApModalTool, setUpesscApModalTool] = useState<string | null>(null);
+  const [ibpsModalTool, setIbpsModalTool] = useState<string | null>(null);
   const [badgeStatus, setBadgeStatus] = useState<LiveBadgeResult>(() =>
     getLiveBadgeStatus(exam.applicationLastDate, 'deadline')
   );
@@ -80,13 +83,18 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
   const isUpesscAssistantProfessor = exam.id === 'upessc-assistant-professor-2026' || exam.slug?.includes('upessc-assistant-professor') || exam.shortName?.includes('UPESSC Assistant Professor');
   const isHpscFso = exam.id === 'hpsc-food-safety-officer-fso-2026' || exam.slug?.includes('hpsc-food-safety-officer') || exam.shortName?.includes('HPSC FSO');
   const isNtpcao = exam.id === 'ntpc-assistant-officer-2026' || exam.slug?.includes('ntpc-assistant-officer') || exam.shortName?.includes('NTPC AO');
+  const isIbpsHindiOfficer = exam.id === 'ibps-hindi-officer-2026' || exam.slug?.includes('ibps-hindi-officer') || exam.shortName?.includes('IBPS Hindi Officer');
 
   useEffect(() => {
     (window as any).__openUpesscApTool = (tool: string) => {
       setUpesscApModalTool(tool);
     };
+    (window as any).__openIbpsTool = (tool: string) => {
+      setIbpsModalTool(tool);
+    };
     return () => {
       delete (window as any).__openUpesscApTool;
+      delete (window as any).__openIbpsTool;
     };
   }, []);
 
@@ -95,21 +103,23 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
       {/* Breadcrumb */}
       <Breadcrumb
         items={[
-          { label: 'Latest Jobs', page: 'latest-jobs' },
-          ...(exam.category === 'Police'
+          ...(exam.category === 'Latest Exam' || isIbpsHindiOfficer
+            ? [{ label: 'Latest Exam', page: 'latest-jobs' as ActivePage }]
+            : [{ label: 'Latest Jobs', page: 'latest-jobs' as ActivePage }]),
+          ...(!isIbpsHindiOfficer && exam.category === 'Police'
             ? [
                 { label: 'Police Recruitment', page: 'latest-jobs' as ActivePage },
                 ...(exam.state === 'Madhya Pradesh' ? [{ label: 'MP State Jobs', page: 'latest-jobs' as ActivePage }] : [])
               ]
             : []),
-          ...(exam.category === 'Teaching'
+          ...(!isIbpsHindiOfficer && exam.category === 'Teaching'
             ? [
                 { label: 'Teaching Jobs', page: 'latest-jobs' as ActivePage },
                 ...(exam.state === 'Uttar Pradesh' ? [{ label: 'Uttar Pradesh Jobs', page: 'latest-jobs' as ActivePage }] : []),
                 ...(exam.organization?.includes('UPESSC') ? [{ label: 'UPESSC', page: 'latest-jobs' as ActivePage }] : [])
               ]
             : []),
-          ...(exam.state === 'Haryana' || exam.organization?.includes('HPSC')
+          ...(!isIbpsHindiOfficer && (exam.state === 'Haryana' || exam.organization?.includes('HPSC'))
             ? [
                 { label: 'Haryana Jobs', page: 'latest-jobs' as ActivePage },
                 { label: 'HPSC', page: 'latest-jobs' as ActivePage }
@@ -235,6 +245,28 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             </div>
           </div>
         </div>
+
+        {/* Live Countdowns for IBPS Hindi Officer */}
+        {isIbpsHindiOfficer && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <LiveCountdownWidget
+              targetDate="2026-10-06T23:59:59+05:30"
+              title="Online Application Closes"
+              subtitle="06 October 2026 (23:59:59 IST)"
+              badgeLabel="Application Deadline"
+              variant="red"
+              passedText="Application Closed"
+            />
+            <LiveCountdownWidget
+              targetDate="2026-10-06T23:59:59+05:30"
+              title="Online Fee Payment Closes"
+              subtitle="06 October 2026 (23:59:59 IST)"
+              badgeLabel="Fee Gateway Closes"
+              variant="purple"
+              passedText="Fee Window Closed"
+            />
+          </div>
+        )}
 
         {/* Live Countdowns for UPESSC Assistant Professor */}
         {isUpesscAssistantProfessor && (
@@ -1389,6 +1421,170 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </a>
                 </div>
               </div>
+            ) : isIbpsHindiOfficer ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Tool 1: Photo Resizer & Compressor */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <Image className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        200×230 px • 20-50 KB
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Photo Resizer &amp; Compressor</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Resize and compress candidate photograph to official IBPS specs (200x230 px, 20-50 KB JPG).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIbpsModalTool('photo')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Resize Photograph</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Tool 2: Signature Resizer & Compressor */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <FileSignature className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        140×60 px • 10-20 KB
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Signature Resizer &amp; Compressor</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Scale signature to 140x60 px (10-20 KB JPG, Black ink pen). Capital letters prohibited.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIbpsModalTool('signature')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Resize Signature</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Tool 3: Age Cut-Off Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Calendar className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        Cut-Off: 01.09.2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Cut-Off Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify if your birth date falls between 02.09.1996 and 01.09.2003 (23 to 30 years age bracket).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIbpsModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Age Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Tool 4: Educational Qualification Combination Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <BookOpen className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        4 Official Combinations
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Qualification Combination Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Validate Master’s &amp; Bachelor’s Hindi/English subject pairing and computer typing competency.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIbpsModalTool('qualification')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Qualification</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Tool 5: Document / PDF Pre-Flight Validator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-teal-300 hover:bg-teal-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-teal-100 text-teal-800 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                        PDF ≤ 500 KB Check
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Document Pre-Flight Validator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Check certificate PDF file sizes against the strict 500 KB upload limit and review mandatory uploads.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIbpsModalTool('documents')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-teal-600 hover:text-white text-teal-800 border border-teal-200 hover:border-teal-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Verify Documents</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Tool 6: Online Mock Test */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        200 Qs • 200 Marks
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Online Mock Test Portal</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Practice official pattern questions (Reasoning, English, GA, Hindi) with sectional timing &amp; 0.25 penalty.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Tool 1: Eligibility Calculator */}
@@ -1555,7 +1751,9 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
           <Accordion
             sections={exam.allInformation}
             title={
-              isConcor
+              isIbpsHindiOfficer
+                ? "Complete 50-Section Exam Information & Guidelines (Advt IBPS/2026-27/04)"
+                : isConcor
                 ? "Complete 50-Section Recruitment Information & Guidelines"
                 : isUpesscPrt
                 ? "Complete 50-Section Recruitment Information & Guidelines (Advt 05/2026)"
@@ -1563,6 +1761,14 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             }
             defaultOpenFirst={true}
           />
+
+          {/* IBPS Hindi Officer Tools Modal */}
+          {isIbpsHindiOfficer && (
+            <IbpsHindiOfficerToolsModal
+              tool={ibpsModalTool}
+              onClose={() => setIbpsModalTool(null)}
+            />
+          )}
 
           {/* CONCOR Tools Modal */}
           {isConcor && (

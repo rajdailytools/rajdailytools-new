@@ -8,6 +8,18 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated IBPS Hindi Officer Recruitment 2026 page
+  if (
+    page === 'ibps-hindi-officer-recruitment-2026' ||
+    page === 'ibps-hindi-officer-2026' ||
+    page === 'ibps-hindi-officer' ||
+    slug === 'ibps-hindi-officer-recruitment-2026' ||
+    slug === 'ibps-hindi-officer-2026' ||
+    slug === 'ibps-hindi-officer'
+  ) {
+    return `${prefix}latest-exam/ibps-hindi-officer-recruitment-2026.html`;
+  }
+
   // Map dedicated root HPSC Food Safety Officer (FSO) Recruitment 2026 page
   if (
     page === 'hpsc-food-safety-officer-fso-recruitment-2026' ||
@@ -208,6 +220,9 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
 
     // Dynamic details
     case 'job-detail':
+      if (slug === 'ibps-hindi-officer-recruitment-2026' || slug === 'ibps-hindi-officer-2026' || slug === 'ibps-hindi-officer') {
+        return `${prefix}latest-exam/ibps-hindi-officer-recruitment-2026.html`;
+      }
       if (slug === 'ntpc-assistant-officer-recruitment-2026' || slug === 'ntpc-assistant-officer-2026' || slug === 'ntpc-assistant-officer') {
         return `${prefix}latest-jobs/ntpc-assistant-officer-recruitment-2026.html`;
       }
