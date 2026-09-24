@@ -914,7 +914,6 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
                 </div>
               </div>
           </div>
-          </div>
 
           {/* ===================== TAB 3: AGE CHECKER ===================== */}
           <div
@@ -1283,6 +1282,5 @@ export const UpesscAssistantProfessorToolsModal: React.FC<UpesscAssistantProfess
           </button>
         </div>
       </div>
-    </div>
   );
 };

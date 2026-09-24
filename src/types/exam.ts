@@ -98,6 +98,7 @@ export interface ExamRecord {
   cutOffLink?: string;
   nextStage?: string;
   mockTestLink?: string;
+  syllabusLink?: string;
   relatedExamIds?: string[];
   logoIcon?: string;
   logoBg?: string;
