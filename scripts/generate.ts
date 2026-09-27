@@ -54,6 +54,8 @@ import { NIC_STA_2026_EXAM } from '../src/data/nicStaData';
 import { NTPC_ASSISTANT_OFFICER_2026_EXAM } from '../src/data/ntpcAssistantOfficerData';
 import { UPESSC_ASSISTANT_PROFESSOR_2026_EXAM } from '../src/data/upesscAssistantProfessorData';
 import { MP_POLICE_CONSTABLE_2026_EXAM } from '../src/data/mpPoliceConstableData';
+import { BTSC_TOURING_VETERINARY_OFFICER_2026_EXAM } from '../src/data/btscTouringVeterinaryOfficerData';
+import { BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM } from '../src/data/btscFisheryExtensionOfficerData';
 import { BSF_HCM_ASI_STENO_2026_EXAM } from '../src/data/bsfHcmAsiStenoData';
 import { BsfHcmAsiStenoAnswerKeyPage } from '../src/pages/BsfHcmAsiStenoAnswerKeyPage';
 import { RRB_GROUP_D_2026_EXAM } from '../src/data/rrbGroupDData';
@@ -108,7 +110,11 @@ const searchIndex = [
     category: exam.category,
     vac: exam.totalVacancy,
     url:
-      exam.slug === 'ibps-hindi-officer-recruitment-2026'
+      exam.slug === 'btsc-fishery-extension-officer-recruitment-2026'
+        ? 'latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html'
+        : exam.slug === 'btsc-touring-veterinary-officer-recruitment-2026'
+        ? 'latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html'
+        : exam.slug === 'ibps-hindi-officer-recruitment-2026'
         ? 'latest-exam/ibps-hindi-officer-recruitment-2026.html'
         : exam.slug === 'upessc-assistant-professor-recruitment-2026'
         ? 'latest-jobs/upessc-assistant-professor-recruitment-2026.html'
@@ -1544,6 +1550,84 @@ async function generateAllPages() {
       pageKey: 'mpesb-mp-police-constable-recruitment-2026',
       depth: 0,
       canonicalPath: 'mpesb-mp-police-constable-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-10a. DEDICATED BTSC FISHERY EXTENSION OFFICER 2026 PAGES (ROOT & LATEST JOBS)
+  // --------------------------------------------------------------------------
+  const btscFisheryExam =
+    EXAMS_DATABASE.find((e) => e.id === 'btsc-fishery-extension-officer-2026' || e.slug === 'btsc-fishery-extension-officer-recruitment-2026') ||
+    BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM;
+
+  // Root level page (depth = 0)
+  writePage(
+    'btsc-fishery-extension-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BTSC Fishery Extension Officer Recruitment 2026 – Apply Online, 231 Posts, Eligibility & Notification',
+      description:
+        'BTSC Fishery Extension Officer Recruitment 2026 Advt 28/2026 for 231 regular posts in Fisheries Directorate Bihar. Pay Level-7 ₹44,900. 2-Year PG Degree in Fisheries Science under ICAR Agricultural University, 100-mark CBT exam pattern, experience marks & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: btscFisheryExam, depth: 0 })
+      ),
+      pageKey: 'btsc-fishery-extension-officer-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html'
+    })
+  );
+
+  // Dedicated Latest Jobs Page: latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html (depth = 1)
+  writePage(
+    'latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BTSC Fishery Extension Officer Recruitment 2026 – Apply Online, 231 Posts, Eligibility & Notification',
+      description:
+        'BTSC Fishery Extension Officer Recruitment 2026 Advt 28/2026 for 231 regular posts in Fisheries Directorate Bihar. Pay Level-7 ₹44,900. 2-Year PG Degree in Fisheries Science under ICAR Agricultural University, 100-mark CBT exam pattern, experience marks & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: btscFisheryExam, depth: 1 })
+      ),
+      pageKey: 'btsc-fishery-extension-officer-recruitment-2026',
+      depth: 1,
+      canonicalPath: 'latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html'
+    })
+  );
+
+  // --------------------------------------------------------------------------
+  // 2g-10b. DEDICATED BTSC TOURING VETERINARY OFFICER 2026 PAGES (ROOT & LATEST JOBS)
+  // --------------------------------------------------------------------------
+  const btscTouringVetExam =
+    EXAMS_DATABASE.find((e) => e.id === 'btsc-touring-veterinary-officer-2026' || e.slug === 'btsc-touring-veterinary-officer-recruitment-2026') ||
+    BTSC_TOURING_VETERINARY_OFFICER_2026_EXAM;
+
+  // Root level page (depth = 0)
+  writePage(
+    'btsc-touring-veterinary-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BTSC Touring Veterinary Officer Recruitment 2026 – Apply Online, 787 Posts, Eligibility & Notification',
+      description:
+        'BTSC Touring Veterinary Officer Recruitment 2026 Advt 27/2026 for 787 regular posts in Animal & Fisheries Resources Dept Bihar. Pay Level 9 ₹53,100–₹1,67,800. B.V.Sc. qualification, Bihar Veterinary Council registration, 100-mark CBT exam pattern, experience weightage & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: btscTouringVetExam, depth: 0 })
+      ),
+      pageKey: 'btsc-touring-veterinary-officer-recruitment-2026',
+      depth: 0,
+      canonicalPath: 'latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html'
+    })
+  );
+
+  // Dedicated Latest Jobs Page: latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html (depth = 1)
+  writePage(
+    'latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html',
+    wrapWithHtmlLayout({
+      title: 'BTSC Touring Veterinary Officer Recruitment 2026 – Apply Online, 787 Posts, Eligibility & Notification',
+      description:
+        'BTSC Touring Veterinary Officer Recruitment 2026 Advt 27/2026 for 787 regular posts in Animal & Fisheries Resources Dept Bihar. Pay Level 9 ₹53,100–₹1,67,800. B.V.Sc. qualification, Bihar Veterinary Council registration, 100-mark CBT exam pattern, experience weightage & direct apply link.',
+      content: renderToStaticMarkup(
+        React.createElement(JobDetailPage, { exam: btscTouringVetExam, depth: 1 })
+      ),
+      pageKey: 'btsc-touring-veterinary-officer-recruitment-2026',
+      depth: 1,
+      canonicalPath: 'latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html'
     })
   );
 

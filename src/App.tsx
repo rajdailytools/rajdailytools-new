@@ -58,6 +58,7 @@ import { CONCOR_RECRUITMENT_2026_EXAM } from './data/concorData';
 import { HPSC_FSO_2026_EXAM } from './data/hpscFsoData';
 import { UPESSC_ASSISTANT_PROFESSOR_2026_EXAM } from './data/upesscAssistantProfessorData';
 import { IBPS_HINDI_OFFICER_2026_EXAM } from './data/ibpsHindiOfficerData';
+import { BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM } from './data/btscFisheryExtensionOfficerData';
 import { IbpsHindiOfficerPage } from './pages/IbpsHindiOfficerPage';
 import { ALL_15_RANKING_EXAMS } from './data/rankingPagesData';
 import { ALLAHABAD_UNIVERSITY_PHD_2026_EXAM } from './data/allahabadUniversityPhdData';
@@ -82,6 +83,13 @@ export default function App() {
 
       if (!effectiveRoute) {
         setCurrentPage('home');
+        return;
+      }
+
+      // Check direct BTSC Fishery Extension Officer route
+      if (effectiveRoute.includes('btsc-fishery-extension-officer') || effectiveRoute.includes('btsc-feo')) {
+        setCurrentPage('job-detail');
+        setCurrentSlug('btsc-fishery-extension-officer-recruitment-2026');
         return;
       }
 
@@ -272,6 +280,12 @@ export default function App() {
   const isMpPoliceConstablePage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb-mp-police-constable') || currentPage.startsWith('mp-police-constable'));
   const mpPoliceConstableRecord = EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026');
 
+  const isBtscFisheryPage = typeof currentPage === 'string' && (currentPage.startsWith('btsc-fishery-extension-officer') || currentPage === 'btsc-fishery-extension-officer-recruitment-2026');
+  const btscFisheryRecord = EXAMS_DATABASE.find((e) => e.id === 'btsc-fishery-extension-officer-2026' || e.slug === 'btsc-fishery-extension-officer-recruitment-2026') || BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM;
+
+  const isBtscPage = typeof currentPage === 'string' && (currentPage.startsWith('btsc-touring-veterinary-officer') || currentPage.startsWith('btsc-veterinary-officer') || currentPage === 'btsc-touring-veterinary-officer-recruitment-2026');
+  const btscRecord = EXAMS_DATABASE.find((e) => e.id === 'btsc-touring-veterinary-officer-2026' || e.slug === 'btsc-touring-veterinary-officer-recruitment-2026');
+
   const isSscJePage = typeof currentPage === 'string' && (currentPage.startsWith('ssc-je') || currentPage === 'ssc-je-recruitment-2026');
   const sscJeRecord = EXAMS_DATABASE.find((e) => e.id === 'ssc-je-2026' || e.slug === 'ssc-je-recruitment-2026');
 
@@ -315,6 +329,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isBtscPage && btscRecord) ? btscRecord :
     (isUpesscAssistantProfessorPage && upesscAssistantProfessorRecord) ? upesscAssistantProfessorRecord :
     (isHpscFsoPage && hpscFsoRecord) ? hpscFsoRecord :
     (isConcorPage && concorRecord) ? concorRecord :
@@ -403,6 +418,14 @@ export default function App() {
         }
         if (currentSlug === 'upessc-prt-assistant-teacher-recruitment-2026' || currentSlug === 'upessc-prt-assistant-teacher-2026' || currentSlug === 'upessc-prt-2026') {
           return <JobDetailPage exam={upesscPrtRecord || currentExam} onNavigate={handleNavigate} />;
+        }
+        if (
+          currentSlug === 'btsc-fishery-extension-officer-recruitment-2026' ||
+          currentSlug === 'btsc-fishery-extension-officer-2026' ||
+          currentSlug === 'btsc-fishery-extension-officer' ||
+          currentSlug === 'btsc-feo-2026'
+        ) {
+          return <JobDetailPage exam={btscFisheryRecord || currentExam} onNavigate={handleNavigate} />;
         }
         return <JobDetailPage exam={currentExam} onNavigate={handleNavigate} />;
 
@@ -655,6 +678,11 @@ export default function App() {
       case 'upsssc-senior-instructor-recruitment-2026':
       case 'upsssc-senior-instructor-2026':
         return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'btsc-touring-veterinary-officer-recruitment-2026':
+      case 'btsc-touring-veterinary-officer-2026':
+      case 'btsc-veterinary-officer-2026':
+        return <JobDetailPage exam={btscRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'mpesb-mp-police-constable-recruitment-2026':
       case 'mp-police-constable-recruitment-2026':

@@ -107,8 +107,20 @@ import {
   IBPS_HINDI_OFFICER_2026_EXAM,
   generateIbpsHindiOfficer50Sections
 } from './ibpsHindiOfficerData';
+import {
+  BTSC_TOURING_VETERINARY_OFFICER_2026_EXAM,
+  generateBtsc50Sections
+} from './btscTouringVeterinaryOfficerData';
+import {
+  BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM,
+  generateBtscFishery50Sections
+} from './btscFisheryExtensionOfficerData';
 
 export {
+  BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM,
+  generateBtscFishery50Sections,
+  BTSC_TOURING_VETERINARY_OFFICER_2026_EXAM,
+  generateBtsc50Sections,
   IBPS_HINDI_OFFICER_2026_EXAM,
   generateIbpsHindiOfficer50Sections,
   UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
@@ -177,6 +189,8 @@ export {
 };
 
 const BASE_EXAMS: ExamRecord[] = [
+  BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM,
+  BTSC_TOURING_VETERINARY_OFFICER_2026_EXAM,
   IBPS_HINDI_OFFICER_2026_EXAM,
   UPESSC_ASSISTANT_PROFESSOR_2026_EXAM,
   NTPC_ASSISTANT_OFFICER_2026_EXAM,

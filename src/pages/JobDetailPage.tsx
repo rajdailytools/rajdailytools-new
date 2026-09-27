@@ -11,6 +11,8 @@ import { HpscFsoToolsModal } from '../components/HpscFsoToolsModal';
 import { NtpcToolsModal } from '../components/NtpcToolsModal';
 import { UpesscAssistantProfessorToolsModal } from '../components/UpesscAssistantProfessorToolsModal';
 import { IbpsHindiOfficerToolsModal } from '../components/IbpsHindiOfficerToolsModal';
+import { BtscToolsModal } from '../components/BtscToolsModal';
+import { BtscFisheryToolsModal } from '../components/BtscFisheryToolsModal';
 import { LiveCountdownWidget } from '../components/LiveCountdownWidget';
 import { RankingToolEngine } from '../components/RankingTools';
 import { getCountdown, formatDate } from '../utils/dateUtils';
@@ -36,7 +38,8 @@ import {
   FileCheck,
   FileSignature,
   DollarSign,
-  Award
+  Award,
+  Layers
 } from 'lucide-react';
 
 interface JobDetailPageProps {
@@ -52,6 +55,8 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
   const [ntpcModalTool, setNtpcModalTool] = useState<string | null>(null);
   const [upesscApModalTool, setUpesscApModalTool] = useState<string | null>(null);
   const [ibpsModalTool, setIbpsModalTool] = useState<string | null>(null);
+  const [btscModalTool, setBtscModalTool] = useState<string | null>(null);
+  const [btscFisheryModalTool, setBtscFisheryModalTool] = useState<string | null>(null);
   const [badgeStatus, setBadgeStatus] = useState<LiveBadgeResult>(() =>
     getLiveBadgeStatus(exam.applicationLastDate, 'deadline')
   );
@@ -84,6 +89,8 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
   const isHpscFso = exam.id === 'hpsc-food-safety-officer-fso-2026' || exam.slug?.includes('hpsc-food-safety-officer') || exam.shortName?.includes('HPSC FSO');
   const isNtpcao = exam.id === 'ntpc-assistant-officer-2026' || exam.slug?.includes('ntpc-assistant-officer') || exam.shortName?.includes('NTPC AO');
   const isIbpsHindiOfficer = exam.id === 'ibps-hindi-officer-2026' || exam.slug?.includes('ibps-hindi-officer') || exam.shortName?.includes('IBPS Hindi Officer');
+  const isBtscFishery = exam.id === 'btsc-fishery-extension-officer-2026' || exam.slug?.includes('btsc-fishery-extension-officer') || (exam.examName?.includes('BTSC') && exam.examName?.includes('Fishery'));
+  const isBtsc = (exam.id === 'btsc-touring-veterinary-officer-2026' || exam.slug?.includes('btsc-touring-veterinary-officer') || exam.shortName?.includes('BTSC')) && !isBtscFishery;
 
   useEffect(() => {
     (window as any).__openUpesscApTool = (tool: string) => {
@@ -92,9 +99,17 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
     (window as any).__openIbpsTool = (tool: string) => {
       setIbpsModalTool(tool);
     };
+    (window as any).__openBtscTool = (tool: string) => {
+      setBtscModalTool(tool);
+    };
+    (window as any).__openBtscFisheryTool = (tool: string) => {
+      setBtscFisheryModalTool(tool);
+    };
     return () => {
       delete (window as any).__openUpesscApTool;
       delete (window as any).__openIbpsTool;
+      delete (window as any).__openBtscTool;
+      delete (window as any).__openBtscFisheryTool;
     };
   }, []);
 
@@ -102,31 +117,44 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Breadcrumb */}
       <Breadcrumb
-        items={[
-          ...(exam.category === 'Latest Exam' || isIbpsHindiOfficer
-            ? [{ label: 'Latest Exam', page: 'latest-jobs' as ActivePage }]
-            : [{ label: 'Latest Jobs', page: 'latest-jobs' as ActivePage }]),
-          ...(!isIbpsHindiOfficer && exam.category === 'Police'
+        items={
+          isBtscFishery
             ? [
-                { label: 'Police Recruitment', page: 'latest-jobs' as ActivePage },
-                ...(exam.state === 'Madhya Pradesh' ? [{ label: 'MP State Jobs', page: 'latest-jobs' as ActivePage }] : [])
+                { label: 'Latest Job', page: 'latest-jobs' as ActivePage },
+                { label: exam.examName }
               ]
-            : []),
-          ...(!isIbpsHindiOfficer && exam.category === 'Teaching'
-            ? [
-                { label: 'Teaching Jobs', page: 'latest-jobs' as ActivePage },
-                ...(exam.state === 'Uttar Pradesh' ? [{ label: 'Uttar Pradesh Jobs', page: 'latest-jobs' as ActivePage }] : []),
-                ...(exam.organization?.includes('UPESSC') ? [{ label: 'UPESSC', page: 'latest-jobs' as ActivePage }] : [])
+            : [
+                ...(exam.category === 'Latest Exam' || isIbpsHindiOfficer
+                  ? [{ label: 'Latest Exam', page: 'latest-jobs' as ActivePage }]
+                  : [{ label: 'Latest Jobs', page: 'latest-jobs' as ActivePage }]),
+                ...(!isIbpsHindiOfficer && exam.category === 'Police'
+                  ? [
+                      { label: 'Police Recruitment', page: 'latest-jobs' as ActivePage },
+                      ...(exam.state === 'Madhya Pradesh' ? [{ label: 'MP State Jobs', page: 'latest-jobs' as ActivePage }] : [])
+                    ]
+                  : []),
+                ...(!isIbpsHindiOfficer && exam.category === 'Teaching'
+                  ? [
+                      { label: 'Teaching Jobs', page: 'latest-jobs' as ActivePage },
+                      ...(exam.state === 'Uttar Pradesh' ? [{ label: 'Uttar Pradesh Jobs', page: 'latest-jobs' as ActivePage }] : []),
+                      ...(exam.organization?.includes('UPESSC') ? [{ label: 'UPESSC', page: 'latest-jobs' as ActivePage }] : [])
+                    ]
+                  : []),
+                ...(!isIbpsHindiOfficer && (exam.state === 'Haryana' || exam.organization?.includes('HPSC'))
+                  ? [
+                      { label: 'Haryana Jobs', page: 'latest-jobs' as ActivePage },
+                      { label: 'HPSC', page: 'latest-jobs' as ActivePage }
+                    ]
+                  : []),
+                ...(!isIbpsHindiOfficer && (exam.state === 'Bihar' || exam.organization?.includes('BTSC'))
+                  ? [
+                      { label: 'Bihar Jobs', page: 'latest-jobs' as ActivePage },
+                      { label: 'BTSC', page: 'latest-jobs' as ActivePage }
+                    ]
+                  : []),
+                { label: exam.examName }
               ]
-            : []),
-          ...(!isIbpsHindiOfficer && (exam.state === 'Haryana' || exam.organization?.includes('HPSC'))
-            ? [
-                { label: 'Haryana Jobs', page: 'latest-jobs' as ActivePage },
-                { label: 'HPSC', page: 'latest-jobs' as ActivePage }
-              ]
-            : []),
-          { label: exam.examName }
-        ]}
+        }
         onNavigate={onNavigate}
         depth={depth}
       />
@@ -294,6 +322,50 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
               badgeLabel="Written Exam Date"
               variant="emerald"
               passedText="Exam Started / Ongoing"
+            />
+          </div>
+        )}
+
+        {/* Live Countdowns for BTSC Fishery Extension Officer */}
+        {isBtscFishery && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <LiveCountdownWidget
+              targetDate="2026-10-23T23:59:59+05:30"
+              title="Online Application Closes"
+              subtitle="23 October 2026 (23:59:59 IST)"
+              badgeLabel="Application Deadline"
+              variant="red"
+              passedText="APPLICATION CLOSED"
+            />
+            <LiveCountdownWidget
+              targetDate="2026-10-23T23:59:59+05:30"
+              title="Online Fee Payment Closes"
+              subtitle="23 October 2026 (23:59:59 IST)"
+              badgeLabel="Fee Gateway Closes"
+              variant="purple"
+              passedText="APPLICATION CLOSED"
+            />
+          </div>
+        )}
+
+        {/* Live Countdowns for BTSC Touring Veterinary Officer */}
+        {isBtsc && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <LiveCountdownWidget
+              targetDate="2026-10-23T23:59:59+05:30"
+              title="Online Application Closes"
+              subtitle="23 October 2026 (23:59:59 IST)"
+              badgeLabel="Application Deadline"
+              variant="red"
+              passedText="APPLICATION CLOSED"
+            />
+            <LiveCountdownWidget
+              targetDate="2026-10-23T23:59:59+05:30"
+              title="Online Fee Payment Closes"
+              subtitle="23 October 2026 (23:59:59 IST)"
+              badgeLabel="Fee Gateway Closes"
+              variant="purple"
+              passedText="APPLICATION CLOSED"
             />
           </div>
         )}
@@ -1585,6 +1657,439 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </a>
                 </div>
               </div>
+            ) : isBtscFishery ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* BTSC Fishery Tool 1: Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        2-Yr PG Fisheries Science
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify 2-year Post Graduate Degree in Fisheries Science from an ICAR-recognised Agricultural University.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('eligibility')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 2: Age Cut-Off Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Calendar className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: 01.08.2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Cut-Off Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate actual age as on 01.08.2026 (Min 21 yrs; UR M 37, F/BC/EBC 40, SC/ST 42, PwBD +10 yrs).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 3: Contractual Experience Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        Max 25 Marks (5/Yr)
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Experience Marks Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate official experience marks for contractual service in Bihar Govt Fisheries Directorate (5 marks/yr, max 25).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('experience')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Experience Marks</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 4: CBT Marks & Penalty Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Calculator className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        +1 / -0.25 • 100 Qs
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">CBT Marks Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Simulate 100-question CBT score, negative penalties (-0.25), scaled 75-mark weightage, and 30% qualifying mark.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('cbt')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate CBT Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 5: Composite Selection Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <Percent className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        75% CBT + 25% Exp = 100M
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Final Composite Merit Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Combine 75-mark written CBT weightage with contractual service points to compute official composite merit score.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('selection')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Composite Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 6: 231 Vacancies Matrix */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-cyan-100 text-cyan-800 rounded-lg">
+                        <Layers className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200">
+                        231 Posts &bull; 35% Women
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Vacancies &amp; Reservation Matrix</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Inspect category breakdown (UR 96, EBC 41, SC 35, BC 27, EWS 23, BCW 7, ST 2) and horizontal quotas.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('vacancies')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-800 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>View Vacancy Matrix</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 7: Document Verification Checklist */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-teal-300 hover:bg-teal-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-teal-100 text-teal-800 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                        12 DV Certificates
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">DV Certificate Checklist</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify all mandatory certificates (PG Fisheries degree, ICAR proof, Bihar Domicile, Caste/NCL, Experience).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscFisheryModalTool('checklist')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-teal-600 hover:text-white text-teal-800 border border-teal-200 hover:border-teal-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Open DV Checklist</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Fishery Tool 8: Online Mock Test */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        100 Qs • 100 Marks
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Online Mock Test Portal</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Practice full-length 100-question bilingual test simulating the CBT pattern with instant score analysis.
+                    </p>
+                  </div>
+                  <a
+                    href="#/mock-test"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (onNavigate) {
+                        onNavigate('mock-test');
+                      } else {
+                        window.location.hash = '#/mock-test';
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            ) : isBtsc ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* BTSC Tool 1: Eligibility Checker */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                        B.V.Sc. &amp; Council Reg
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Eligibility Checker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify B.V.Sc./B.V.Sc. &amp; A.H. degree recognition from VCI and permanent Bihar Veterinary Council registration.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('eligibility')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Check Eligibility</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 2: Age Cut-Off Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                        <Calendar className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                        Cut-Off: 01.08.2026
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Age Cut-Off Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Calculate exact age as on 01.08.2026 (Min 21 yrs, UR M 37, F/BC/EBC 40, SC/ST 42, PwBD +10 yrs, Ex-SM 57 yrs).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('age')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Age</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 3: Contractual Experience Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        Max 25 Marks (5/Yr)
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Experience Marks Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Compute weightage marks for contractual veterinary service in Bihar Govt Animal &amp; Fisheries Resources Dept.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('experience')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Experience Marks</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 4: CBT Marks & Penalty Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Calculator className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        +1 / -0.25 • 100 Qs
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">CBT Marks &amp; Penalty Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Simulate 100-question CBT score, negative penalties (-0.25 per wrong), and accuracy percentage.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('cbt')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate CBT Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 5: Composite Selection Calculator */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                        <Percent className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        75% CBT + 25% Exp = 100M
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Composite Merit Calculator</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Combine 75% written CBT score with service experience points to get your official composite merit score.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('selection')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Calculate Composite Score</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 6: 787 Vacancies Matrix */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-cyan-100 text-cyan-800 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200">
+                        787 Posts &bull; 35% Women
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Vacancies &amp; Reservation Matrix</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Inspect category-wise vacancies (UR 228, SC 207, EBC 195, BC 89, EWS 55, ST 13) and 261 women quota posts.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('vacancies')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-800 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>View Vacancy Matrix</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 7: Document Verification Checklist */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-teal-300 hover:bg-teal-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-teal-100 text-teal-800 rounded-lg">
+                        <FileCheck className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
+                        11 DV Certificates
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">DV Certificate Checklist</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Verify mandatory original documents (B.V.Sc. Degree, Bihar Council Registration, Domicile, Caste/NCL).
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setBtscModalTool('checklist')}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-teal-600 hover:text-white text-teal-800 border border-teal-200 hover:border-teal-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                  >
+                    <span>Open DV Checklist</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* BTSC Tool 8: Online Mock Test */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <Award className="w-4 h-4" />
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                        100 Qs • 100 Marks
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-slate-900 font-display">Online Mock Test Portal</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Practice official pattern Veterinary Science questions with timer, instant results, and negative marking.
+                    </p>
+                  </div>
+                  <a
+                    href={`${depth === 1 ? '../' : './'}tools/mock-test.html?exam=${exam.slug}`}
+                    onClick={(e) => {
+                      if (onNavigate) {
+                        e.preventDefault();
+                        window.location.hash = `#/tools/mock-test?exam=${exam.slug}`;
+                        onNavigate('tool-detail', `mock-test?exam=${exam.slug}`);
+                      }
+                    }}
+                    className="mt-3.5 w-full py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <span>Start Mock Test</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Tool 1: Eligibility Calculator */}
@@ -1751,7 +2256,9 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
           <Accordion
             sections={exam.allInformation}
             title={
-              isIbpsHindiOfficer
+              isBtscFishery
+                ? "Complete 50-Section Recruitment Information & Guidelines (Advt 28/2026)"
+                : isIbpsHindiOfficer
                 ? "Complete 50-Section Exam Information & Guidelines (Advt IBPS/2026-27/04)"
                 : isConcor
                 ? "Complete 50-Section Recruitment Information & Guidelines"
@@ -1807,6 +2314,22 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             <UpesscAssistantProfessorToolsModal
               tool={upesscApModalTool}
               onClose={() => setUpesscApModalTool(null)}
+            />
+          )}
+
+          {/* BTSC Fishery Extension Officer Tools Modal */}
+          {isBtscFishery && (
+            <BtscFisheryToolsModal
+              tool={btscFisheryModalTool}
+              onClose={() => setBtscFisheryModalTool(null)}
+            />
+          )}
+
+          {/* BTSC Touring Veterinary Officer Tools Modal */}
+          {isBtsc && (
+            <BtscToolsModal
+              tool={btscModalTool}
+              onClose={() => setBtscModalTool(null)}
             />
           )}
 

@@ -8,6 +8,34 @@ import { ActivePage } from '../types/exam';
 export function getPageUrl(page: ActivePage | string, slug?: string, depth: number = 0): string {
   const prefix = depth === 1 ? '../' : './';
 
+  // Map dedicated BTSC Fishery Extension Officer Recruitment 2026 page
+  if (
+    page === 'btsc-fishery-extension-officer-recruitment-2026' ||
+    page === 'btsc-fishery-extension-officer-2026' ||
+    page === 'btsc-fishery-officer-2026' ||
+    page === 'btsc-fishery-extension-officer' ||
+    slug === 'btsc-fishery-extension-officer-recruitment-2026' ||
+    slug === 'btsc-fishery-extension-officer-2026' ||
+    slug === 'btsc-fishery-officer-2026' ||
+    slug === 'btsc-fishery-extension-officer'
+  ) {
+    return `${prefix}latest-jobs/btsc-fishery-extension-officer-recruitment-2026.html`;
+  }
+
+  // Map dedicated BTSC Touring Veterinary Officer Recruitment 2026 page
+  if (
+    page === 'btsc-touring-veterinary-officer-recruitment-2026' ||
+    page === 'btsc-touring-veterinary-officer-2026' ||
+    page === 'btsc-veterinary-officer-2026' ||
+    page === 'btsc-touring-veterinary-officer' ||
+    slug === 'btsc-touring-veterinary-officer-recruitment-2026' ||
+    slug === 'btsc-touring-veterinary-officer-2026' ||
+    slug === 'btsc-veterinary-officer-2026' ||
+    slug === 'btsc-touring-veterinary-officer'
+  ) {
+    return `${prefix}latest-jobs/btsc-touring-veterinary-officer-recruitment-2026.html`;
+  }
+
   // Map dedicated IBPS Hindi Officer Recruitment 2026 page
   if (
     page === 'ibps-hindi-officer-recruitment-2026' ||
