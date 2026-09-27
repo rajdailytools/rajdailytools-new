@@ -17,12 +17,19 @@ interface BtscFisheryToolsModalProps {
   onClose: () => void;
 }
 
+const normalizeTab = (t?: string | null): string => {
+  if (!t) return 'eligibility';
+  if (t === 'documents') return 'checklist';
+  if (t === 'matrix') return 'vacancies';
+  return t;
+};
+
 export const BtscFisheryToolsModal: React.FC<BtscFisheryToolsModalProps> = ({ tool, onClose }) => {
-  const [activeTab, setActiveTab] = useState<string>(tool || 'eligibility');
+  const [activeTab, setActiveTab] = useState<string>(normalizeTab(tool));
 
   useEffect(() => {
     if (tool) {
-      setActiveTab(tool);
+      setActiveTab(normalizeTab(tool));
     }
   }, [tool]);
 

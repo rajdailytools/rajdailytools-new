@@ -78,7 +78,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   ];
 
   const handleItemClick = (e: React.MouseEvent, page: ActivePage) => {
-    if (onNavigate && (!window.location.pathname.endsWith('.html'))) {
+    if (onNavigate) {
       e.preventDefault();
       onNavigate(page);
       onClose();

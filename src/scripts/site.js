@@ -832,5 +832,30 @@
     initSharePrint();
     initLiveCountdowns();
     initIbpsHindiOfficerTools();
+    initBtscFisheryTools();
+  }
+
+  // 9. BTSC Fishery Tools Trigger
+  function initBtscFisheryTools() {
+    document.querySelectorAll('[data-btsc-fishery-tool]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        var toolId = btn.getAttribute('data-btsc-fishery-tool');
+        if (!toolId) return;
+        if (typeof window.__openBtscFisheryTool === 'function') {
+          window.__openBtscFisheryTool(toolId);
+        } else {
+          var checkCount = 0;
+          var interval = setInterval(function () {
+            checkCount++;
+            if (typeof window.__openBtscFisheryTool === 'function') {
+              window.__openBtscFisheryTool(toolId);
+              clearInterval(interval);
+            } else if (checkCount > 30) {
+              clearInterval(interval);
+            }
+          }, 100);
+        }
+      });
+    });
   }
 })();

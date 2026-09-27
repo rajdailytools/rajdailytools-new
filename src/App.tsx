@@ -66,111 +66,173 @@ import { NVS_CLASS_11_2027_ADMISSION } from './data/nvsClass11Data';
 import { NVS_CLASS_9_2027_ADMISSION } from './data/nvsClass9Data';
 import { AIBE_XXII_2026_ADMISSION } from './data/aibeData';
 
+// Helper to synchronously resolve route from current window.location (hash or pathname)
+function getInitialRoute(): { page: ActivePage; slug: string; tool: ToolType } {
+  if (typeof window === 'undefined') {
+    return {
+      page: 'home',
+      slug: 'ssc-cgl-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  const rawHash = window.location.hash.replace(/^#\/?/, '').replace(/\.html$/, '');
+  const pathname = window.location.pathname.replace(/^\//, '').replace(/\/$/, '').replace(/\.html$/, '');
+  
+  const effectiveRoute = rawHash || pathname;
+
+  if (!effectiveRoute) {
+    return {
+      page: 'home',
+      slug: 'ssc-cgl-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct BTSC Fishery Extension Officer route
+  if (
+    effectiveRoute.includes('btsc-fishery-extension-officer') ||
+    effectiveRoute.includes('btsc-feo')
+  ) {
+    return {
+      page: 'job-detail',
+      slug: 'btsc-fishery-extension-officer-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct BTSC Touring Veterinary Officer route
+  if (
+    effectiveRoute.includes('btsc-touring-veterinary-officer') ||
+    effectiveRoute.includes('btsc-veterinary-officer')
+  ) {
+    return {
+      page: 'job-detail',
+      slug: 'btsc-touring-veterinary-officer-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct MP Police Constable route
+  if (
+    effectiveRoute.includes('mpesb-mp-police-constable') ||
+    effectiveRoute.includes('mp-police-constable')
+  ) {
+    return {
+      page: 'job-detail',
+      slug: 'mpesb-mp-police-constable-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct UPESSC Assistant Professor route
+  if (effectiveRoute.includes('ibps-hindi-officer')) {
+    return {
+      page: 'job-detail',
+      slug: 'ibps-hindi-officer-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  if (effectiveRoute.includes('upessc-assistant-professor') || effectiveRoute.includes('upessc-ap')) {
+    return {
+      page: 'job-detail',
+      slug: 'upessc-assistant-professor-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct NTPC Assistant Officer route
+  if (effectiveRoute.includes('ntpc-assistant-officer') || effectiveRoute.includes('ntpc-ao')) {
+    return {
+      page: 'job-detail',
+      slug: 'ntpc-assistant-officer-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct HPSC FSO route
+  if (effectiveRoute.includes('hpsc-food-safety-officer') || effectiveRoute.includes('hpsc-fso')) {
+    return {
+      page: 'job-detail',
+      slug: 'hpsc-food-safety-officer-fso-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check direct UPESSC PRT route
+  if (effectiveRoute.includes('upessc-prt')) {
+    return {
+      page: 'job-detail',
+      slug: 'upessc-prt-assistant-teacher-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Check ranking page direct route
+  const matchedRankingExam = ALL_15_RANKING_EXAMS.find(
+    (e) => e.slug === effectiveRoute || e.id === effectiveRoute
+  );
+  if (matchedRankingExam) {
+    return {
+      page: 'job-detail',
+      slug: matchedRankingExam.slug,
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Route /tools to ToolsPage if no specific tool
+  if (effectiveRoute === 'tools') {
+    return {
+      page: 'tools' as ActivePage,
+      slug: 'ssc-cgl-recruitment-2026',
+      tool: 'eligibility-calculator'
+    };
+  }
+
+  // Support /tools/:toolId?exam=:examSlug or tool-detail/:toolId?exam=:examSlug
+  if (effectiveRoute.startsWith('tools/') || effectiveRoute.startsWith('tool-detail/')) {
+    const clean = effectiveRoute.replace('tools/', '').replace('tool-detail/', '');
+    let toolId = clean;
+    let examParam = '';
+    if (clean.includes('?exam=')) {
+      const split = clean.split('?exam=');
+      toolId = split[0];
+      examParam = split[1];
+    }
+    return {
+      page: 'tool-detail',
+      slug: examParam || 'ssc-cgl-recruitment-2026',
+      tool: toolId as ToolType
+    };
+  }
+
+  const parts = effectiveRoute.split('/');
+  const pageKey = parts[0] as ActivePage;
+  const slugKey = parts[1] || 'ssc-cgl-recruitment-2026';
+
+  return {
+    page: pageKey || 'home',
+    slug: slugKey,
+    tool: 'eligibility-calculator'
+  };
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<ActivePage>('home');
-  const [currentSlug, setCurrentSlug] = useState<string>('ssc-cgl-recruitment-2026');
-  const [currentTool, setCurrentTool] = useState<ToolType>('eligibility-calculator');
+  const initialRoute = getInitialRoute();
+  const [currentPage, setCurrentPage] = useState<ActivePage>(initialRoute.page);
+  const [currentSlug, setCurrentSlug] = useState<string>(initialRoute.slug);
+  const [currentTool, setCurrentTool] = useState<ToolType>(initialRoute.tool);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Synchronize with URL hash for browser history / back button
   useEffect(() => {
     const handleHashChange = () => {
       setIsMobileDrawerOpen(false);
-      const rawHash = window.location.hash.replace('#/', '').replace('#', '').replace(/\.html$/, '');
-      const pathname = window.location.pathname.replace(/^\//, '').replace(/\.html$/, '');
-      
-      const effectiveRoute = rawHash || pathname;
-
-      if (!effectiveRoute) {
-        setCurrentPage('home');
-        return;
-      }
-
-      // Check direct BTSC Fishery Extension Officer route
-      if (effectiveRoute.includes('btsc-fishery-extension-officer') || effectiveRoute.includes('btsc-feo')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('btsc-fishery-extension-officer-recruitment-2026');
-        return;
-      }
-
-      // Check direct UPESSC Assistant Professor route
-      if (effectiveRoute.includes('ibps-hindi-officer')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('ibps-hindi-officer-recruitment-2026');
-        return;
-      }
-
-      if (effectiveRoute.includes('upessc-assistant-professor') || effectiveRoute.includes('upessc-ap')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('upessc-assistant-professor-recruitment-2026');
-        return;
-      }
-
-      // Check direct NTPC Assistant Officer route
-      if (effectiveRoute.includes('ntpc-assistant-officer') || effectiveRoute.includes('ntpc-ao')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('ntpc-assistant-officer-recruitment-2026');
-        return;
-      }
-
-      // Check direct HPSC FSO route
-      if (effectiveRoute.includes('hpsc-food-safety-officer') || effectiveRoute.includes('hpsc-fso')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('hpsc-food-safety-officer-fso-recruitment-2026');
-        return;
-      }
-
-      // Check direct UPESSC PRT route
-      if (effectiveRoute.includes('upessc-prt')) {
-        setCurrentPage('job-detail');
-        setCurrentSlug('upessc-prt-assistant-teacher-recruitment-2026');
-        return;
-      }
-
-      // Check ranking page direct route
-      const matchedRankingExam = ALL_15_RANKING_EXAMS.find(
-        (e) => e.slug === effectiveRoute || e.id === effectiveRoute
-      );
-      if (matchedRankingExam) {
-        setCurrentPage('job-detail');
-        setCurrentSlug(matchedRankingExam.slug);
-        return;
-      }
-
-      // Route /tools to ToolsPage if no specific tool
-      if (effectiveRoute === 'tools') {
-        setCurrentPage('tools' as ActivePage);
-        return;
-      }
-
-      // Support /tools/:toolId?exam=:examSlug or tool-detail/:toolId?exam=:examSlug
-      if (effectiveRoute.startsWith('tools/') || effectiveRoute.startsWith('tool-detail/')) {
-        const clean = effectiveRoute.replace('tools/', '').replace('tool-detail/', '');
-        let toolId = clean;
-        let examParam = '';
-        if (clean.includes('?exam=')) {
-          const split = clean.split('?exam=');
-          toolId = split[0];
-          examParam = split[1];
-        }
-        setCurrentPage('tool-detail');
-        setCurrentTool(toolId as ToolType);
-        if (examParam) {
-          setCurrentSlug(examParam);
-        }
-        return;
-      }
-
-      const parts = effectiveRoute.split('/');
-      const pageKey = parts[0] as ActivePage;
-      const slugKey = parts[1];
-
-      if (pageKey) {
-        setCurrentPage(pageKey);
-      }
-      if (slugKey) {
-        setCurrentSlug(slugKey);
-      }
+      const nextRoute = getInitialRoute();
+      setCurrentPage(nextRoute.page);
+      setCurrentSlug(nextRoute.slug);
+      setCurrentTool(nextRoute.tool);
     };
 
     // Initial check
@@ -280,8 +342,16 @@ export default function App() {
   const isMpPoliceConstablePage = typeof currentPage === 'string' && (currentPage.startsWith('mpesb-mp-police-constable') || currentPage.startsWith('mp-police-constable'));
   const mpPoliceConstableRecord = EXAMS_DATABASE.find((e) => e.id === 'mp-police-constable-2026' || e.slug === 'mpesb-mp-police-constable-recruitment-2026');
 
-  const isBtscFisheryPage = typeof currentPage === 'string' && (currentPage.startsWith('btsc-fishery-extension-officer') || currentPage === 'btsc-fishery-extension-officer-recruitment-2026');
-  const btscFisheryRecord = EXAMS_DATABASE.find((e) => e.id === 'btsc-fishery-extension-officer-2026' || e.slug === 'btsc-fishery-extension-officer-recruitment-2026') || BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM;
+  const isBtscFisheryPage =
+    (typeof currentPage === 'string' &&
+      (currentPage.startsWith('btsc-fishery-extension-officer') ||
+       currentPage.startsWith('btsc-feo') ||
+       currentPage === 'btsc-fishery-extension-officer-recruitment-2026')) ||
+    currentSlug === 'btsc-fishery-extension-officer-recruitment-2026' ||
+    currentSlug === 'btsc-fishery-extension-officer-2026' ||
+    currentSlug === 'btsc-fishery-extension-officer' ||
+    currentSlug === 'btsc-feo-2026';
+  const btscFisheryRecord = BTSC_FISHERY_EXTENSION_OFFICER_2026_EXAM;
 
   const isBtscPage = typeof currentPage === 'string' && (currentPage.startsWith('btsc-touring-veterinary-officer') || currentPage.startsWith('btsc-veterinary-officer') || currentPage === 'btsc-touring-veterinary-officer-recruitment-2026');
   const btscRecord = EXAMS_DATABASE.find((e) => e.id === 'btsc-touring-veterinary-officer-2026' || e.slug === 'btsc-touring-veterinary-officer-recruitment-2026');
@@ -329,6 +399,7 @@ export default function App() {
   const aiimsRecord = EXAMS_DATABASE.find((e) => e.id === 'aiims-norcet-11-2026' || e.slug === 'aiims-norcet-11th-admit-card-2026');
 
   const currentExam: ExamRecord =
+    (isBtscFisheryPage && btscFisheryRecord) ? btscFisheryRecord :
     (isBtscPage && btscRecord) ? btscRecord :
     (isUpesscAssistantProfessorPage && upesscAssistantProfessorRecord) ? upesscAssistantProfessorRecord :
     (isHpscFsoPage && hpscFsoRecord) ? hpscFsoRecord :
@@ -678,6 +749,12 @@ export default function App() {
       case 'upsssc-senior-instructor-recruitment-2026':
       case 'upsssc-senior-instructor-2026':
         return <JobDetailPage exam={upssscRecord || currentExam} onNavigate={handleNavigate} />;
+
+      case 'btsc-fishery-extension-officer-recruitment-2026':
+      case 'btsc-fishery-extension-officer-2026':
+      case 'btsc-fishery-extension-officer':
+      case 'btsc-feo-2026':
+        return <JobDetailPage exam={btscFisheryRecord || currentExam} onNavigate={handleNavigate} />;
 
       case 'btsc-touring-veterinary-officer-recruitment-2026':
       case 'btsc-touring-veterinary-officer-2026':

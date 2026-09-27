@@ -1660,7 +1660,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             ) : isBtscFishery ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* BTSC Fishery Tool 1: Eligibility Checker */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('eligibility')}
+                  data-btsc-fishery-tool="eligibility"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-blue-300 hover:bg-blue-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-blue-100 text-blue-700 rounded-lg">
@@ -1677,8 +1681,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('eligibility')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="eligibility"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('eligibility');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-blue-600 hover:text-white text-blue-700 border border-blue-200 hover:border-blue-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600"
                   >
                     <span>Check Eligibility</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1686,7 +1694,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 2: Age Cut-Off Calculator */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('age')}
+                  data-btsc-fishery-tool="age"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-purple-300 hover:bg-purple-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-purple-100 text-purple-700 rounded-lg">
@@ -1703,8 +1715,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('age')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="age"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('age');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-purple-600 hover:text-white text-purple-700 border border-purple-200 hover:border-purple-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-purple-600 group-hover:text-white group-hover:border-purple-600"
                   >
                     <span>Calculate Age</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1712,7 +1728,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 3: Contractual Experience Calculator */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('experience')}
+                  data-btsc-fishery-tool="experience"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-emerald-300 hover:bg-emerald-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-emerald-100 text-emerald-700 rounded-lg">
@@ -1729,8 +1749,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('experience')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="experience"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('experience');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-emerald-600 hover:text-white text-emerald-700 border border-emerald-200 hover:border-emerald-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600"
                   >
                     <span>Calculate Experience Marks</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1738,7 +1762,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 4: CBT Marks & Penalty Calculator */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('cbt')}
+                  data-btsc-fishery-tool="cbt"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
@@ -1755,8 +1783,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('cbt')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="cbt"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('cbt');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600"
                   >
                     <span>Calculate CBT Score</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1764,7 +1796,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 5: Composite Selection Calculator */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('selection')}
+                  data-btsc-fishery-tool="selection"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-amber-300 hover:bg-amber-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-amber-100 text-amber-800 rounded-lg">
@@ -1781,8 +1817,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('selection')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="selection"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('selection');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-amber-600 hover:text-white text-amber-900 border border-amber-200 hover:border-amber-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600"
                   >
                     <span>Calculate Composite Score</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1790,7 +1830,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 6: 231 Vacancies Matrix */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('vacancies')}
+                  data-btsc-fishery-tool="vacancies"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-cyan-300 hover:bg-cyan-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-cyan-100 text-cyan-800 rounded-lg">
@@ -1807,8 +1851,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('vacancies')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-800 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="vacancies"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('vacancies');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-cyan-600 hover:text-white text-cyan-800 border border-cyan-200 hover:border-cyan-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-cyan-600 group-hover:text-white group-hover:border-cyan-600"
                   >
                     <span>View Vacancy Matrix</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1816,7 +1864,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 7: Document Verification Checklist */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-teal-300 hover:bg-teal-50/20 transition-all">
+                <div
+                  onClick={() => setBtscFisheryModalTool('checklist')}
+                  data-btsc-fishery-tool="checklist"
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-teal-300 hover:bg-teal-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-teal-100 text-teal-800 rounded-lg">
@@ -1833,8 +1885,12 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                   </div>
                   <button
                     type="button"
-                    onClick={() => setBtscFisheryModalTool('checklist')}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-teal-600 hover:text-white text-teal-800 border border-teal-200 hover:border-teal-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    data-btsc-fishery-tool="checklist"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBtscFisheryModalTool('checklist');
+                    }}
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-teal-600 hover:text-white text-teal-800 border border-teal-200 hover:border-teal-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-teal-600 group-hover:text-white group-hover:border-teal-600"
                   >
                     <span>Open DV Checklist</span>
                     <ArrowRight className="w-3 h-3" />
@@ -1842,7 +1898,16 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                 </div>
 
                 {/* BTSC Fishery Tool 8: Online Mock Test */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all">
+                <div
+                  onClick={() => {
+                    if (onNavigate) {
+                      onNavigate('mock-test');
+                    } else {
+                      window.location.hash = '#/mock-test';
+                    }
+                  }}
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-300 hover:bg-indigo-50/20 transition-all cursor-pointer group"
+                >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
@@ -1858,16 +1923,17 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
                     </p>
                   </div>
                   <a
-                    href="#/mock-test"
+                    href={getPageUrl('mock-test', undefined, depth)}
                     onClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
                       if (onNavigate) {
                         onNavigate('mock-test');
                       } else {
                         window.location.hash = '#/mock-test';
                       }
                     }}
-                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                    className="mt-3.5 w-full py-2 px-3 bg-white hover:bg-indigo-600 hover:text-white text-indigo-700 border border-indigo-200 hover:border-indigo-600 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600"
                   >
                     <span>Start Mock Test</span>
                     <ArrowRight className="w-3 h-3" />

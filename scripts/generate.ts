@@ -216,6 +216,39 @@ interface PageTemplateOptions {
   canonicalPath?: string;
 }
 
+let mainJsFile = '';
+let mainCssFile = '';
+
+function detectViteAssets() {
+  const distAssetsDir = path.join(DIST_DIR, 'assets');
+  const viteIndexHtml = path.join(DIST_DIR, 'index.html');
+  
+  if (fs.existsSync(viteIndexHtml)) {
+    const html = fs.readFileSync(viteIndexHtml, 'utf-8');
+    const jsMatch = html.match(/src="[^"]*\/assets\/(index-[^"]+\.js)"/);
+    if (jsMatch) {
+      mainJsFile = jsMatch[1];
+    }
+    const cssMatch = html.match(/href="[^"]*\/assets\/(index-[^"]+\.css)"/);
+    if (cssMatch) {
+      mainCssFile = cssMatch[1];
+    }
+  }
+
+  if (fs.existsSync(distAssetsDir)) {
+    const files = fs.readdirSync(distAssetsDir);
+    if (!mainJsFile) {
+      mainJsFile = files.find((f) => f.startsWith('index-') && f.endsWith('.js')) || '';
+    }
+    if (!mainCssFile) {
+      mainCssFile = files.find((f) => f.startsWith('index-') && f.endsWith('.css')) || '';
+    }
+  }
+
+  console.log(`✓ Detected Vite React bundle: ${mainJsFile || 'none'}`);
+  console.log(`✓ Detected Vite CSS bundle: ${mainCssFile || 'none'}`);
+}
+
 function wrapWithHtmlLayout({
   title,
   description,
@@ -253,6 +286,13 @@ function wrapWithHtmlLayout({
     })
   );
 
+  const jsScriptTag = mainJsFile
+    ? `<script type="module" crossorigin src="/assets/${mainJsFile}"></script>`
+    : '';
+  const cssLinkTag = mainCssFile
+    ? `<link rel="stylesheet" crossorigin href="/assets/${mainCssFile}" />`
+    : '';
+
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -270,20 +310,24 @@ function wrapWithHtmlLayout({
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Sora:wght@100..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${relPrefix}assets/site.css" />
+  ${cssLinkTag}
   <script>
     window.RAJ_REL_PREFIX = '${relPrefix}';
     window.RAJ_EXAMS_SEARCH_INDEX = ${JSON.stringify(searchIndex)};
   </script>
 </head>
 <body class="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
-  ${tickerHtml}
-  ${headerHtml}
-  <main class="flex-1">
-    ${content}
-  </main>
-  ${footerHtml}
-  ${drawerHtml}
-  <script src="${relPrefix}assets/site.js"></script>
+  <div id="root" class="min-h-screen flex flex-col">
+    ${tickerHtml}
+    ${headerHtml}
+    <main class="flex-1">
+      ${content}
+    </main>
+    ${footerHtml}
+    ${drawerHtml}
+  </div>
+  <script src="${relPrefix}assets/site.js" defer></script>
+  ${jsScriptTag}
 </body>
 </html>`;
 }
@@ -340,6 +384,7 @@ async function generateAllPages() {
     fs.mkdirSync(DIST_DIR, { recursive: true });
   }
 
+  detectViteAssets();
   copyAssets();
 
   // Find SSC CGL record for dedicated top-level pages
