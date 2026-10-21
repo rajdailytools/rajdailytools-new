@@ -41,13 +41,18 @@ const ADSTERRA_IFRAME_HTML = `<!DOCTYPE html>
  */
 export const AdsterraBanner300x250: React.FC<AdsterraBannerProps> = ({ className = '' }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const loadedRef = useRef<boolean>(false);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || loadedRef.current) return;
 
-    // Reset container to avoid duplication on component re-render
-    container.innerHTML = '';
+    // Check if an iframe is already present (e.g. from initial render or SSR)
+    const existingIframe = container.querySelector('iframe');
+    if (existingIframe) {
+      loadedRef.current = true;
+      return;
+    }
 
     const iframe = document.createElement('iframe');
     iframe.width = '300';
@@ -62,11 +67,13 @@ export const AdsterraBanner300x250: React.FC<AdsterraBannerProps> = ({ className
     iframe.srcdoc = ADSTERRA_IFRAME_HTML;
 
     container.appendChild(iframe);
+    loadedRef.current = true;
 
     return () => {
       if (container) {
         container.innerHTML = '';
       }
+      loadedRef.current = false;
     };
   }, []);
 
