@@ -6,6 +6,7 @@ import { getCountdown, formatDate } from '../utils/dateUtils';
 import { performGlobalSearch, GlobalSearchResult } from '../utils/searchUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
+import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
 import {
   Search,
   Briefcase,
@@ -335,9 +336,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
         </div>
       </section>
 
-      {/* Adsterra 320x50 Leaderboard Banner between Hero and Recruitment Deadlines */}
+      {/* Responsive Leaderboard Banner between Hero and Recruitment Deadlines */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AdsterraBanner320x50 className="!my-0" />
+        <AdsterraBanner728x90 className="!my-2" />
+        <div className="md:hidden">
+          <AdsterraBanner320x50 className="!my-0" />
+        </div>
       </div>
 
       {/* 2. LATEST VACANCIES — APPLY BEFORE LAST DATE (BOX WITH DYNAMIC COUNTDOWN) */}
@@ -987,6 +991,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
           })}
         </div>
       </section>
+
+      {/* Adsterra 728x90 Desktop Leaderboard Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdsterraBanner728x90 className="!my-0" />
+      </div>
 
       {/* 9. WHY CHOOSE RAJDAILYTOOLS & STUDENT HELP */}
       <section className="bg-slate-50 py-16 border-y border-slate-200/80">

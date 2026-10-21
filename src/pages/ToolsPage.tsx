@@ -5,6 +5,7 @@ import { Breadcrumb } from '../components/Breadcrumb';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
+import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
 import {
   Calculator,
   Image,
@@ -233,8 +234,11 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({ onNavigate, depth = 0 }) =
         </div>
       </div>
 
-      {/* Adsterra 320x50 Banner before Tools Grid */}
-      <AdsterraBanner320x50 className="!my-2" />
+      {/* Responsive Leaderboard Banner before Tools Grid */}
+      <AdsterraBanner728x90 className="!my-3" />
+      <div className="md:hidden">
+        <AdsterraBanner320x50 className="!my-2" />
+      </div>
 
       {/* Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

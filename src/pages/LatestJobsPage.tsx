@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
+import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
 
 interface LatestJobsPageProps {
   onNavigate: (page: ActivePage, slug?: string) => void;
@@ -231,8 +232,11 @@ export const LatestJobsPage: React.FC<LatestJobsPageProps> = ({ onNavigate, dept
           ======================================================== */}
       <EligibilityFinder onNavigate={onNavigate} depth={depth} />
 
-      {/* Adsterra 320x50 Leaderboard Banner */}
-      <AdsterraBanner320x50 className="my-4" />
+      {/* Responsive Leaderboard Banner */}
+      <AdsterraBanner728x90 className="my-4" />
+      <div className="md:hidden">
+        <AdsterraBanner320x50 className="my-4" />
+      </div>
 
       {/* ========================================================
           3. SEARCH & ADVANCED FILTERS BAR

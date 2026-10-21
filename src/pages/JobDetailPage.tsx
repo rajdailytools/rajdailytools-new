@@ -19,6 +19,7 @@ import { getCountdown, formatDate } from '../utils/dateUtils';
 import { getLiveBadgeStatus, LiveBadgeResult } from '../utils/countdownEngine';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
+import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
 import {
   Briefcase,
   Calendar,
@@ -2319,8 +2320,11 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
             )}
           </div>
 
-          {/* Adsterra 320x50 Leaderboard Banner between tools/summary and full details */}
-          <AdsterraBanner320x50 className="!my-6" />
+          {/* Responsive Leaderboard Banner between tools/summary and full details */}
+          <AdsterraBanner728x90 className="!my-6" />
+          <div className="md:hidden">
+            <AdsterraBanner320x50 className="!my-4" />
+          </div>
 
           {/* 50-SECTION ACCORDIONS */}
           <Accordion
