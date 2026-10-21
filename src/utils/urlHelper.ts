@@ -237,14 +237,25 @@ export function getPageUrl(page: ActivePage | string, slug?: string, depth: numb
     case 'tools':
       return `${prefix}tools.html`;
     case 'about':
-      return `${prefix}about.html`;
+    case 'about-us':
+      return `${prefix}about-us.html`;
     case 'contact':
-      return `${prefix}contact.html`;
+    case 'contact-us':
+      return `${prefix}contact-us.html`;
     case 'privacy':
     case 'privacy-policy':
       return `${prefix}privacy-policy.html`;
+    case 'disclaimer':
+      return `${prefix}disclaimer.html`;
     case 'terms':
-      return `${prefix}terms.html`;
+    case 'terms-and-conditions':
+      return `${prefix}terms-and-conditions.html`;
+    case 'copyright':
+      return `${prefix}copyright.html`;
+    case 'sitemap':
+      return `${prefix}sitemap.html`;
+    case 'faq':
+      return `${prefix}faq.html`;
 
     // Dynamic details
     case 'job-detail':

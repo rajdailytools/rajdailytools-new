@@ -33,6 +33,10 @@ import { AboutPage } from '../src/pages/AboutPage';
 import { ContactPage } from '../src/pages/ContactPage';
 import { PrivacyPolicyPage } from '../src/pages/PrivacyPolicyPage';
 import { TermsPage } from '../src/pages/TermsPage';
+import { DisclaimerPage } from '../src/pages/DisclaimerPage';
+import { CopyrightPage } from '../src/pages/CopyrightPage';
+import { SitemapPage } from '../src/pages/SitemapPage';
+import { FaqPage } from '../src/pages/FaqPage';
 import { ToolDetailPage, ToolType } from '../src/pages/ToolDetailPage';
 import { ExamTopicPage } from '../src/pages/ExamTopicPage';
 import { ToolsPage } from '../src/pages/ToolsPage';
@@ -305,12 +309,55 @@ function wrapWithHtmlLayout({
   <meta property="og:description" content="${escapeHtml(description)}" />
   <meta property="og:url" content="${escapeHtml(canonicalUrl)}" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RajDailyTools" />
+  <meta property="og:locale" content="en_IN" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${escapeHtml(title)}" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Sora:wght@100..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${relPrefix}assets/site.css" />
   ${cssLinkTag}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://rajdailytools.in/#organization",
+        "name": "RajDailyTools",
+        "url": "https://rajdailytools.in",
+        "email": "rajdailytools@gmail.com",
+        "description": "India's independent educational, government exam preparation, and student utility platform."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://rajdailytools.in/#website",
+        "url": "https://rajdailytools.in",
+        "name": "RajDailyTools",
+        "publisher": {
+          "@id": "https://rajdailytools.in/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://rajdailytools.in/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "${escapeHtml(canonicalUrl)}#webpage",
+        "url": "${escapeHtml(canonicalUrl)}",
+        "name": "${escapeHtml(title)}",
+        "description": "${escapeHtml(description)}",
+        "isPartOf": {
+          "@id": "https://rajdailytools.in/#website"
+        }
+      }
+    ]
+  }
+  </script>
   <script>
     window.RAJ_REL_PREFIX = '${relPrefix}';
     window.RAJ_EXAMS_SEARCH_INDEX = ${JSON.stringify(searchIndex)};
@@ -563,9 +610,21 @@ async function generateAllPages() {
     })
   );
 
-  // About Page
+  // About Us Page
   const aboutContent = renderToStaticMarkup(
     React.createElement(AboutPage, { depth: 0 })
+  );
+  writePage(
+    'about-us.html',
+    wrapWithHtmlLayout({
+      title: 'About RajDailyTools – India’s Dedicated Exam Preparation Portal',
+      description:
+        'Learn about the mission, editorial standards, and tools built by RajDailyTools to help aspirants navigate government exams with clarity.',
+      content: aboutContent,
+      pageKey: 'about-us',
+      canonicalPath: 'about-us.html',
+      depth: 0
+    })
   );
   writePage(
     'about.html',
@@ -575,13 +634,26 @@ async function generateAllPages() {
         'Learn about the mission, editorial standards, and tools built by RajDailyTools to help aspirants navigate government exams with clarity.',
       content: aboutContent,
       pageKey: 'about',
+      canonicalPath: 'about-us.html',
       depth: 0
     })
   );
 
-  // Contact Page
+  // Contact Us Page
   const contactContent = renderToStaticMarkup(
     React.createElement(ContactPage, { depth: 0 })
+  );
+  writePage(
+    'contact-us.html',
+    wrapWithHtmlLayout({
+      title: 'Contact RajDailyTools – Support & Editorial Feedback',
+      description:
+        'Get in touch with the RajDailyTools team for feedback, correction requests, exam updates, and partnership inquiries.',
+      content: contactContent,
+      pageKey: 'contact-us',
+      canonicalPath: 'contact-us.html',
+      depth: 0
+    })
   );
   writePage(
     'contact.html',
@@ -591,6 +663,7 @@ async function generateAllPages() {
         'Get in touch with the RajDailyTools team for feedback, correction requests, exam updates, and partnership inquiries.',
       content: contactContent,
       pageKey: 'contact',
+      canonicalPath: 'contact-us.html',
       depth: 0
     })
   );
@@ -604,25 +677,119 @@ async function generateAllPages() {
     wrapWithHtmlLayout({
       title: 'Privacy Policy – RajDailyTools',
       description:
-        'Read the privacy policy of RajDailyTools regarding user data, non-tracking practices, and client-side calculators.',
+        'Read the privacy policy of RajDailyTools regarding user data, non-tracking practices, Google AdSense, and client-side calculators.',
+      content: privacyContent,
+      pageKey: 'privacy-policy',
+      canonicalPath: 'privacy-policy.html',
+      depth: 0
+    })
+  );
+  writePage(
+    'privacy.html',
+    wrapWithHtmlLayout({
+      title: 'Privacy Policy – RajDailyTools',
+      description:
+        'Read the privacy policy of RajDailyTools regarding user data, non-tracking practices, Google AdSense, and client-side calculators.',
       content: privacyContent,
       pageKey: 'privacy',
+      canonicalPath: 'privacy-policy.html',
       depth: 0
     })
   );
 
-  // Terms Page
+  // Disclaimer Page
+  const disclaimerContent = renderToStaticMarkup(
+    React.createElement(DisclaimerPage, { depth: 0 })
+  );
+  writePage(
+    'disclaimer.html',
+    wrapWithHtmlLayout({
+      title: 'Disclaimer – Official Non-Government Advisory | RajDailyTools',
+      description:
+        'Important non-government affiliation disclaimer and candidate verification guidelines for RajDailyTools portal visitors.',
+      content: disclaimerContent,
+      pageKey: 'disclaimer',
+      canonicalPath: 'disclaimer.html',
+      depth: 0
+    })
+  );
+
+  // Terms and Conditions Page
   const termsContent = renderToStaticMarkup(
     React.createElement(TermsPage, { depth: 0 })
+  );
+  writePage(
+    'terms-and-conditions.html',
+    wrapWithHtmlLayout({
+      title: 'Terms & Conditions – RajDailyTools',
+      description:
+        'Terms of service, permitted educational usage, and user rights for RajDailyTools portal visitors.',
+      content: termsContent,
+      pageKey: 'terms-and-conditions',
+      canonicalPath: 'terms-and-conditions.html',
+      depth: 0
+    })
   );
   writePage(
     'terms.html',
     wrapWithHtmlLayout({
       title: 'Terms & Conditions – RajDailyTools',
       description:
-        'Terms of service, educational disclaimer, and usage conditions for RajDailyTools portal visitors.',
+        'Terms of service, permitted educational usage, and user rights for RajDailyTools portal visitors.',
       content: termsContent,
       pageKey: 'terms',
+      canonicalPath: 'terms-and-conditions.html',
+      depth: 0
+    })
+  );
+
+  // Copyright Policy Page
+  const copyrightContent = renderToStaticMarkup(
+    React.createElement(CopyrightPage, { depth: 0 })
+  );
+  writePage(
+    'copyright.html',
+    wrapWithHtmlLayout({
+      title: 'Copyright Policy – Intellectual Property & Fair Use | RajDailyTools',
+      description:
+        'Copyright and intellectual property protection, official notice attribution, and grievance mechanism for RajDailyTools.',
+      content: copyrightContent,
+      pageKey: 'copyright',
+      canonicalPath: 'copyright.html',
+      depth: 0
+    })
+  );
+
+  // HTML Sitemap Page
+  const sitemapContent = renderToStaticMarkup(
+    React.createElement(SitemapPage, { depth: 0 })
+  );
+  writePage(
+    'sitemap.html',
+    wrapWithHtmlLayout({
+      title: 'HTML Sitemap – Full Website Navigation Directory | RajDailyTools',
+      description:
+        'User-friendly HTML sitemap navigating all exams, recruitments, admit cards, answer keys, results, mock tests, calculators, and legal policies.',
+      content: sitemapContent,
+      pageKey: 'sitemap',
+      canonicalPath: 'sitemap.html',
+      depth: 0
+    })
+  );
+
+  // FAQ Page
+  const faqContent = renderToStaticMarkup(
+    React.createElement(FaqPage, { depth: 0 })
+  );
+  writePage(
+    'faq.html',
+    wrapWithHtmlLayout({
+      title: 'Frequently Asked Questions (FAQ) – Help Center | RajDailyTools',
+      description:
+        'Frequently asked questions about government jobs, downloading admit cards, checking results, mock tests, calculators, and verification.',
+      content: faqContent,
+      pageKey: 'faq',
+      canonicalPath: 'faq.html',
       depth: 0
     })
   );
@@ -2442,9 +2609,23 @@ async function generateAllPages() {
       relPath.startsWith('tools/') ||
       !relPath.includes('/') // Root-level ranking, guide, and 50-section pages
     ) {
-      if (['about.html', 'contact.html', 'privacy-policy.html', 'terms.html'].includes(relPath)) {
+      if ([
+        'about.html',
+        'about-us.html',
+        'contact.html',
+        'contact-us.html',
+        'privacy-policy.html',
+        'privacy.html',
+        'disclaimer.html',
+        'terms.html',
+        'terms-and-conditions.html',
+        'copyright.html'
+      ].includes(relPath)) {
         priority = '0.5';
         changefreq = 'monthly';
+      } else if (['sitemap.html', 'faq.html'].includes(relPath)) {
+        priority = '0.7';
+        changefreq = 'weekly';
       } else {
         priority = '0.8';
         changefreq = 'daily';

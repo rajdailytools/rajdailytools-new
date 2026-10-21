@@ -27,6 +27,10 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
+import { DisclaimerPage } from './pages/DisclaimerPage';
+import { CopyrightPage } from './pages/CopyrightPage';
+import { SitemapPage } from './pages/SitemapPage';
+import { FaqPage } from './pages/FaqPage';
 import { ToolDetailPage, ToolType } from './pages/ToolDetailPage';
 import { ExamTopicPage } from './pages/ExamTopicPage';
 import { ToolsPage } from './pages/ToolsPage';
@@ -87,6 +91,32 @@ function getInitialRoute(): { page: ActivePage; slug: string; tool: ToolType } {
       slug: 'ssc-cgl-recruitment-2026',
       tool: 'eligibility-calculator'
     };
+  }
+
+  // Check essential legal and navigation routes
+  if (effectiveRoute === 'about' || effectiveRoute === 'about-us') {
+    return { page: 'about-us', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'contact' || effectiveRoute === 'contact-us') {
+    return { page: 'contact-us', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'privacy' || effectiveRoute === 'privacy-policy') {
+    return { page: 'privacy-policy', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'disclaimer') {
+    return { page: 'disclaimer', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'terms' || effectiveRoute === 'terms-and-conditions') {
+    return { page: 'terms-and-conditions', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'copyright') {
+    return { page: 'copyright', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'sitemap') {
+    return { page: 'sitemap', slug: '', tool: 'eligibility-calculator' };
+  }
+  if (effectiveRoute === 'faq') {
+    return { page: 'faq', slug: '', tool: 'eligibility-calculator' };
   }
 
   // Check direct BTSC Fishery Extension Officer route
@@ -565,16 +595,32 @@ export default function App() {
         );
 
       case 'about':
+      case 'about-us':
         return <AboutPage onNavigate={handleNavigate} />;
 
       case 'contact':
+      case 'contact-us':
         return <ContactPage onNavigate={handleNavigate} />;
 
       case 'privacy':
+      case 'privacy-policy':
         return <PrivacyPolicyPage onNavigate={handleNavigate} />;
 
+      case 'disclaimer':
+        return <DisclaimerPage onNavigate={handleNavigate} />;
+
       case 'terms':
+      case 'terms-and-conditions':
         return <TermsPage onNavigate={handleNavigate} />;
+
+      case 'copyright':
+        return <CopyrightPage onNavigate={handleNavigate} />;
+
+      case 'sitemap':
+        return <SitemapPage onNavigate={handleNavigate} />;
+
+      case 'faq':
+        return <FaqPage onNavigate={handleNavigate} />;
 
       case 'tool-detail':
         return (
