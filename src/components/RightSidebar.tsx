@@ -4,6 +4,7 @@ import { EXAMS_DATABASE } from '../data/exams';
 import { ExternalLink, Calendar, Send, Layers, ArrowRight } from 'lucide-react';
 import { formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
+import { AdsterraBanner300x250 } from './AdsterraBanner300x250';
 
 interface RightSidebarProps {
   currentExam?: ExamRecord;
@@ -104,6 +105,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
           )}
         </div>
       </div>
+
+      {/* Adsterra 300x250 Banner Ad */}
+      <AdsterraBanner300x250 className="!my-1" />
 
       {/* CARD 3: Mock Test Banner */}
       <div className="bg-gradient-to-br from-indigo-900 to-blue-900 text-white rounded-2xl p-5 shadow-md">

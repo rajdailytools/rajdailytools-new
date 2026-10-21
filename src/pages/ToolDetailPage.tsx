@@ -39,6 +39,7 @@ import {
   LoanEmiCalculatorTool,
   SimpleInterestCalculatorTool
 } from '../components/calculators/ExtraTools';
+import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
 
 export type ToolType =
   | 'eligibility-calculator'
@@ -202,6 +203,9 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
       {toolId === 'simple-interest-calculator' && <SimpleInterestCalculatorTool />}
       {toolId === 'physical-eligibility' && <PhysicalEligibilityTool exam={activeExam} onNavigate={onNavigate} />}
       {toolId === 'mock-test' && <MockTestTool exam={activeExam} onNavigate={onNavigate} />}
+
+      {/* Non-intrusive Adsterra 300x250 Banner ad after tool interaction/result area */}
+      <AdsterraBanner300x250 />
     </div>
   );
 };

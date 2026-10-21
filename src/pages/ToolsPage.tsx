@@ -3,6 +3,7 @@ import { ActivePage, ExamRecord } from '../types/exam';
 import { EXAMS_DATABASE } from '../data/exams';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { getPageUrl } from '../utils/urlHelper';
+import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
 import {
   Calculator,
   Image,
@@ -283,6 +284,9 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({ onNavigate, depth = 0 }) =
           );
         })}
       </div>
+
+      {/* Non-intrusive Adsterra 300x250 Banner Ad */}
+      <AdsterraBanner300x250 />
     </div>
   );
 };
