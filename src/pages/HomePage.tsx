@@ -74,7 +74,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
             <div className="lg:col-span-7 space-y-5 text-left">
               <div className="inline-flex items-center gap-2 bg-white border border-slate-200 px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 shadow-xs">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>185+ Guides &amp; Resources • Updated Daily</span>
+                <span>40+ Resources &amp; Growing</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.15] font-display">
@@ -192,21 +192,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
               <div className="grid grid-cols-3 gap-6 pt-4 border-t border-slate-200/80 max-w-lg">
                 <div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
-                    185<span className="text-blue-600">+</span>
+                    40<span className="text-blue-600">+</span>
                   </div>
-                  <div className="text-xs font-medium text-slate-500">Guides &amp; Updates</div>
+                  <div className="text-xs font-medium text-slate-500">Resources &amp; Updates</div>
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
-                    4<span className="text-blue-600">+</span>
+                    Daily
                   </div>
-                  <div className="text-xs font-medium text-slate-500">Exam Categories</div>
+                  <div className="text-xs font-medium text-slate-500">Exam &amp; Job Updates</div>
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 font-display">
-                    100<span className="text-emerald-600">%</span>
+                    Official
                   </div>
-                  <div className="text-xs font-medium text-slate-500">Free to Access</div>
+                  <div className="text-xs font-medium text-slate-500">Source Verification</div>
                 </div>
               </div>
             </div>
@@ -1047,7 +1047,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
                 <div className="p-2 bg-white/10 rounded-xl">🎓 BSc Physics Graduate</div>
                 <div className="p-2 bg-white/10 rounded-xl">💻 COPA ITI Certified</div>
                 <div className="p-2 bg-white/10 rounded-xl">🇮🇳 Serving Students Across India</div>
-                <div className="p-2 bg-white/10 rounded-xl">📚 185+ Guides &amp; Growing</div>
+                <div className="p-2 bg-white/10 rounded-xl">📚 40+ Resources &amp; Growing</div>
               </div>
             </div>
 
