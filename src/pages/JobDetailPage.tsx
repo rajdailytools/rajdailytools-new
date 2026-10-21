@@ -20,6 +20,7 @@ import { getLiveBadgeStatus, LiveBadgeResult } from '../utils/countdownEngine';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
+import { AdsterraNativeBanner } from '../components/AdsterraNativeBanner';
 import {
   Briefcase,
   Calendar,
@@ -2426,6 +2427,9 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ exam, onNavigate, 
               </div>
             </div>
           )}
+
+          {/* Adsterra Native Responsive Recommendation Banner */}
+          <AdsterraNativeBanner className="!my-6" />
         </div>
 
         {/* Right Sidebar */}

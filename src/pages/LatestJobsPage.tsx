@@ -27,6 +27,7 @@ import {
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
+import { AdsterraNativeBanner } from '../components/AdsterraNativeBanner';
 
 interface LatestJobsPageProps {
   onNavigate: (page: ActivePage, slug?: string) => void;
@@ -505,6 +506,9 @@ export const LatestJobsPage: React.FC<LatestJobsPageProps> = ({ onNavigate, dept
           </div>
         )}
       </section>
+
+      {/* Adsterra Native Responsive Recommendation Banner */}
+      <AdsterraNativeBanner className="!my-6" />
     </div>
   );
 };

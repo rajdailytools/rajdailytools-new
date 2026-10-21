@@ -42,6 +42,7 @@ import {
 import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
+import { AdsterraNativeBanner } from '../components/AdsterraNativeBanner';
 
 export type ToolType =
   | 'eligibility-calculator'
@@ -214,6 +215,9 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
       {/* Non-intrusive Adsterra 300x250 Banner ad after tool interaction/result area */}
       <AdsterraBanner300x250 />
+
+      {/* Adsterra Native Responsive Recommendation Banner */}
+      <AdsterraNativeBanner className="!my-6" />
     </div>
   );
 };

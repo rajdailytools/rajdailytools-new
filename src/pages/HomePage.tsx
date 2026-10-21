@@ -7,6 +7,7 @@ import { performGlobalSearch, GlobalSearchResult } from '../utils/searchUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import { AdsterraBanner728x90 } from '../components/AdsterraBanner728x90';
+import { AdsterraNativeBanner } from '../components/AdsterraNativeBanner';
 import {
   Search,
   Briefcase,
@@ -911,6 +912,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
           </div>
         </div>
       </section>
+
+      {/* Adsterra Native Responsive Banner between Mock Tests and Admissions */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdsterraNativeBanner className="!my-0" />
+      </div>
 
       {/* 8. LATEST ADMISSION FORMS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
