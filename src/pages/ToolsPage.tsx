@@ -4,6 +4,7 @@ import { EXAMS_DATABASE } from '../data/exams';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
+import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import {
   Calculator,
   Image,
@@ -231,6 +232,9 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({ onNavigate, depth = 0 }) =
           </div>
         </div>
       </div>
+
+      {/* Adsterra 320x50 Banner before Tools Grid */}
+      <AdsterraBanner320x50 className="!my-2" />
 
       {/* Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -5,6 +5,7 @@ import { ExternalLink, Calendar, Send, Layers, ArrowRight } from 'lucide-react';
 import { formatDate } from '../utils/dateUtils';
 import { getPageUrl } from '../utils/urlHelper';
 import { AdsterraBanner300x250 } from './AdsterraBanner300x250';
+import { AdsterraBanner320x50 } from './AdsterraBanner320x50';
 
 interface RightSidebarProps {
   currentExam?: ExamRecord;
@@ -186,6 +187,11 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ currentExam, onNavig
             </a>
           ))}
         </div>
+      </div>
+
+      {/* Adsterra 320x50 Banner - Desktop Sidebar only to prevent stacking clutter on mobile */}
+      <div className="hidden lg:block">
+        <AdsterraBanner320x50 className="!my-2" />
       </div>
     </div>
   );

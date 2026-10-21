@@ -5,6 +5,7 @@ import { ADMISSIONS_DATABASE } from '../data/admissions';
 import { getCountdown, formatDate } from '../utils/dateUtils';
 import { performGlobalSearch, GlobalSearchResult } from '../utils/searchUtils';
 import { getPageUrl } from '../utils/urlHelper';
+import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 import {
   Search,
   Briefcase,
@@ -333,6 +334,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, depth = 0 }) => 
           </div>
         </div>
       </section>
+
+      {/* Adsterra 320x50 Leaderboard Banner between Hero and Recruitment Deadlines */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdsterraBanner320x50 className="!my-0" />
+      </div>
 
       {/* 2. LATEST VACANCIES — APPLY BEFORE LAST DATE (BOX WITH DYNAMIC COUNTDOWN) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

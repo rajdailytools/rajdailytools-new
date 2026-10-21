@@ -40,6 +40,7 @@ import {
   SimpleInterestCalculatorTool
 } from '../components/calculators/ExtraTools';
 import { AdsterraBanner300x250 } from '../components/AdsterraBanner300x250';
+import { AdsterraBanner320x50 } from '../components/AdsterraBanner320x50';
 
 export type ToolType =
   | 'eligibility-calculator'
@@ -188,6 +189,9 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           })}
         </div>
       </div>
+
+      {/* Adsterra 320x50 Leaderboard Banner above Tool Engine */}
+      <AdsterraBanner320x50 className="!my-2" />
 
       {/* Render Specific Tool Engine */}
       {toolId === 'eligibility-calculator' && <EligibilityCalculatorTool exam={activeExam} onNavigate={onNavigate} />}
